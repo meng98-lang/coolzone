@@ -6,7 +6,7 @@ export interface Product {
   price: number;
   originalPrice?: number;
   image: string;
-  category: 'wall-mounted' | 'portable' | 'central';
+  category: 'wall-mounted' | 'portable' | 'central' | 'floor-standing';
   rating: number;
   reviews: number;
   features: string[];
@@ -23,6 +23,7 @@ export const categories = [
   { id: 'all', name: 'All Products', nameEn: 'All' },
   { id: 'wall-mounted', name: 'Wall Mounted', nameEn: 'Wall' },
   { id: 'portable', name: 'Portable', nameEn: 'Portable' },
+  { id: 'floor-standing', name: 'Floor Standing', nameEn: 'Tower' },
   { id: 'central', name: 'Central AC', nameEn: 'Central' },
 ] as const;
 
@@ -191,6 +192,42 @@ export const products: Product[] = [
     coolingCapacity: '24,000 BTU',
     noiseLevel: '48 dB (outdoor)',
     color: '#8B5CF6',
+  },
+  {
+    id: 'frostline-tower-24000',
+    name: 'FrostLine Tower 24000',
+    subtitle: 'Floor Standing AC',
+    price: 1099,
+    originalPrice: 1299,
+    image: '/products/frostline-tower-24000.jpg',
+    category: 'floor-standing',
+    rating: 4.7,
+    reviews: 89,
+    features: [
+      '360° Air Distribution',
+      'Touch Control Panel',
+      'Smart Inverter Technology',
+      'Ultra Quiet Operation 32dB',
+      'Self-Cleaning Function',
+      'WiFi Remote Control',
+    ],
+    specs: {
+      'Cooling Capacity': '24,000 BTU/h',
+      'Coverage Area': '45-65 m²',
+      'Power Consumption': '2,100 W',
+      'Energy Class': 'A++',
+      'Noise Level': '32-45 dB',
+      'Dimensions': '520 × 350 × 1730 mm',
+      'Weight': '42 kg',
+      'Refrigerant': 'R32',
+      'Warranty': '5 Years',
+    },
+    description: 'Elegant floor-standing tower design perfect for living rooms and large spaces. 360° air distribution ensures even cooling throughout the room, while the ultra-quiet operation keeps your environment peaceful.',
+    badge: 'New',
+    energyClass: 'A++',
+    coolingCapacity: '24,000 BTU',
+    noiseLevel: '32-45 dB',
+    color: '#06B6D4',
   },
 ];
 
