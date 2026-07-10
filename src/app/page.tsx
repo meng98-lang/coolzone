@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  const featuredProducts = products.filter((p) => p.badge).slice(0, 3);
+  const featuredProducts = products.filter((p) => p.badge);
 
   return (
     <>
