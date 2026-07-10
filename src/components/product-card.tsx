@@ -1,16 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { Star, ShoppingCart, Zap } from 'lucide-react';
+import { Star, MessageCircle, Zap } from 'lucide-react';
 import type { Product } from '@/lib/products';
-import { useCart } from '@/lib/store';
+import { buildProductInquiryUrl } from '@/lib/whatsapp';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addItem } = useCart();
+  const whatsappUrl = buildProductInquiryUrl(product.name, product.id);
 
   return (
     <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 hover:-translate-y-1">
@@ -93,13 +93,15 @@ export function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
           </div>
-          <button
-            onClick={() => addItem(product)}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm hover:shadow-md active:scale-95"
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-medium rounded-xl transition-colors shadow-sm hover:shadow-md active:scale-95"
           >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Add</span>
-          </button>
+            <MessageCircle className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Inquire</span>
+          </a>
         </div>
       </div>
     </div>

@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart, Star, ArrowLeft, Check, Zap, Volume2, Thermometer, Wifi } from 'lucide-react';
-import { useCart } from '@/lib/store';
+import { Star, ArrowLeft, Check, Zap, Volume2, Thermometer, Wifi, MessageCircle, ShoppingCart } from 'lucide-react';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/products';
 import type { Product } from '@/lib/products';
+import { buildProductInquiryUrl, buildOrderUrl } from '@/lib/whatsapp';
+import { useCart } from '@/lib/store';
 
 interface ProductDetailProps {
   product: Product;
@@ -145,8 +146,17 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* Add to Cart */}
-            <div className="mt-8 flex gap-3">
+            {/* WhatsApp Actions */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <a
+                href={buildProductInquiryUrl(product.name, product.id)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 px-8 py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold rounded-xl transition-all shadow-lg shadow-green-600/20 hover:shadow-green-600/30 active:scale-[0.98]"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Buy Now on WhatsApp
+              </a>
               <button
                 onClick={() => addItem(product)}
                 className="flex-1 flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 active:scale-[0.98]"

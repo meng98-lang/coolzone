@@ -4,6 +4,7 @@ import { CartProvider } from '@/lib/store';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CartSidebar } from '@/components/cart-sidebar';
+import { WhatsAppFloat } from '@/components/whatsapp-float';
 
 export const metadata: Metadata = {
   title: {
@@ -28,6 +29,7 @@ export default function RootLayout({
           <CartSidebar />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <WhatsAppFloat />
         </CartProvider>
       </body>
     </html>

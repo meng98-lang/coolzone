@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { useCart } from '@/lib/store';
-import { ShoppingCart, Menu, X, Snowflake } from 'lucide-react';
+import { ShoppingCart, Menu, X, Snowflake, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
+import { buildContactUrl } from '@/lib/whatsapp';
 
 export function Header() {
   const { totalItems, toggleCart } = useCart();
@@ -40,7 +41,16 @@ export function Header() {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <a
+              href={buildContactUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-medium rounded-xl transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span className="hidden lg:inline">WhatsApp</span>
+            </a>
             <button
               onClick={toggleCart}
               className="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors group"

@@ -1,8 +1,8 @@
 'use client';
 
-import { X, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
+import { X, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useCart } from '@/lib/store';
-import Link from 'next/link';
+import { buildOrderUrl } from '@/lib/whatsapp';
 
 export function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice, totalItems } = useCart();
@@ -123,15 +123,21 @@ export function CartSidebar() {
                 <span className="text-sm text-gray-500">Subtotal</span>
                 <span className="text-lg font-bold text-gray-900">&euro;{totalPrice.toLocaleString()}</span>
               </div>
-              <p className="text-xs text-gray-400">Shipping and taxes calculated at checkout</p>
-              <Link
-                href="/checkout"
+              <p className="text-xs text-gray-400">Click below to order via WhatsApp</p>
+              <a
+                href={buildOrderUrl(items.map((item) => ({
+                  name: item.product.name,
+                  quantity: item.quantity,
+                  price: item.product.price,
+                })))}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={closeCart}
-                className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors shadow-lg shadow-blue-600/20"
+                className="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-medium rounded-xl transition-colors shadow-lg shadow-green-600/20"
               >
-                Checkout
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                <MessageCircle className="w-4 h-4" />
+                Order via WhatsApp
+              </a>
               <button
                 onClick={closeCart}
                 className="w-full py-2.5 text-sm text-gray-500 hover:text-gray-700 transition-colors"

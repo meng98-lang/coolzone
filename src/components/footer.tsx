@@ -1,5 +1,6 @@
-import { Snowflake } from 'lucide-react';
+import { Snowflake, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
+import { buildContactUrl } from '@/lib/whatsapp';
 
 export function Footer() {
   return (
@@ -37,7 +38,7 @@ export function Footer() {
               <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Installation Guide</a></li>
               <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Warranty Info</a></li>
               <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">FAQ</a></li>
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Contact Us</a></li>
+              <li><a href={buildContactUrl()} target="_blank" rel="noopener noreferrer" className="text-sm hover:text-blue-400 transition-colors">WhatsApp Us</a></li>
             </ul>
           </div>
 
@@ -59,14 +60,15 @@ export function Footer() {
             &copy; 2025 CoolZone. All rights reserved. Shipping across EU & UK.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-gray-500">Payment:</span>
-            <div className="flex gap-2">
-              {['Visa', 'MC', 'Amex', 'PayPal'].map((method) => (
-                <span key={method} className="px-2 py-1 bg-gray-800 rounded text-[10px] font-medium text-gray-400">
-                  {method}
-                </span>
-              ))}
-            </div>
+            <a
+              href={buildContactUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 rounded-lg transition-colors"
+            >
+              <MessageCircle className="w-4 h-4 text-[#25D366]" />
+              <span className="text-xs font-medium text-[#25D366]">Chat on WhatsApp</span>
+            </a>
           </div>
         </div>
       </div>
