@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCart } from '@/lib/store';
-import { ShoppingCart, Menu, X, Snowflake, MessageCircle } from 'lucide-react';
+import { ShoppingCart, Menu, X, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import { buildContactUrl } from '@/lib/whatsapp';
 
@@ -16,9 +16,6 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-shadow">
-              <Snowflake className="w-5 h-5 text-white" />
-            </div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
               CoolZone
             </span>

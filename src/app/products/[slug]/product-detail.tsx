@@ -58,7 +58,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
               }}
             />
             <div className="relative z-10 w-full max-w-sm">
-              <ProductLargeIllustration product={product} />
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-auto object-contain drop-shadow-xl"
+              />
             </div>
             {product.badge && (
               <span className="absolute top-5 left-5 px-3 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-full">
@@ -200,83 +204,5 @@ export function ProductDetail({ product }: ProductDetailProps) {
   );
 }
 
-// Large product illustration for detail page
-function ProductLargeIllustration({ product }: { product: Product }) {
-  const color = product.color;
 
-  if (product.category === 'wall-mounted') {
-    return (
-      <svg viewBox="0 0 300 200" className="w-full h-auto drop-shadow-xl">
-        <rect x="100" y="15" width="100" height="8" rx="3" fill="#e5e7eb" />
-        <rect x="40" y="23" width="220" height="100" rx="18" fill="white" stroke="#e5e7eb" strokeWidth="2" />
-        <rect x="50" y="30" width="200" height="75" rx="12" fill={color} opacity="0.08" />
-        <rect x="60" y="90" width="180" height="20" rx="6" fill={color} opacity="0.2" />
-        <line x1="80" y1="100" x2="220" y2="100" stroke={color} strokeWidth="1" opacity="0.4" />
-        <rect x="200" y="45" width="38" height="18" rx="5" fill="#1e293b" opacity="0.9" />
-        <text x="219" y="58" textAnchor="middle" fill={color} fontSize="11" fontWeight="bold">22°C</text>
-        <circle cx="70" cy="54" r="4" fill={color} opacity="0.7">
-          <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite" />
-        </circle>
-        <path d="M90 130 Q90 155 85 175" stroke={color} strokeWidth="1.5" fill="none" opacity="0.25">
-          <animate attributeName="opacity" values="0.25;0.05;0.25" dur="3s" repeatCount="indefinite" />
-        </path>
-        <path d="M150 130 Q150 160 145 185" stroke={color} strokeWidth="1.5" fill="none" opacity="0.2">
-          <animate attributeName="opacity" values="0.2;0.03;0.2" dur="3.5s" repeatCount="indefinite" />
-        </path>
-        <path d="M210 130 Q210 155 215 175" stroke={color} strokeWidth="1.5" fill="none" opacity="0.25">
-          <animate attributeName="opacity" values="0.25;0.05;0.25" dur="2.8s" repeatCount="indefinite" />
-        </path>
-        <text x="150" y="68" textAnchor="middle" fill={color} fontSize="20" opacity="0.3">&#10052;</text>
-      </svg>
-    );
-  }
 
-  if (product.category === 'portable') {
-    return (
-      <svg viewBox="0 0 200 280" className="w-full h-auto drop-shadow-xl">
-        <rect x="40" y="30" width="120" height="200" rx="20" fill="white" stroke="#e5e7eb" strokeWidth="2" />
-        <rect x="55" y="45" width="90" height="35" rx="10" fill={color} opacity="0.12" />
-        <line x1="65" y1="55" x2="135" y2="55" stroke={color} strokeWidth="1" opacity="0.3" />
-        <line x1="65" y1="63" x2="135" y2="63" stroke={color} strokeWidth="1" opacity="0.3" />
-        <line x1="65" y1="71" x2="135" y2="71" stroke={color} strokeWidth="1" opacity="0.3" />
-        <rect x="60" y="95" width="80" height="40" rx="8" fill={color} opacity="0.06" />
-        <circle cx="80" cy="115" r="7" fill={color} opacity="0.25" />
-        <circle cx="100" cy="115" r="7" fill={color} opacity="0.18" />
-        <circle cx="120" cy="115" r="7" fill={color} opacity="0.12" />
-        <rect x="65" y="150" width="70" height="25" rx="6" fill="#1e293b" opacity="0.9" />
-        <text x="100" y="167" textAnchor="middle" fill={color} fontSize="14" fontWeight="bold">20°C</text>
-        <circle cx="60" cy="238" r="8" fill="#d1d5db" />
-        <circle cx="140" cy="238" r="8" fill="#d1d5db" />
-        <rect x="80" y="18" width="40" height="12" rx="6" fill="#e5e7eb" />
-        <path d="M85 35 Q85 15 78 5" stroke={color} strokeWidth="1.5" fill="none" opacity="0.25">
-          <animate attributeName="opacity" values="0.25;0.05;0.25" dur="2.5s" repeatCount="indefinite" />
-        </path>
-        <path d="M115 35 Q115 12 122 2" stroke={color} strokeWidth="1.5" fill="none" opacity="0.2">
-          <animate attributeName="opacity" values="0.2;0.03;0.2" dur="3s" repeatCount="indefinite" />
-        </path>
-      </svg>
-    );
-  }
-
-  // Central AC
-  return (
-    <svg viewBox="0 0 300 240" className="w-full h-auto drop-shadow-xl">
-      <rect x="20" y="80" width="100" height="120" rx="12" fill="white" stroke="#e5e7eb" strokeWidth="2" />
-      <circle cx="70" cy="140" r="32" fill="none" stroke={color} strokeWidth="2" opacity="0.25" />
-      <circle cx="70" cy="140" r="20" fill="none" stroke={color} strokeWidth="1.5" opacity="0.15" />
-      <circle cx="70" cy="140" r="7" fill={color} opacity="0.15" />
-      <rect x="150" y="30" width="120" height="50" rx="12" fill="white" stroke="#e5e7eb" strokeWidth="2" />
-      <rect x="160" y="62" width="100" height="12" rx="4" fill={color} opacity="0.15" />
-      <circle cx="170" cy="48" r="3" fill={color} opacity="0.6">
-        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite" />
-      </circle>
-      <path d="M120 110 L150 110 L150 55" stroke={color} strokeWidth="2.5" fill="none" opacity="0.15" strokeDasharray="6 3" />
-      <rect x="150" y="140" width="120" height="50" rx="12" fill="white" stroke="#e5e7eb" strokeWidth="2" />
-      <rect x="160" y="172" width="100" height="12" rx="4" fill={color} opacity="0.15" />
-      <circle cx="170" cy="158" r="3" fill={color} opacity="0.6">
-        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.3s" repeatCount="indefinite" />
-      </circle>
-      <path d="M120 150 L150 165" stroke={color} strokeWidth="2.5" fill="none" opacity="0.15" strokeDasharray="6 3" />
-    </svg>
-  );
-}

@@ -82,49 +82,12 @@ export default function HomePage() {
               <div className="relative w-full aspect-square max-w-lg mx-auto">
                 {/* Background circle */}
                 <div className="absolute inset-8 bg-gradient-to-br from-blue-100 to-cyan-50 rounded-full" />
-                {/* Main AC illustration */}
-                <svg viewBox="0 0 400 400" className="relative z-10 w-full h-full">
-                  {/* Large AC unit */}
-                  <rect x="80" y="120" width="240" height="100" rx="20" fill="white" stroke="#e5e7eb" strokeWidth="2" />
-                  <rect x="90" y="130" width="220" height="70" rx="14" fill="url(#heroGrad)" opacity="0.1" />
-                  {/* Vent */}
-                  <rect x="100" y="180" width="200" height="25" rx="8" fill="#3B82F6" opacity="0.15" />
-                  <line x1="120" y1="192" x2="280" y2="192" stroke="#3B82F6" strokeWidth="1" opacity="0.3" />
-                  {/* Display */}
-                  <rect x="250" y="145" width="45" height="22" rx="6" fill="#1e293b" opacity="0.9" />
-                  <text x="272" y="160" textAnchor="middle" fill="#3B82F6" fontSize="12" fontWeight="bold">22°C</text>
-                  {/* LED */}
-                  <circle cx="110" cy="155" r="4" fill="#3B82F6" opacity="0.7">
-                    <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite" />
-                  </circle>
-                  {/* Air flow animation */}
-                  <path d="M140 230 Q140 270 130 300" stroke="#3B82F6" strokeWidth="2" fill="none" opacity="0.2">
-                    <animate attributeName="opacity" values="0.2;0.05;0.2" dur="3s" repeatCount="indefinite" />
-                  </path>
-                  <path d="M200 230 Q200 280 190 320" stroke="#06b6d4" strokeWidth="2" fill="none" opacity="0.15">
-                    <animate attributeName="opacity" values="0.15;0.03;0.15" dur="3.5s" repeatCount="indefinite" />
-                  </path>
-                  <path d="M260 230 Q260 270 270 300" stroke="#3B82F6" strokeWidth="2" fill="none" opacity="0.2">
-                    <animate attributeName="opacity" values="0.2;0.05;0.2" dur="2.8s" repeatCount="indefinite" />
-                  </path>
-                  {/* Snowflake */}
-                  <text x="200" y="165" textAnchor="middle" fill="#3B82F6" fontSize="24" opacity="0.3">&#10052;</text>
-                  {/* Temperature particles */}
-                  <circle cx="150" cy="260" r="3" fill="#3B82F6" opacity="0.15">
-                    <animate attributeName="cy" values="260;300;260" dur="4s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.15;0;0.15" dur="4s" repeatCount="indefinite" />
-                  </circle>
-                  <circle cx="250" cy="250" r="2" fill="#06b6d4" opacity="0.15">
-                    <animate attributeName="cy" values="250;290;250" dur="3.5s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.15;0;0.15" dur="3.5s" repeatCount="indefinite" />
-                  </circle>
-                  <defs>
-                    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" />
-                      <stop offset="100%" stopColor="#06b6d4" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                {/* Hero image */}
+                <img
+                  src="/products/hero-bg.jpg"
+                  alt="Modern air conditioning in luxury living room"
+                  className="relative z-10 w-full h-full object-cover rounded-3xl shadow-2xl"
+                />
               </div>
             </div>
           </div>

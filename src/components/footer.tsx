@@ -1,4 +1,4 @@
-import { Snowflake, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import { buildContactUrl } from '@/lib/whatsapp';
 
@@ -10,9 +10,6 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <Snowflake className="w-4 h-4 text-white" />
-              </div>
               <span className="text-lg font-bold text-white">CoolZone</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed">
