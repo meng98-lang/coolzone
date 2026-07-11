@@ -32,7 +32,7 @@ export function Header() {
             <Link href="/products#features" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
               Why Us
             </Link>
-            <Link href="/products#contact" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+            <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
               Contact
             </Link>
           </nav>
@@ -85,7 +85,7 @@ export function Header() {
               <Link href="/products#features" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                 Why Us
               </Link>
-              <Link href="/products#contact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+              <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                 Contact
               </Link>
             </div>

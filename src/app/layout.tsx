@@ -5,6 +5,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CartSidebar } from '@/components/cart-sidebar';
 import { WhatsAppFloat } from '@/components/whatsapp-float';
+import { TrackingScripts } from '@/components/tracking-scripts';
 
 export const metadata: Metadata = {
   title: {
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-white text-gray-900">
+        <TrackingScripts />
         <CartProvider>
           <Header />
           <CartSidebar />

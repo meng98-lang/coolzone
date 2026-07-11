@@ -35,6 +35,7 @@ export function Footer() {
               <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Installation Guide</a></li>
               <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Warranty Info</a></li>
               <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">FAQ</a></li>
+              <li><a href="/contact" className="text-sm hover:text-blue-400 transition-colors">Contact Us</a></li>
               <li><a href={buildContactUrl()} target="_blank" rel="noopener noreferrer" className="text-sm hover:text-blue-400 transition-colors">WhatsApp Us</a></li>
             </ul>
           </div>
