@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t['products.title'],
     description: t['products.subtitle'],
+    keywords: t['seo.keywords'],
     alternates: {
       canonical: `${baseUrl}/${locale}/products`,
       languages: Object.fromEntries(

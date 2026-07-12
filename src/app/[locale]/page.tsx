@@ -22,8 +22,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const baseUrl = process.env.COZE_PROJECT_DOMAIN_DEFAULT ? `https://${process.env.COZE_PROJECT_DOMAIN_DEFAULT}` : 'https://coolzone.vercel.app';
 
   return {
-    title: `CoolZone - ${t['home.hero.title']}`,
-    description: t['home.hero.subtitle'],
+    title: t['seo.siteName'],
+    description: t['seo.description'],
+    keywords: t['seo.keywords'],
     alternates: {
       canonical: `${baseUrl}/${locale}`,
       languages: Object.fromEntries(
@@ -31,8 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ),
     },
     openGraph: {
-      title: `CoolZone - ${t['home.hero.title']}`,
-      description: t['home.hero.subtitle'],
+      title: t['seo.siteName'],
+      description: t['seo.description'],
       locale: locale.toUpperCase(),
       type: 'website',
       siteName: 'CoolZone',
@@ -40,8 +41,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     twitter: {
       card: 'summary_large_image',
-      title: `CoolZone - ${t['home.hero.title']}`,
-      description: t['home.hero.subtitle'],
+      title: t['seo.siteName'],
+      description: t['seo.description'],
     },
   };
 }

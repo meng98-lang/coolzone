@@ -97,6 +97,11 @@ type TranslationKeys = {
   'common.sort': string;
   'common.price': string;
   'common.currency': string;
+  
+  // SEO Keywords
+  'seo.keywords': string;
+  'seo.siteName': string;
+  'seo.description': string;
 };
 
 type Translations = Partial<Record<Locale, TranslationKeys>> & { en: TranslationKeys };
@@ -187,6 +192,9 @@ export const translations: Translations = {
     'common.sort': 'Sort',
     'common.price': 'Price',
     'common.currency': '€',
+    'seo.keywords': 'air conditioning, AC unit, wall mounted air conditioner, portable air conditioner, split AC, inverter air conditioning, energy efficient AC, R32 refrigerant, cooling system, heat pump, EU energy label, bedroom AC, living room cooling, commercial air conditioning, quiet air conditioner, smart WiFi AC, Europe air conditioning',
+    'seo.siteName': 'CoolZone - Premium Air Conditioning for Europe',
+    'seo.description': 'Buy energy-efficient air conditioners in Europe. Wall-mounted, portable, central & floor-standing AC units with EU warranty. Free shipping across EU.',
   },
 
   // French
@@ -274,6 +282,9 @@ export const translations: Translations = {
     'common.sort': 'Trier',
     'common.price': 'Prix',
     'common.currency': '€',
+    'seo.keywords': 'climatisation, climatiseur, climatiseur mural, climatiseur mobile, climatiseur split, climatisation inverter, climatiseur économique, fluide frigorigène R32, système de refroidissement, pompe à chaleur, étiquette énergie UE, climatiseur chambre, climatisation salon, climatisation commerciale, climatiseur silencieux, climatiseur WiFi, climatisation Europe',
+    'seo.siteName': 'CoolZone - Climatisation Premium pour l\'Europe',
+    'seo.description': 'Achetez des climatiseurs écoénergétiques en Europe. Units murales, portables, centrales et sur pied avec garantie UE. Livraison gratuite dans toute l\'UE.',
   },
 
   // German
@@ -361,9 +372,10 @@ export const translations: Translations = {
     'common.sort': 'Sortieren',
     'common.price': 'Preis',
     'common.currency': '€',
+    'seo.keywords': 'Klimaanlage, Klimagerät, Wand-Klimaanlage, mobile Klimaanlage, Split-Klimaanlage, Inverter-Klimaanlage, energieeffiziente Klimaanlage, Kältemittel R32, Kühlsystem, Wärmepumpe, EU-Energielabel, Schlafzimmer-Klimaanlage, Wohnraumkühlung, gewerbliche Klimaanlage, leise Klimaanlage, Smart-WiFi-Klimaanlage, Klimaanlage Europa',
+    'seo.siteName': 'CoolZone - Premium-Klimaanlagen für Europa',
+    'seo.description': 'Kaufen Sie energieeffiziente Klimaanlagen in Europa. Wand-, Portable-, Zentral- und Standgeräte mit EU-Garantie. Kostenloser Versand in die gesamte EU.',
   },
-
-  // Spanish
   es: {
     'nav.home': 'Inicio',
     'nav.products': 'Productos',
@@ -448,6 +460,9 @@ export const translations: Translations = {
     'common.sort': 'Ordenar',
     'common.price': 'Precio',
     'common.currency': '€',
+    'seo.keywords': 'aire acondicionado, climatizador, aire acondicionado mural, aire acondicionado portátil, split inverter, aire acondicionado inverter, aire acondicionado eficiente, refrigerante R32, sistema de refrigeración, bomba de calor, etiqueta energética UE, aire acondicionado dormitorio, climatización salón, aire acondicionado comercial, aire acondicionado silencioso, aire acondicionado WiFi, aire acondicionado Europa',
+    'seo.siteName': 'CoolZone - Aire Acondicionado Premium para Europa',
+    'seo.description': 'Compre aire acondicionado de alta eficiencia en Europa. Unidades murales, portátiles, centrales y de pie con garantía UE. Envío gratis a toda la UE.',
   },
 
   // Italian
@@ -535,6 +550,9 @@ export const translations: Translations = {
     'common.sort': 'Ordina',
     'common.price': 'Prezzo',
     'common.currency': '€',
+    'seo.keywords': 'condizionatore, aria condizionata, condizionatore a muro, condizionatore portatile, split inverter, condizionatore inverter, condizionatore efficiente, refrigerante R32, sistema di raffreddamento, pompa di calore, etichetta energetica UE, condizionatore camera, climatizzazione soggiorno, condizionatore commerciale, condizionatore silenzioso, condizionatore WiFi, aria condizionata Europa',
+    'seo.siteName': 'CoolZone - Condizionatori Premium per l\'Europa',
+    'seo.description': 'Acquista condizionatori ad alta efficienza in Europa. Unità murali, portatili, centrali e a pavimento con garanzia UE. Spedizione gratuita in tutta la UE.',
   },
 
   // Dutch
@@ -622,6 +640,9 @@ export const translations: Translations = {
     'common.sort': 'Sorteren',
     'common.price': 'Prijs',
     'common.currency': '€',
+    'seo.keywords': 'airconditioning, airco, wand-airco, mobiele airco, split-airco, inverter airconditioning, energiezuinige airco, koudemiddel R32, koelsysteem, warmtepomp, EU-energielabel, slaapkamer airco, woonkamer koeling, commerciële airconditioning, stille airco, smart WiFi airco, airconditioning Europa',
+    'seo.siteName': 'CoolZone - Premium Airconditioning voor Europa',
+    'seo.description': 'Koop energiezuinige airconditioners in Europa. Wand-, portable-, centrale- en vloermodellen met EU-garantie. Gratis verzending in de hele EU.',
   },
 
   // Portuguese
@@ -709,6 +730,9 @@ export const translations: Translations = {
     'common.sort': 'Ordenar',
     'common.price': 'Preço',
     'common.currency': '€',
+    'seo.keywords': 'ar condicionado, climatizador, ar condicionado de parede, ar condicionado portátil, split inverter, ar condicionado inverter, ar condicionado eficiente, refrigerante R32, sistema de refrigeração, bomba de calor, etiqueta energética UE, ar condicionado quarto, climatização sala, ar condicionado comercial, ar condicionado silencioso, ar condicionado WiFi, ar condicionado Europa',
+    'seo.siteName': 'CoolZone - Ar Condicionado Premium para a Europa',
+    'seo.description': 'Compre ar condicionado de alta eficiência na Europa. Unidades murais, portáteis, centrais e de pé com garantia UE. Envio grátis para toda a UE.',
   },
 
   // Polish
@@ -796,6 +820,9 @@ export const translations: Translations = {
     'common.sort': 'Sortuj',
     'common.price': 'Cena',
     'common.currency': '€',
+    'seo.keywords': 'klimatyzacja, klimatyzator, klimatyzator ścienny, klimatyzator przenośny, klimatyzator split, inverter klimatyzacja, energooszczędna klimatyzacja, czynnik chłodniczy R32, system chłodzenia, pompa ciepła, etykieta energetyczna UE, klimatyzator do sypialni, klimatyzacja salonu, klimatyzacja komercyjna, cicha klimatyzacja, klimatyzator WiFi, klimatyzacja Europa',
+    'seo.siteName': 'CoolZone - Premium Klimatyzacja dla Europy',
+    'seo.description': 'Kup energooszczędne klimatyzatory w Europie. Urządzenia ścienne, przenośne, centralne i stojące z gwarancją UE. Darmowa wysyłka w całej UE.',
   },
 };
 

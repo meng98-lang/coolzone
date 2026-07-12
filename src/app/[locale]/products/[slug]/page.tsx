@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
   return {
     title: `${product.name} - CoolZone`,
     description: product.description,
+    keywords: `${t['seo.keywords']}, ${product.name}, ${product.category}, ${product.coolingCapacity} BTU`,
     alternates: {
       canonical: `${baseUrl}/${locale}/products/${slug}`,
       languages: Object.fromEntries(

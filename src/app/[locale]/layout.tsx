@@ -21,10 +21,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     title: {
-      default: `CoolZone - ${t['nav.products']} | ${t['home.hero.title']}`,
+      default: t['seo.siteName'],
       template: `%s | CoolZone`,
     },
-    description: t['home.hero.subtitle'],
+    description: t['seo.description'],
+    keywords: t['seo.keywords'],
     alternates: {
       canonical: `${baseUrl}/${locale}`,
       languages: Object.fromEntries(
@@ -32,16 +33,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       ),
     },
     openGraph: {
-      title: `CoolZone - ${t['home.hero.title']}`,
-      description: t['home.hero.subtitle'],
+      title: t['seo.siteName'],
+      description: t['seo.description'],
       locale: locale.toUpperCase(),
       type: 'website',
       siteName: 'CoolZone',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `CoolZone - ${t['home.hero.title']}`,
-      description: t['home.hero.subtitle'],
+      title: t['seo.siteName'],
+      description: t['seo.description'],
     },
   };
 }
