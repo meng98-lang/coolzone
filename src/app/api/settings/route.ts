@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSettings, updateSettings, verifyAdminPassword } from '@/lib/db';
 
-// GET /api/settings - 获取网站配置（公开接口，返回非敏感配置）
+// GET /api/settings - 获取网站配置
 export async function GET() {
-  const settings = getSettings();
-  // 只返回非敏感配置
+  const settings = await getSettings();
   return NextResponse.json({
     whatsappPhone: settings.whatsappPhone,
     facebookPixelId: settings.facebookPixelId,
@@ -17,26 +16,18 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password, whatsappPhone, facebookPixelId, googleAnalyticsId, tiktokPixelId, newAdminPassword } = body;
+    const { password, ...updates } = body;
 
-    // 验证管理员密码
-    if (!verifyAdminPassword(password)) {
+    if (!password) {
+      return NextResponse.json({ error: 'Password required' }, { status: 400 });
+    }
+
+    const isValid = await verifyAdminPassword(password);
+    if (!isValid) {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
     }
 
-    // 构建更新对象
-    const updates: Record<string, string> = {};
-    if (whatsappPhone !== undefined) updates.whatsappPhone = whatsappPhone;
-    if (facebookPixelId !== undefined) updates.facebookPixelId = facebookPixelId;
-    if (googleAnalyticsId !== undefined) updates.googleAnalyticsId = googleAnalyticsId;
-    if (tiktokPixelId !== undefined) updates.tiktokPixelId = tiktokPixelId;
-    if (newAdminPassword !== undefined && newAdminPassword.length >= 6) {
-      updates.adminPassword = newAdminPassword;
-    }
-
-    const settings = updateSettings(updates);
-    
-    // 返回更新后的配置（不包含密码）
+    const settings = await updateSettings(updates);
     return NextResponse.json({
       success: true,
       settings: {
@@ -48,21 +39,5 @@ export async function POST(request: NextRequest) {
     });
   } catch {
     return NextResponse.json({ error: 'Failed to update settings' }, { status: 500 });
-  }
-}
-
-// POST /api/settings/auth - 验证管理员密码
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { password } = body;
-
-    if (verifyAdminPassword(password)) {
-      return NextResponse.json({ success: true, token: 'admin' });
-    }
-    
-    return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
-  } catch {
-    return NextResponse.json({ error: 'Authentication failed' }, { status: 500 });
   }
 }

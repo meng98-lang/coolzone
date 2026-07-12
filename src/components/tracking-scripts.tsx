@@ -6,8 +6,8 @@ import { getSettings } from '@/lib/db';
  * 从配置中读取 Facebook Pixel ID、Google Analytics ID 和 TikTok Pixel ID
  * 并注入对应的跟踪脚本
  */
-export function TrackingScripts() {
-  const settings = getSettings();
+export async function TrackingScripts() {
+  const settings = await getSettings();
   const { facebookPixelId, googleAnalyticsId, tiktokPixelId } = settings;
 
   return (

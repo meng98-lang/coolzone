@@ -1,22 +1,10 @@
 /**
- * 数据存储模块
- * 使用JSON文件存储联系表单和网站配置
+ * 数据存储模块 - Supabase版本
+ * 使用Supabase数据库存储联系表单、网站配置和流量统计
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { getSupabaseClient } from '@/storage/database/supabase-client';
 
-// 数据目录
-const DATA_DIR = join(process.cwd(), 'data');
-
-// 确保数据目录存在
-if (!existsSync(DATA_DIR)) {
-  mkdirSync(DATA_DIR, { recursive: true });
-}
-
-// 文件路径
-const INQUIRIES_FILE = join(DATA_DIR, 'inquiries.json');
-const SETTINGS_FILE = join(DATA_DIR, 'settings.json');
-const TRAFFIC_FILE = join(DATA_DIR, 'traffic.json');
+const client = getSupabaseClient();
 
 // 联系表单数据类型
 export interface Inquiry {
@@ -25,8 +13,9 @@ export interface Inquiry {
   email: string;
   phone: string;
   message: string;
-  createdAt: string;
-  read: boolean;
+  product_name: string | null;
+  created_at: string;
+  is_read: boolean;
 }
 
 // 网站配置类型
@@ -40,142 +29,211 @@ export interface SiteSettings {
 
 // 默认配置
 const DEFAULT_SETTINGS: SiteSettings = {
-  whatsappPhone: '491234567890', // 替换为你的WhatsApp号码（含国际区号）
+  whatsappPhone: '491234567890',
   facebookPixelId: '',
   googleAnalyticsId: '',
   tiktokPixelId: '',
-  adminPassword: 'coolzone2024', // 后台密码，请修改
+  adminPassword: 'coolzone2024',
 };
 
-// 读取JSON文件
-function readJsonFile<T>(filePath: string, defaultValue: T): T {
-  try {
-    if (!existsSync(filePath)) {
-      writeFileSync(filePath, JSON.stringify(defaultValue, null, 2));
-      return defaultValue;
-    }
-    const content = readFileSync(filePath, 'utf-8');
-    return JSON.parse(content) as T;
-  } catch {
-    return defaultValue;
-  }
-}
-
-// 写入JSON文件
-function writeJsonFile<T>(filePath: string, data: T): void {
-  writeFileSync(filePath, JSON.stringify(data, null, 2));
+// 流量记录类型
+export interface TrafficRecord {
+  id: number;
+  date: string;
+  path: string;
+  country: string;
+  referrer: string;
+  user_agent: string;
+  search_keyword: string;
+  created_at: string;
 }
 
 // ============ 联系表单操作 ============
 
 // 获取所有联系表单
-export function getInquiries(): Inquiry[] {
-  return readJsonFile<Inquiry[]>(INQUIRIES_FILE, []);
+export async function getInquiries(): Promise<Inquiry[]> {
+  const { data, error } = await client
+    .from('inquiries')
+    .select('id, name, email, phone, message, product_name, created_at, is_read')
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(`查询联系表单失败: ${error.message}`);
+  return (data || []) as Inquiry[];
 }
 
 // 添加联系表单
-export function addInquiry(data: Omit<Inquiry, 'id' | 'createdAt' | 'read'>): Inquiry {
-  const inquiries = getInquiries();
-  const newInquiry: Inquiry = {
-    ...data,
-    id: `inq_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-    createdAt: new Date().toISOString(),
-    read: false,
-  };
-  inquiries.unshift(newInquiry); // 新消息在最前面
-  writeJsonFile(INQUIRIES_FILE, inquiries);
-  return newInquiry;
+export async function addInquiry(data: { name: string; email: string; phone: string; message: string; productName?: string }): Promise<Inquiry> {
+  const { data: result, error } = await client
+    .from('inquiries')
+    .insert({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.message,
+      product_name: data.productName || null,
+      is_read: false,
+    })
+    .select()
+    .single();
+  if (error) throw new Error(`添加联系表单失败: ${error.message}`);
+  return result as Inquiry;
 }
 
 // 标记表单为已读
-export function markInquiryAsRead(id: string): boolean {
-  const inquiries = getInquiries();
-  const index = inquiries.findIndex((inq) => inq.id === id);
-  if (index === -1) return false;
-  inquiries[index].read = true;
-  writeJsonFile(INQUIRIES_FILE, inquiries);
+export async function markInquiryAsRead(id: number): Promise<boolean> {
+  const { error } = await client
+    .from('inquiries')
+    .update({ is_read: true })
+    .eq('id', id);
+  if (error) throw new Error(`标记已读失败: ${error.message}`);
   return true;
 }
 
 // 删除联系表单
-export function deleteInquiry(id: string): boolean {
-  const inquiries = getInquiries();
-  const filtered = inquiries.filter((inq) => inq.id !== id);
-  if (filtered.length === inquiries.length) return false;
-  writeJsonFile(INQUIRIES_FILE, filtered);
+export async function deleteInquiry(id: number): Promise<boolean> {
+  const { error } = await client
+    .from('inquiries')
+    .delete()
+    .eq('id', id);
+  if (error) throw new Error(`删除联系表单失败: ${error.message}`);
   return true;
 }
 
 // 获取未读数量
-export function getUnreadCount(): number {
-  const inquiries = getInquiries();
-  return inquiries.filter((inq) => !inq.read).length;
+export async function getUnreadCount(): Promise<number> {
+  const { count, error } = await client
+    .from('inquiries')
+    .select('*', { count: 'exact', head: true })
+    .eq('is_read', false);
+  if (error) throw new Error(`获取未读数量失败: ${error.message}`);
+  return count || 0;
 }
 
 // ============ 网站配置操作 ============
 
 // 获取网站配置
-export function getSettings(): SiteSettings {
-  return readJsonFile<SiteSettings>(SETTINGS_FILE, DEFAULT_SETTINGS);
+export async function getSettings(): Promise<SiteSettings> {
+  const { data, error } = await client
+    .from('settings')
+    .select('whatsapp_phone, facebook_pixel_id, google_analytics_id, tiktok_pixel_id, admin_password')
+    .eq('id', 1)
+    .maybeSingle();
+  if (error) throw new Error(`获取配置失败: ${error.message}`);
+  
+  if (!data) {
+    return DEFAULT_SETTINGS;
+  }
+  
+  return {
+    whatsappPhone: data.whatsapp_phone || DEFAULT_SETTINGS.whatsappPhone,
+    facebookPixelId: data.facebook_pixel_id || '',
+    googleAnalyticsId: data.google_analytics_id || '',
+    tiktokPixelId: data.tiktok_pixel_id || '',
+    adminPassword: data.admin_password || DEFAULT_SETTINGS.adminPassword,
+  };
 }
 
 // 更新网站配置
-export function updateSettings(updates: Partial<SiteSettings>): SiteSettings {
-  const settings = getSettings();
-  const updated = { ...settings, ...updates };
-  writeJsonFile(SETTINGS_FILE, updated);
-  return updated;
+export async function updateSettings(updates: Partial<SiteSettings>): Promise<SiteSettings> {
+  const dbUpdates: Record<string, string> = {};
+  if (updates.whatsappPhone !== undefined) dbUpdates.whatsapp_phone = updates.whatsappPhone;
+  if (updates.facebookPixelId !== undefined) dbUpdates.facebook_pixel_id = updates.facebookPixelId;
+  if (updates.googleAnalyticsId !== undefined) dbUpdates.google_analytics_id = updates.googleAnalyticsId;
+  if (updates.tiktokPixelId !== undefined) dbUpdates.tiktok_pixel_id = updates.tiktokPixelId;
+  if (updates.adminPassword !== undefined) dbUpdates.admin_password = updates.adminPassword;
+  
+  if (Object.keys(dbUpdates).length > 0) {
+    const { error } = await client
+      .from('settings')
+      .update({ ...dbUpdates, updated_at: new Date().toISOString() })
+      .eq('id', 1);
+    if (error) throw new Error(`更新配置失败: ${error.message}`);
+  }
+  
+  return getSettings();
 }
 
 // 验证管理员密码
-export function verifyAdminPassword(password: string): boolean {
-  const settings = getSettings();
+export async function verifyAdminPassword(password: string): Promise<boolean> {
+  const settings = await getSettings();
   return password === settings.adminPassword;
 }
 
 // ============ 流量统计操作 ============
 
-// 流量记录类型
-export interface TrafficRecord {
-  id: string;
-  timestamp: string;
-  path: string;
-  ip: string;
-  country: string;
-  userAgent: string;
-  referer: string;
-  searchKeyword: string;
-}
-
-// 获取所有流量记录
-export function getTrafficRecords(): TrafficRecord[] {
-  return readJsonFile<TrafficRecord[]>(TRAFFIC_FILE, []);
-}
-
 // 记录访问
-export function recordVisit(data: Omit<TrafficRecord, 'id' | 'timestamp'>): TrafficRecord {
-  const records = getTrafficRecords();
-  const newRecord: TrafficRecord = {
-    ...data,
-    id: `trf_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
-    timestamp: new Date().toISOString(),
-  };
-  records.unshift(newRecord);
-  // 只保留最近10000条记录，避免文件过大
-  if (records.length > 10000) {
-    records.length = 10000;
-  }
-  writeJsonFile(TRAFFIC_FILE, records);
-  return newRecord;
+export async function recordVisit(data: { date: string; path: string; country: string; referrer: string; userAgent: string; searchKeyword: string }): Promise<TrafficRecord> {
+  const { data: result, error } = await client
+    .from('traffic')
+    .insert({
+      date: data.date,
+      path: data.path,
+      country: data.country,
+      referrer: data.referrer,
+      user_agent: data.userAgent,
+      search_keyword: data.searchKeyword,
+    })
+    .select()
+    .single();
+  if (error) throw new Error(`记录访问失败: ${error.message}`);
+  return result as TrafficRecord;
 }
 
-// 根据IP获取国家（简化版，实际应使用IP地理位置API）
+// 获取流量统计
+export async function getTrafficStats(days: number = 30) {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+  const startDateStr = startDate.toISOString().split('T')[0];
+  
+  const { data, error } = await client
+    .from('traffic')
+    .select('date, path, country, search_keyword')
+    .gte('date', startDateStr)
+    .order('date', { ascending: true });
+  if (error) throw new Error(`获取流量统计失败: ${error.message}`);
+  
+  const records = data || [];
+  
+  // 每日流量
+  const dailyTraffic: Record<string, number> = {};
+  records.forEach((r: { date: string }) => {
+    dailyTraffic[r.date] = (dailyTraffic[r.date] || 0) + 1;
+  });
+  
+  // 来源国家
+  const countryStats: Record<string, number> = {};
+  records.forEach((r: { country: string }) => {
+    const country = r.country || 'Unknown';
+    countryStats[country] = (countryStats[country] || 0) + 1;
+  });
+  
+  // 搜索关键词
+  const keywordStats: Record<string, number> = {};
+  records.forEach((r: { search_keyword: string }) => {
+    if (r.search_keyword) {
+      keywordStats[r.search_keyword] = (keywordStats[r.search_keyword] || 0) + 1;
+    }
+  });
+  
+  // 热门页面
+  const pageStats: Record<string, number> = {};
+  records.forEach((r: { path: string }) => {
+    pageStats[r.path] = (pageStats[r.path] || 0) + 1;
+  });
+  
+  return {
+    dailyTraffic,
+    countryStats,
+    keywordStats,
+    pageStats,
+    totalVisits: records.length,
+  };
+}
+
+// 根据IP获取国家（简化版）
 export function getCountryFromIP(ip: string): string {
-  // 简化的IP国家判断（仅用于演示，实际应使用GeoIP服务）
   const ipPrefix = ip.split('.')[0];
   const prefixNum = parseInt(ipPrefix, 10);
   
-  // 根据IP段粗略判断国家
   if (prefixNum >= 1 && prefixNum <= 9) return 'US';
   if (prefixNum >= 10 && prefixNum <= 15) return 'EU';
   if (prefixNum >= 16 && prefixNum <= 30) return 'US';
@@ -195,119 +253,14 @@ export function getCountryFromIP(ip: string): string {
 export function extractSearchKeyword(referer: string): string {
   if (!referer) return '';
   
-  // Google搜索
   const googleMatch = referer.match(/[?&]q=([^&]+)/);
-  if (googleMatch) return decodeURIComponent(googleMatch[1].replace(/\+/g, ' '));
+  if (googleMatch) return decodeURIComponent(googleMatch[1]);
   
-  // Bing搜索
   const bingMatch = referer.match(/[?&]q=([^&]+)/);
-  if (bingMatch) return decodeURIComponent(bingMatch[1].replace(/\+/g, ' '));
+  if (bingMatch) return decodeURIComponent(bingMatch[1]);
   
-  // Baidu搜索
   const baiduMatch = referer.match(/[?&]wd=([^&]+)/);
-  if (baiduMatch) return decodeURIComponent(baiduMatch[1].replace(/\+/g, ' '));
+  if (baiduMatch) return decodeURIComponent(baiduMatch[1]);
   
   return '';
-}
-
-// 获取每日统计
-export function getDailyStats(days: number = 30): { date: string; visits: number; uniqueVisitors: number }[] {
-  const records = getTrafficRecords();
-  const stats: Record<string, { visits: number; ips: Set<string> }> = {};
-  
-  const now = new Date();
-  for (let i = 0; i < days; i++) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().split('T')[0];
-    stats[dateStr] = { visits: 0, ips: new Set() };
-  }
-  
-  records.forEach((record) => {
-    const dateStr = record.timestamp.split('T')[0];
-    if (stats[dateStr]) {
-      stats[dateStr].visits++;
-      stats[dateStr].ips.add(record.ip);
-    }
-  });
-  
-  return Object.entries(stats)
-    .map(([date, data]) => ({
-      date,
-      visits: data.visits,
-      uniqueVisitors: data.ips.size,
-    }))
-    .sort((a, b) => a.date.localeCompare(b.date));
-}
-
-// 获取国家统计
-export function getCountryStats(): { country: string; visits: number }[] {
-  const records = getTrafficRecords();
-  const stats: Record<string, number> = {};
-  
-  records.forEach((record) => {
-    const country = record.country || 'Unknown';
-    stats[country] = (stats[country] || 0) + 1;
-  });
-  
-  return Object.entries(stats)
-    .map(([country, visits]) => ({ country, visits }))
-    .sort((a, b) => b.visits - a.visits);
-}
-
-// 获取来源统计
-export function getSourceStats(): { source: string; visits: number }[] {
-  const records = getTrafficRecords();
-  const stats: Record<string, number> = {};
-  
-  records.forEach((record) => {
-    let source = 'Direct';
-    if (record.referer) {
-      try {
-        const url = new URL(record.referer);
-        source = url.hostname.replace('www.', '');
-      } catch {
-        source = record.referer.substring(0, 30);
-      }
-    }
-    stats[source] = (stats[source] || 0) + 1;
-  });
-  
-  return Object.entries(stats)
-    .map(([source, visits]) => ({ source, visits }))
-    .sort((a, b) => b.visits - a.visits)
-    .slice(0, 20);
-}
-
-// 获取搜索词统计
-export function getKeywordStats(): { keyword: string; visits: number }[] {
-  const records = getTrafficRecords();
-  const stats: Record<string, number> = {};
-  
-  records.forEach((record) => {
-    if (record.searchKeyword) {
-      const keyword = record.searchKeyword.toLowerCase();
-      stats[keyword] = (stats[keyword] || 0) + 1;
-    }
-  });
-  
-  return Object.entries(stats)
-    .map(([keyword, visits]) => ({ keyword, visits }))
-    .sort((a, b) => b.visits - a.visits)
-    .slice(0, 20);
-}
-
-// 获取页面访问统计
-export function getPageStats(): { path: string; visits: number }[] {
-  const records = getTrafficRecords();
-  const stats: Record<string, number> = {};
-  
-  records.forEach((record) => {
-    stats[record.path] = (stats[record.path] || 0) + 1;
-  });
-  
-  return Object.entries(stats)
-    .map(([path, visits]) => ({ path, visits }))
-    .sort((a, b) => b.visits - a.visits)
-    .slice(0, 20);
 }

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
-  const inquiries = getInquiries();
+  const inquiries = await getInquiries();
   return NextResponse.json({ inquiries });
 }
 
@@ -16,9 +16,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, message } = body;
+    const { name, email, phone, message, productName } = body;
 
-    // 验证必填字段
     if (!name || !email || !phone) {
       return NextResponse.json(
         { error: 'Name, email and phone are required' },
@@ -26,7 +25,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 验证邮箱格式
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -35,7 +33,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const inquiry = addInquiry({ name, email, phone, message: message || '' });
+    const inquiry = await addInquiry({ name, email, phone, message: message || '', productName });
     return NextResponse.json({ success: true, inquiry }, { status: 201 });
   } catch {
     return NextResponse.json(
@@ -57,7 +55,7 @@ export async function PUT(request: NextRequest) {
     const { id, action } = body;
 
     if (action === 'read') {
-      const success = markInquiryAsRead(id);
+      const success = await markInquiryAsRead(id);
       return NextResponse.json({ success });
     }
     
@@ -81,6 +79,6 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
   }
 
-  const success = deleteInquiry(id);
+  const success = await deleteInquiry(parseInt(id, 10));
   return NextResponse.json({ success });
 }

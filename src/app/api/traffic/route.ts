@@ -3,11 +3,7 @@ import {
   recordVisit,
   getCountryFromIP,
   extractSearchKeyword,
-  getDailyStats,
-  getCountryStats,
-  getSourceStats,
-  getKeywordStats,
-  getPageStats,
+  getTrafficStats,
   verifyAdminPassword,
 } from '@/lib/db';
 
@@ -17,25 +13,22 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { path } = body;
 
-    // 获取客户端IP
     const forwarded = request.headers.get('x-forwarded-for');
     const ip = forwarded ? forwarded.split(',')[0].trim() : '127.0.0.1';
 
-    // 获取User-Agent和Referer
     const userAgent = request.headers.get('user-agent') || '';
     const referer = request.headers.get('referer') || '';
 
-    // 判断国家和提取搜索词
     const country = getCountryFromIP(ip);
     const searchKeyword = extractSearchKeyword(referer);
+    const date = new Date().toISOString().split('T')[0];
 
-    // 记录访问
-    recordVisit({
+    await recordVisit({
+      date,
       path: path || '/',
-      ip,
       country,
+      referrer: referer,
       userAgent,
-      referer,
       searchKeyword,
     });
 
@@ -48,36 +41,25 @@ export async function POST(request: NextRequest) {
 // GET /api/traffic - 获取统计数据（需要管理员认证）
 export async function GET(request: NextRequest) {
   try {
-    // 验证管理员密码
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const token = authHeader.substring(7);
-    if (!verifyAdminPassword(token)) {
+    const isValid = await verifyAdminPassword(token);
+    if (!isValid) {
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
     }
 
-    // 获取统计数据
-    const dailyStats = getDailyStats(30);
-    const countryStats = getCountryStats();
-    const sourceStats = getSourceStats();
-    const keywordStats = getKeywordStats();
-    const pageStats = getPageStats();
-
-    // 计算总访问量和独立访客数
-    const totalVisits = dailyStats.reduce((sum, d) => sum + d.visits, 0);
-    const totalUniqueVisitors = dailyStats.reduce((sum, d) => sum + d.uniqueVisitors, 0);
+    const stats = await getTrafficStats(30);
 
     return NextResponse.json({
-      totalVisits,
-      totalUniqueVisitors,
-      dailyStats,
-      countryStats,
-      sourceStats,
-      keywordStats,
-      pageStats,
+      totalVisits: stats.totalVisits,
+      dailyTraffic: stats.dailyTraffic,
+      countryStats: stats.countryStats,
+      keywordStats: stats.keywordStats,
+      pageStats: stats.pageStats,
     });
   } catch {
     return NextResponse.json({ error: 'Failed to get statistics' }, { status: 500 });
