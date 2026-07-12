@@ -1,20 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Send, AlertCircle } from 'lucide-react';
 
 interface ContactFormProps {
   productName?: string;
 }
 
 export function ContactForm({ productName }: ContactFormProps) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     message: productName ? `I'm interested in the ${productName}. Please send me more details.` : '',
   });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,11 +37,8 @@ export function ContactForm({ productName }: ContactFormProps) {
         throw new Error(data.error || 'Submission failed');
       }
 
-      setStatus('success');
-      setFormData({ name: '', email: '', phone: '', message: '' });
-      
-      // 3秒后重置状态
-      setTimeout(() => setStatus('idle'), 3000);
+      // 提交成功后跳转到 /ok 感谢页面（用于谷歌广告转化追踪）
+      router.push('/ok');
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Submission failed');
@@ -49,18 +48,6 @@ export function ContactForm({ productName }: ContactFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  if (status === 'success') {
-    return (
-      <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
-        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold text-green-800 mb-2">Thank You!</h3>
-        <p className="text-green-600">
-          Your message has been received. We will contact you within 24 hours.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
