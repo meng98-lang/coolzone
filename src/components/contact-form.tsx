@@ -3,12 +3,16 @@
 import { useState } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 
-export function ContactForm() {
+interface ContactFormProps {
+  productName?: string;
+}
+
+export function ContactForm({ productName }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    message: '',
+    message: productName ? `I'm interested in the ${productName}. Please send me more details.` : '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');

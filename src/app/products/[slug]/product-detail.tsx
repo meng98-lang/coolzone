@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Star, ArrowLeft, Check, Zap, Volume2, Thermometer, Wifi, MessageCircle, ShoppingCart } from 'lucide-react';
 import { ProductCard } from '@/components/product-card';
+import { ContactForm } from '@/components/contact-form';
 import { products } from '@/lib/products';
 import type { Product } from '@/lib/products';
 import { buildProductInquiryUrl, buildOrderUrl } from '@/lib/whatsapp';
@@ -199,6 +200,35 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
           </div>
         )}
+
+        {/* Contact Form Section */}
+        <div className="mt-20 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 lg:p-12">
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Interested in {product.name}?</h2>
+              <p className="text-gray-600 mb-6">
+                Leave us your details and we&apos;ll get back to you within 24 hours with pricing, availability, and any questions you may have.
+              </p>
+              <ul className="space-y-3 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-green-500" />
+                  Free consultation &amp; site assessment
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-green-500" />
+                  Professional installation support
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-green-500" />
+                  5-year warranty included
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <ContactForm productName={product.name} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
