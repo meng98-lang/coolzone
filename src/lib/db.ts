@@ -34,6 +34,7 @@ export interface SiteSettings {
   whatsappPhone: string;
   facebookPixelId: string;
   googleAnalyticsId: string;
+  tiktokPixelId: string;
   adminPassword: string;
 }
 
@@ -42,6 +43,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   whatsappPhone: '491234567890', // 替换为你的WhatsApp号码（含国际区号）
   facebookPixelId: '',
   googleAnalyticsId: '',
+  tiktokPixelId: '',
   adminPassword: 'coolzone2024', // 后台密码，请修改
 };
 

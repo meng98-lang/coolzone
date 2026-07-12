@@ -7,6 +7,7 @@ interface Settings {
   whatsappPhone: string;
   facebookPixelId: string;
   googleAnalyticsId: string;
+  tiktokPixelId: string;
 }
 
 export default function SettingsPage() {
@@ -14,6 +15,7 @@ export default function SettingsPage() {
     whatsappPhone: '',
     facebookPixelId: '',
     googleAnalyticsId: '',
+    tiktokPixelId: '',
   });
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ export default function SettingsPage() {
         whatsappPhone: data.whatsappPhone || '',
         facebookPixelId: data.facebookPixelId || '',
         googleAnalyticsId: data.googleAnalyticsId || '',
+        tiktokPixelId: data.tiktokPixelId || '',
       });
     } catch (err) {
       console.error('Failed to fetch settings:', err);
@@ -61,6 +64,7 @@ export default function SettingsPage() {
           whatsappPhone: settings.whatsappPhone,
           facebookPixelId: settings.facebookPixelId,
           googleAnalyticsId: settings.googleAnalyticsId,
+          tiktokPixelId: settings.tiktokPixelId,
         }),
       });
 
@@ -194,6 +198,36 @@ export default function SettingsPage() {
           />
           <p className="mt-1 text-xs text-gray-400">
             Find your Measurement ID in Google Analytics Admin → Data Streams
+          </p>
+        </div>
+      </div>
+
+      {/* TikTok Pixel */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center">
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.88 2.89 2.89 0 01-2.88-2.88 2.89 2.89 0 012.88-2.88c.28 0 .56.04.82.11V9.4a6.33 6.33 0 00-.82-.05A6.34 6.34 0 003.15 15.7a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.74a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.17z" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">TikTok Pixel</h2>
+            <p className="text-sm text-gray-500">Track TikTok ad conversions and events</p>
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Pixel ID
+          </label>
+          <input
+            type="text"
+            value={settings.tiktokPixelId}
+            onChange={(e) => setSettings((prev) => ({ ...prev, tiktokPixelId: e.target.value }))}
+            placeholder="CXXXXXXXXXXXXXXX"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-800 focus:border-transparent transition-all outline-none"
+          />
+          <p className="mt-1 text-xs text-gray-400">
+            Find your Pixel ID in TikTok Ads Manager → Assets → Events
           </p>
         </div>
       </div>

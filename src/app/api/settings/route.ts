@@ -9,6 +9,7 @@ export async function GET() {
     whatsappPhone: settings.whatsappPhone,
     facebookPixelId: settings.facebookPixelId,
     googleAnalyticsId: settings.googleAnalyticsId,
+    tiktokPixelId: settings.tiktokPixelId,
   });
 }
 
@@ -16,7 +17,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password, whatsappPhone, facebookPixelId, googleAnalyticsId, newAdminPassword } = body;
+    const { password, whatsappPhone, facebookPixelId, googleAnalyticsId, tiktokPixelId, newAdminPassword } = body;
 
     // 验证管理员密码
     if (!verifyAdminPassword(password)) {
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
     if (whatsappPhone !== undefined) updates.whatsappPhone = whatsappPhone;
     if (facebookPixelId !== undefined) updates.facebookPixelId = facebookPixelId;
     if (googleAnalyticsId !== undefined) updates.googleAnalyticsId = googleAnalyticsId;
+    if (tiktokPixelId !== undefined) updates.tiktokPixelId = tiktokPixelId;
     if (newAdminPassword !== undefined && newAdminPassword.length >= 6) {
       updates.adminPassword = newAdminPassword;
     }
@@ -41,6 +43,7 @@ export async function POST(request: NextRequest) {
         whatsappPhone: settings.whatsappPhone,
         facebookPixelId: settings.facebookPixelId,
         googleAnalyticsId: settings.googleAnalyticsId,
+        tiktokPixelId: settings.tiktokPixelId,
       },
     });
   } catch {
