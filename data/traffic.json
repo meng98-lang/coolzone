@@ -1,5 +1,15 @@
 [
   {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783818189677_ygvsjx",
+    "timestamp": "2026-07-12T01:03:09.677Z"
+  },
+  {
     "path": "/products/frost-free-18000",
     "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
     "country": "Unknown",
