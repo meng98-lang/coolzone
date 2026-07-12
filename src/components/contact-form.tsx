@@ -3,13 +3,17 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Send, AlertCircle } from 'lucide-react';
+import { getTranslations } from '@/i18n/translations';
+import type { Locale } from '@/i18n/config';
 
 interface ContactFormProps {
   productName?: string;
+  locale?: Locale;
 }
 
-export function ContactForm({ productName }: ContactFormProps) {
+export function ContactForm({ productName, locale = 'en' }: ContactFormProps) {
   const router = useRouter();
+  const t = getTranslations(locale);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,7 +42,7 @@ export function ContactForm({ productName }: ContactFormProps) {
       }
 
       // 提交成功后跳转到 /ok 感谢页面（用于谷歌广告转化追踪）
-      router.push('/ok');
+      router.push(`/${locale}/ok`);
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Submission failed');
@@ -51,7 +55,7 @@ export function ContactForm({ productName }: ContactFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t['contact.info.title']}</h2>
       
       {status === 'error' && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-600 text-sm">
@@ -61,10 +65,9 @@ export function ContactForm({ productName }: ContactFormProps) {
       )}
 
       <div className="space-y-4">
-        {/* 姓名 */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Full Name <span className="text-red-500">*</span>
+            {t['contact.name']} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -78,10 +81,9 @@ export function ContactForm({ productName }: ContactFormProps) {
           />
         </div>
 
-        {/* 邮箱 */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email <span className="text-red-500">*</span>
+            {t['contact.email']} <span className="text-red-500">*</span>
           </label>
           <input
             type="email"
@@ -95,10 +97,9 @@ export function ContactForm({ productName }: ContactFormProps) {
           />
         </div>
 
-        {/* 电话 */}
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-            Phone Number <span className="text-red-500">*</span>
+            {t['contact.phone']} <span className="text-red-500">*</span>
           </label>
           <input
             type="tel"
@@ -112,10 +113,9 @@ export function ContactForm({ productName }: ContactFormProps) {
           />
         </div>
 
-        {/* 留言 */}
         <div>
           <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-            Message
+            {t['contact.message']}
           </label>
           <textarea
             id="message"
@@ -140,12 +140,12 @@ export function ContactForm({ productName }: ContactFormProps) {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Sending...
+              {t['common.loading']}
             </>
           ) : (
             <>
               <Send className="w-5 h-5" />
-              Send Message
+              {t['contact.submit']}
             </>
           )}
         </button>

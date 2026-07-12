@@ -5,17 +5,25 @@ import { useCart } from '@/lib/store';
 import { ShoppingCart, Menu, X, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import { buildContactUrl } from '@/lib/whatsapp';
+import { LanguageSwitcher } from './language-switcher';
+import type { Locale } from '@/i18n/config';
+import { getTranslations } from '@/i18n/translations';
 
-export function Header() {
+interface HeaderProps {
+  locale?: Locale;
+}
+
+export function Header({ locale = 'en' }: HeaderProps) {
   const { totalItems, toggleCart } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = getTranslations(locale);
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href={`/${locale}`} className="flex items-center gap-2 group">
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
               CoolZone
             </span>
@@ -23,22 +31,20 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-              Home
+            <Link href={`/${locale}`} className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+              {t['nav.home']}
             </Link>
-            <Link href="/products" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-              Products
+            <Link href={`/${locale}/products`} className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+              {t['nav.products']}
             </Link>
-            <Link href="/products#features" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-              Why Us
-            </Link>
-            <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-              Contact
+            <Link href={`/${locale}/contact`} className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+              {t['nav.contact']}
             </Link>
           </nav>
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            <LanguageSwitcher currentLocale={locale} />
             <a
               href={buildContactUrl()}
               target="_blank"
@@ -76,17 +82,14 @@ export function Header() {
         {mobileMenuOpen && (
           <nav className="md:hidden py-4 border-t border-gray-100 animate-in slide-in-from-top-2">
             <div className="flex flex-col gap-3">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                Home
+              <Link href={`/${locale}`} onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                {t['nav.home']}
               </Link>
-              <Link href="/products" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                Products
+              <Link href={`/${locale}/products`} onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                {t['nav.products']}
               </Link>
-              <Link href="/products#features" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                Why Us
-              </Link>
-              <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                Contact
+              <Link href={`/${locale}/contact`} onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                {t['nav.contact']}
               </Link>
             </div>
           </nav>

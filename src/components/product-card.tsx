@@ -4,18 +4,22 @@ import Link from 'next/link';
 import { Star, MessageCircle, Zap } from 'lucide-react';
 import type { Product } from '@/lib/products';
 import { buildProductInquiryUrl } from '@/lib/whatsapp';
+import type { Locale } from '@/i18n/config';
+import { getTranslations } from '@/i18n/translations';
 
 interface ProductCardProps {
   product: Product;
+  locale?: Locale;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, locale = 'en' }: ProductCardProps) {
   const whatsappUrl = buildProductInquiryUrl(product.name, product.id);
+  const t = getTranslations(locale);
 
   return (
     <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300 hover:-translate-y-1">
       {/* Image area */}
-      <Link href={`/products/${product.id}`} className="block relative">
+      <Link href={`/${locale}/products/${product.id}`} className="block relative">
         <div className="aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-6 relative overflow-hidden">
           {/* Decorative background */}
           <div className="absolute inset-0 opacity-30" style={{
@@ -49,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Content */}
       <div className="p-5">
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/${locale}/products/${product.id}`}>
           <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
@@ -104,7 +108,7 @@ export function ProductCard({ product }: ProductCardProps) {
             className="flex items-center gap-1.5 px-3.5 py-2 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-medium rounded-xl transition-colors shadow-sm hover:shadow-md active:scale-95"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Inquire</span>
+            <span className="hidden sm:inline">{t['products.inquire']}</span>
           </a>
         </div>
       </div>
