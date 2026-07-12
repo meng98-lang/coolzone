@@ -6,6 +6,26 @@
     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
     "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
     "searchKeyword": "",
+    "id": "trf_1783897999871_klq48p",
+    "timestamp": "2026-07-12T23:13:19.871Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783897666195_aaxy0q",
+    "timestamp": "2026-07-12T23:07:46.195Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
     "id": "trf_1783897445847_nas48x",
     "timestamp": "2026-07-12T23:04:05.847Z"
   },
