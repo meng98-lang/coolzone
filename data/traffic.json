@@ -1,0 +1,32 @@
+[
+  {
+    "path": "/",
+    "ip": "::1",
+    "country": "Unknown",
+    "userAgent": "curl/8.5.0",
+    "referer": "",
+    "searchKeyword": "",
+    "id": "trf_1783816609981_r8c5q1",
+    "timestamp": "2026-07-12T00:36:49.981Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816550712_wemoc5",
+    "timestamp": "2026-07-12T00:35:50.712Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816486652_mrwnan",
+    "timestamp": "2026-07-12T00:34:46.652Z"
+  }
+]

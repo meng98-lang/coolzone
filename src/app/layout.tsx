@@ -6,6 +6,8 @@ import { Footer } from '@/components/footer';
 import { CartSidebar } from '@/components/cart-sidebar';
 import { WhatsAppFloat } from '@/components/whatsapp-float';
 import { TrackingScripts } from '@/components/tracking-scripts';
+import { TrafficTracker } from '@/components/traffic-tracker';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: {
@@ -26,6 +28,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased bg-white text-gray-900">
         <TrackingScripts />
+        <Suspense fallback={null}>
+          <TrafficTracker />
+        </Suspense>
         <CartProvider>
           <Header />
           <CartSidebar />

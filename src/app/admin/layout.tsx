@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, MessageSquare, Settings, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Settings, LogOut, Menu, X, BarChart3 } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAuth, setIsAuth] = useState(false);
@@ -47,6 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
     { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
     { href: '/admin/settings', label: 'Settings', icon: Settings },
   ];

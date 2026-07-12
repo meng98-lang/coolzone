@@ -16,6 +16,7 @@ if (!existsSync(DATA_DIR)) {
 // 文件路径
 const INQUIRIES_FILE = join(DATA_DIR, 'inquiries.json');
 const SETTINGS_FILE = join(DATA_DIR, 'settings.json');
+const TRAFFIC_FILE = join(DATA_DIR, 'traffic.json');
 
 // 联系表单数据类型
 export interface Inquiry {
@@ -128,4 +129,183 @@ export function updateSettings(updates: Partial<SiteSettings>): SiteSettings {
 export function verifyAdminPassword(password: string): boolean {
   const settings = getSettings();
   return password === settings.adminPassword;
+}
+
+// ============ 流量统计操作 ============
+
+// 流量记录类型
+export interface TrafficRecord {
+  id: string;
+  timestamp: string;
+  path: string;
+  ip: string;
+  country: string;
+  userAgent: string;
+  referer: string;
+  searchKeyword: string;
+}
+
+// 获取所有流量记录
+export function getTrafficRecords(): TrafficRecord[] {
+  return readJsonFile<TrafficRecord[]>(TRAFFIC_FILE, []);
+}
+
+// 记录访问
+export function recordVisit(data: Omit<TrafficRecord, 'id' | 'timestamp'>): TrafficRecord {
+  const records = getTrafficRecords();
+  const newRecord: TrafficRecord = {
+    ...data,
+    id: `trf_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+    timestamp: new Date().toISOString(),
+  };
+  records.unshift(newRecord);
+  // 只保留最近10000条记录，避免文件过大
+  if (records.length > 10000) {
+    records.length = 10000;
+  }
+  writeJsonFile(TRAFFIC_FILE, records);
+  return newRecord;
+}
+
+// 根据IP获取国家（简化版，实际应使用IP地理位置API）
+export function getCountryFromIP(ip: string): string {
+  // 简化的IP国家判断（仅用于演示，实际应使用GeoIP服务）
+  const ipPrefix = ip.split('.')[0];
+  const prefixNum = parseInt(ipPrefix, 10);
+  
+  // 根据IP段粗略判断国家
+  if (prefixNum >= 1 && prefixNum <= 9) return 'US';
+  if (prefixNum >= 10 && prefixNum <= 15) return 'EU';
+  if (prefixNum >= 16 && prefixNum <= 30) return 'US';
+  if (prefixNum >= 31 && prefixNum <= 50) return 'EU';
+  if (prefixNum >= 51 && prefixNum <= 80) return 'US';
+  if (prefixNum >= 81 && prefixNum <= 100) return 'CN';
+  if (prefixNum >= 101 && prefixNum <= 120) return 'JP';
+  if (prefixNum >= 121 && prefixNum <= 150) return 'US';
+  if (prefixNum >= 151 && prefixNum <= 180) return 'EU';
+  if (prefixNum >= 181 && prefixNum <= 200) return 'BR';
+  if (prefixNum >= 201 && prefixNum <= 220) return 'US';
+  if (prefixNum >= 221 && prefixNum <= 255) return 'EU';
+  return 'Unknown';
+}
+
+// 从Referer提取搜索关键词
+export function extractSearchKeyword(referer: string): string {
+  if (!referer) return '';
+  
+  // Google搜索
+  const googleMatch = referer.match(/[?&]q=([^&]+)/);
+  if (googleMatch) return decodeURIComponent(googleMatch[1].replace(/\+/g, ' '));
+  
+  // Bing搜索
+  const bingMatch = referer.match(/[?&]q=([^&]+)/);
+  if (bingMatch) return decodeURIComponent(bingMatch[1].replace(/\+/g, ' '));
+  
+  // Baidu搜索
+  const baiduMatch = referer.match(/[?&]wd=([^&]+)/);
+  if (baiduMatch) return decodeURIComponent(baiduMatch[1].replace(/\+/g, ' '));
+  
+  return '';
+}
+
+// 获取每日统计
+export function getDailyStats(days: number = 30): { date: string; visits: number; uniqueVisitors: number }[] {
+  const records = getTrafficRecords();
+  const stats: Record<string, { visits: number; ips: Set<string> }> = {};
+  
+  const now = new Date();
+  for (let i = 0; i < days; i++) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    stats[dateStr] = { visits: 0, ips: new Set() };
+  }
+  
+  records.forEach((record) => {
+    const dateStr = record.timestamp.split('T')[0];
+    if (stats[dateStr]) {
+      stats[dateStr].visits++;
+      stats[dateStr].ips.add(record.ip);
+    }
+  });
+  
+  return Object.entries(stats)
+    .map(([date, data]) => ({
+      date,
+      visits: data.visits,
+      uniqueVisitors: data.ips.size,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// 获取国家统计
+export function getCountryStats(): { country: string; visits: number }[] {
+  const records = getTrafficRecords();
+  const stats: Record<string, number> = {};
+  
+  records.forEach((record) => {
+    const country = record.country || 'Unknown';
+    stats[country] = (stats[country] || 0) + 1;
+  });
+  
+  return Object.entries(stats)
+    .map(([country, visits]) => ({ country, visits }))
+    .sort((a, b) => b.visits - a.visits);
+}
+
+// 获取来源统计
+export function getSourceStats(): { source: string; visits: number }[] {
+  const records = getTrafficRecords();
+  const stats: Record<string, number> = {};
+  
+  records.forEach((record) => {
+    let source = 'Direct';
+    if (record.referer) {
+      try {
+        const url = new URL(record.referer);
+        source = url.hostname.replace('www.', '');
+      } catch {
+        source = record.referer.substring(0, 30);
+      }
+    }
+    stats[source] = (stats[source] || 0) + 1;
+  });
+  
+  return Object.entries(stats)
+    .map(([source, visits]) => ({ source, visits }))
+    .sort((a, b) => b.visits - a.visits)
+    .slice(0, 20);
+}
+
+// 获取搜索词统计
+export function getKeywordStats(): { keyword: string; visits: number }[] {
+  const records = getTrafficRecords();
+  const stats: Record<string, number> = {};
+  
+  records.forEach((record) => {
+    if (record.searchKeyword) {
+      const keyword = record.searchKeyword.toLowerCase();
+      stats[keyword] = (stats[keyword] || 0) + 1;
+    }
+  });
+  
+  return Object.entries(stats)
+    .map(([keyword, visits]) => ({ keyword, visits }))
+    .sort((a, b) => b.visits - a.visits)
+    .slice(0, 20);
+}
+
+// 获取页面访问统计
+export function getPageStats(): { path: string; visits: number }[] {
+  const records = getTrafficRecords();
+  const stats: Record<string, number> = {};
+  
+  records.forEach((record) => {
+    stats[record.path] = (stats[record.path] || 0) + 1;
+  });
+  
+  return Object.entries(stats)
+    .map(([path, visits]) => ({ path, visits }))
+    .sort((a, b) => b.visits - a.visits)
+    .slice(0, 20);
 }
