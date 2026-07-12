@@ -6,6 +6,16 @@
     "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
     "referer": "http://localhost:5000/en",
     "searchKeyword": "",
+    "id": "trf_1783900240356_97fswm",
+    "timestamp": "2026-07-12T23:50:40.356Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
     "id": "trf_1783899990078_uqawmx",
     "timestamp": "2026-07-12T23:46:30.078Z"
   },
