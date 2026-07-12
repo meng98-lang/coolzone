@@ -1,5 +1,45 @@
 [
   {
+    "path": "/products/frostline-tower-24000",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/products/frostline-tower-24000",
+    "searchKeyword": "",
+    "id": "trf_1783817995396_t3x3dk",
+    "timestamp": "2026-07-12T00:59:55.396Z"
+  },
+  {
+    "path": "/products/frostline-tower-24000",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/products/frostline-tower-24000",
+    "searchKeyword": "",
+    "id": "trf_1783817975170_uswjx8",
+    "timestamp": "2026-07-12T00:59:35.170Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783817967193_2g1w7x",
+    "timestamp": "2026-07-12T00:59:27.193Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783816948450_rarpcl",
+    "timestamp": "2026-07-12T00:42:28.450Z"
+  },
+  {
     "path": "/",
     "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
     "country": "Unknown",

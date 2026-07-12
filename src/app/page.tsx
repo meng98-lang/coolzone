@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  const featuredProducts = products.filter((p) => p.badge);
+  const featuredProducts = products;
 
   return (
     <>
