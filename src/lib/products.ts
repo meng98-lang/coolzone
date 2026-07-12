@@ -6,6 +6,7 @@ export interface Product {
   price: number;
   originalPrice?: number;
   image: string;
+  images?: string[];
   category: 'wall-mounted' | 'portable' | 'central' | 'floor-standing';
   rating: number;
   reviews: number;
@@ -35,6 +36,7 @@ export const products: Product[] = [
     price: 449,
     originalPrice: 549,
     image: '/products/arctic-breeze-9000.jpg',
+    images: ['/products/arctic-breeze-9000.jpg', '/products/arctic-breeze-9000-angle.jpg', '/products/arctic-breeze-9000-side.jpg', '/products/arctic-breeze-9000-detail.jpg'],
     category: 'wall-mounted',
     rating: 4.8,
     reviews: 342,
@@ -63,6 +65,7 @@ export const products: Product[] = [
     price: 699,
     originalPrice: 849,
     image: '/products/alpine-cool-pro.jpg',
+    images: ['/products/alpine-cool-pro.jpg', '/products/alpine-cool-pro-angle.jpg', '/products/alpine-cool-pro-side.jpg', '/products/alpine-cool-pro-detail.jpg'],
     category: 'wall-mounted',
     rating: 4.9,
     reviews: 521,
@@ -91,6 +94,7 @@ export const products: Product[] = [
     price: 999,
     originalPrice: 1199,
     image: '/products/glacier-max-18000.jpg',
+    images: ['/products/glacier-max-18000.jpg', '/products/glacier-max-18000-angle.jpg', '/products/glacier-max-18000-side.jpg', '/products/glacier-max-18000-detail.jpg'],
     category: 'wall-mounted',
     rating: 4.7,
     reviews: 189,
@@ -118,6 +122,7 @@ export const products: Product[] = [
     price: 349,
     originalPrice: 399,
     image: '/products/breezeport-360.jpg',
+    images: ['/products/breezeport-360.jpg', '/products/breezeport-360-angle.jpg', '/products/breezeport-360-back.jpg'],
     category: 'portable',
     rating: 4.5,
     reviews: 267,
@@ -145,6 +150,7 @@ export const products: Product[] = [
     subtitle: 'Premium Portable AC',
     price: 549,
     image: '/products/coolmove-500.jpg',
+    images: ['/products/coolmove-500.jpg', '/products/coolmove-500-angle.jpg'],
     category: 'portable',
     rating: 4.6,
     reviews: 154,
@@ -172,6 +178,7 @@ export const products: Product[] = [
     price: 2499,
     originalPrice: 2999,
     image: '/products/multizone-central-30000.jpg',
+    images: ['/products/multizone-central-30000.jpg', '/products/multizone-central-30000-angle.jpg', '/products/multizone-central-30000-top.jpg', '/products/multizone-central-30000-detail.jpg'],
     category: 'central',
     rating: 4.9,
     reviews: 87,
@@ -200,6 +207,7 @@ export const products: Product[] = [
     price: 1099,
     originalPrice: 1299,
     image: '/products/frostline-tower-24000.jpg',
+    images: ['/products/frostline-tower-24000.jpg', '/products/frostline-tower-24000-angle.jpg', '/products/frostline-tower-24000-back.jpg', '/products/frostline-tower-24000-detail.jpg'],
     category: 'floor-standing',
     rating: 4.7,
     reviews: 89,

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Star, ArrowLeft, Check, Zap, Volume2, Thermometer, Wifi, MessageCircle, ShoppingCart } from 'lucide-react';
 import { ProductCard } from '@/components/product-card';
@@ -15,6 +16,10 @@ interface ProductDetailProps {
 
 export function ProductDetail({ product }: ProductDetailProps) {
   const { addItem } = useCart();
+  const [selectedImage, setSelectedImage] = useState(0);
+  
+  // Get all images for this product
+  const productImages = product.images || [product.image];
 
   // Get related products (same category, excluding current)
   const relatedProducts = products
@@ -50,25 +55,45 @@ export function ProductDetail({ product }: ProductDetailProps) {
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Product Image */}
-          <div className="bg-white rounded-3xl border border-gray-100 p-8 flex items-center justify-center aspect-square relative overflow-hidden">
-            <div
-              className="absolute inset-0 opacity-20"
-              style={{
-                background: `radial-gradient(circle at 50% 50%, ${product.color}22 0%, transparent 70%)`,
-              }}
-            />
-            <div className="relative z-10 w-full max-w-sm">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-auto object-contain drop-shadow-xl"
+          {/* Product Image Gallery */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-3xl border border-gray-100 p-8 flex items-center justify-center aspect-square relative overflow-hidden">
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  background: `radial-gradient(circle at 50% 50%, ${product.color}22 0%, transparent 70%)`,
+                }}
               />
+              <div className="relative z-10 w-full max-w-sm">
+                <img
+                  src={productImages[selectedImage]}
+                  alt={product.name}
+                  className="w-full h-auto object-contain drop-shadow-xl"
+                />
+              </div>
+              {product.badge && (
+                <span className="absolute top-5 left-5 px-3 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-full">
+                  {product.badge}
+                </span>
+              )}
             </div>
-            {product.badge && (
-              <span className="absolute top-5 left-5 px-3 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-full">
-                {product.badge}
-              </span>
+            {/* Thumbnail Gallery */}
+            {productImages.length > 1 && (
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {productImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`flex-shrink-0 w-20 h-20 rounded-xl border-2 overflow-hidden transition-all ${
+                      selectedImage === idx
+                        ? 'border-blue-600 ring-2 ring-blue-100'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <img src={img} alt={`${product.name} view ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 
