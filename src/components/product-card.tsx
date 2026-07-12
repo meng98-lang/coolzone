@@ -30,8 +30,9 @@ export function ProductCard({ product, locale = 'en' }: ProductCardProps) {
           <div className="relative z-10 w-full h-full flex items-center justify-center">
             <img
               src={product.image}
-              alt={product.name}
+              alt={`${product.name} - ${product.badge || ''} ${t['products.title']} | CoolZone`.trim()}
               className="w-full h-full object-contain drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
             />
           </div>
 

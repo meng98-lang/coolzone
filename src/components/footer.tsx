@@ -43,9 +43,9 @@ export function Footer({ locale = 'en' }: FooterProps) {
             <ul className="space-y-2.5">
               <li><Link href={`/${locale}/contact`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.contactUs']}</Link></li>
               <li><a href={buildContactUrl()} target="_blank" rel="noopener noreferrer" className="text-sm hover:text-blue-400 transition-colors">WhatsApp</a></li>
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">{t['footer.faq']}</a></li>
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">{t['footer.shipping']}</a></li>
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">{t['footer.returns']}</a></li>
+              <li><Link href={`/${locale}/faq`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.faq']}</Link></li>
+              <li><Link href={`/${locale}/shipping`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.shipping']}</Link></li>
+              <li><Link href={`/${locale}/returns`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.returns']}</Link></li>
             </ul>
           </div>
 
@@ -53,9 +53,9 @@ export function Footer({ locale = 'en' }: FooterProps) {
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">CoolZone</h3>
             <ul className="space-y-2.5">
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">About Us</a></li>
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm hover:text-blue-400 transition-colors">Terms of Service</a></li>
+              <li><Link href={`/${locale}/faq`} className="text-sm hover:text-blue-400 transition-colors">About Us</Link></li>
+              <li><Link href={`/${locale}/privacy-policy`} className="text-sm hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+              <li><Link href={`/${locale}/terms`} className="text-sm hover:text-blue-400 transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
         </div>

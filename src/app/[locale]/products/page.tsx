@@ -1,5 +1,6 @@
 import { products, categories } from '@/lib/products';
 import { ProductCard } from '@/components/product-card';
+import { Breadcrumb } from '@/components/breadcrumb';
 import { Filter } from 'lucide-react';
 import Link from 'next/link';
 import { getTranslations } from '@/i18n/translations';
@@ -65,6 +66,7 @@ export default async function ProductsPage({ params, searchParams }: ProductsPag
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Breadcrumb items={[{ label: t['products.title'] }]} locale={locale} />
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <aside className="lg:w-56 flex-shrink-0">

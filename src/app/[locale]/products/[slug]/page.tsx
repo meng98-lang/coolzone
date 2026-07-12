@@ -1,6 +1,8 @@
 import { products } from '@/lib/products';
 import { notFound } from 'next/navigation';
 import { ProductDetail } from '@/app/products/[slug]/product-detail';
+import { Breadcrumb } from '@/components/breadcrumb';
+import { ProductReviews } from '@/components/product-reviews';
 import { getTranslations } from '@/i18n/translations';
 import { locales, primaryLocales, type Locale } from '@/i18n/config';
 import { Suspense } from 'react';
@@ -51,6 +53,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
 export default async function ProductPage({ params }: ProductPageProps) {
   const { locale, slug } = await params;
   const product = products.find((p) => p.id === slug);
+  const t = getTranslations(locale as Locale);
 
   if (!product) {
     notFound();
@@ -80,9 +83,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <Breadcrumb
+          items={[
+            { label: t['products.title'], href: `/${locale}/products` },
+            { label: product.name },
+          ]}
+          locale={locale}
+        />
+      </div>
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
         <ProductDetail product={product} locale={locale as Locale} />
       </Suspense>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <ProductReviews productName={product.name} productSlug={product.id} />
+      </div>
     </>
   );
 }

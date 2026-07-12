@@ -7,6 +7,7 @@ import { Footer } from '@/components/footer';
 import { WhatsAppFloat } from '@/components/whatsapp-float';
 import { TrackingScripts } from '@/components/tracking-scripts';
 import { TrafficTracker } from '@/components/traffic-tracker';
+import { CookieConsent } from '@/components/cookie-consent';
 import { LanguageProvider } from '@/i18n/language-context';
 import { Suspense } from 'react';
 
@@ -75,6 +76,7 @@ export default async function LocaleLayout({
             <Suspense fallback={null}>
               <TrafficTracker />
             </Suspense>
+            <CookieConsent />
           </CartProvider>
         </LanguageProvider>
       </body>
