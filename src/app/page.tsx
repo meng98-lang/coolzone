@@ -17,8 +17,75 @@ import {
 export default function HomePage() {
   const featuredProducts = products;
 
+  // Organization JSON-LD for brand visibility
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'CoolZone',
+    description: 'Premium air conditioning solutions for European homes and businesses. Energy-efficient, whisper-quiet cooling with professional installation.',
+    url: process.env.COZE_PROJECT_DOMAIN_DEFAULT ? `https://${process.env.COZE_PROJECT_DOMAIN_DEFAULT}` : 'https://coolzone.vercel.app',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      availableLanguage: ['English', 'German', 'French', 'Spanish'],
+    },
+    areaServed: {
+      '@type': 'Place',
+      name: 'Europe',
+    },
+    sameAs: [],
+  };
+
+  // FAQ JSON-LD for GEO optimization
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What areas do you deliver to?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'We deliver to all European countries including Germany, France, Italy, Spain, Netherlands, Belgium, Austria, Switzerland, and more.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do you offer installation services?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes, we provide professional installation services across Europe. Contact us via WhatsApp for a quote.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What warranty do you offer?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'All CoolZone products come with a 5-year manufacturer warranty covering parts and labor.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I choose the right air conditioner?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Consider your room size: 9000 BTU for 10-15m², 12000 BTU for 15-20m², 18000 BTU for 20-30m². Contact us for personalized recommendations.',
+        },
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50">
         {/* Background decoration */}

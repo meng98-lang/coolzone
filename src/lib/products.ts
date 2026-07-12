@@ -18,6 +18,7 @@ export interface Product {
   coolingCapacity: string;
   noiseLevel: string;
   color: string;
+  inStock?: boolean;
 }
 
 export const categories = [
