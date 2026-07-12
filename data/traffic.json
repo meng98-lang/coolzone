@@ -1,6 +1,16 @@
 [
   {
     "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899041433_3hpxam",
+    "timestamp": "2026-07-12T23:30:41.433Z"
+  },
+  {
+    "path": "/en",
     "ip": "13.250.50.39",
     "country": "EU",
     "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",

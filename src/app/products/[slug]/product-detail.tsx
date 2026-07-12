@@ -63,16 +63,16 @@ export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
               </div>
             </div>
             {productImages.length > 1 && (
-              <div className="flex gap-3 mt-4">
+              <div className="flex gap-2 sm:gap-3 mt-3 sm:mt-4 overflow-x-auto pb-2 -mx-1 px-1">
                 {productImages.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`w-20 h-20 rounded-xl border-2 overflow-hidden transition-all ${
+                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-lg sm:rounded-xl border-2 overflow-hidden transition-all flex-shrink-0 ${
                       idx === selectedImage ? 'border-blue-500 shadow-lg' : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
-                    <img src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`${product.name} view ${idx + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -81,14 +81,14 @@ export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
 
           {/* Product Info */}
           <div>
-            <div className="bg-white rounded-2xl border border-gray-100 p-8">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 sm:p-8">
               {product.badge && (
                 <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full mb-3">
                   {product.badge}
                 </span>
               )}
-              <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
-              <p className="text-gray-500 mt-2">{product.subtitle}</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{product.name}</h1>
+              <p className="text-gray-500 text-sm sm:text-base mt-2">{product.subtitle}</p>
 
               {/* Rating */}
               <div className="flex items-center gap-2 mt-4">
@@ -101,30 +101,30 @@ export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
               </div>
 
               {/* Price */}
-              <div className="mt-6 flex items-baseline gap-3">
-                <span className="text-4xl font-bold text-gray-900">&euro;{product.price}</span>
+              <div className="mt-4 sm:mt-6 flex items-baseline gap-3">
+                <span className="text-3xl sm:text-4xl font-bold text-gray-900">&euro;{product.price}</span>
                 {product.originalPrice && (
-                  <span className="text-xl text-gray-400 line-through">&euro;{product.originalPrice}</span>
+                  <span className="text-lg sm:text-xl text-gray-400 line-through">&euro;{product.originalPrice}</span>
                 )}
               </div>
 
               {/* Quick Specs */}
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <Thermometer className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm text-gray-700">{product.coolingCapacity}</span>
+              <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex items-center gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg sm:rounded-xl">
+                  <Thermometer className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500" />
+                  <span className="text-xs sm:text-sm text-gray-700">{product.coolingCapacity}</span>
                 </div>
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <Zap className="w-4 h-4 text-amber-500" />
-                  <span className="text-sm text-gray-700">{product.energyClass}</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg sm:rounded-xl">
+                  <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500" />
+                  <span className="text-xs sm:text-sm text-gray-700">{product.energyClass}</span>
                 </div>
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <Volume2 className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-gray-700">{product.noiseLevel}</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg sm:rounded-xl">
+                  <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
+                  <span className="text-xs sm:text-sm text-gray-700">{product.noiseLevel}</span>
                 </div>
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
-                  <Wifi className="w-4 h-4 text-purple-500" />
-                  <span className="text-sm text-gray-700">Wi-Fi</span>
+                <div className="flex items-center gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg sm:rounded-xl">
+                  <Wifi className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-500" />
+                  <span className="text-xs sm:text-sm text-gray-700">Wi-Fi</span>
                 </div>
               </div>
 
@@ -174,9 +174,9 @@ export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
         </div>
 
         {/* Description & Specs */}
-        <div className="mt-12 grid lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{t['products.specs']}</h2>
+        <div className="mt-8 sm:mt-12 grid lg:grid-cols-2 gap-6 sm:gap-8">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 sm:p-8">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">{t['products.specs']}</h2>
             <dl className="space-y-3">
               {Object.entries(product.specs).map(([key, value]) => (
                 <div key={key} className="flex justify-between py-2 border-b border-gray-50">
@@ -187,8 +187,8 @@ export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
             </dl>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{t['products.features']}</h2>
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 sm:p-8">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">{t['products.features']}</h2>
             <ul className="space-y-3">
               {product.features.map((feature) => (
                 <li key={feature} className="flex items-center gap-2">
