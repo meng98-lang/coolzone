@@ -34,17 +34,49 @@ export default function AnalyticsPage() {
   const fetchStats = async () => {
     setLoading(true);
     try {
+      const password = localStorage.getItem('coolzone_admin_password') || 'coolzone2024';
       const res = await fetch('/api/traffic?stats=true', {
-        headers: { Authorization: `Bearer admin` },
+        headers: { Authorization: `Bearer ${password}` },
       });
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
+        // Map API response to expected format
+        const today = new Date().toISOString().split('T')[0];
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        const dailyStats = (data.dailyTraffic || []).map((d: { date: string; count: number }) => ({
+          date: d.date,
+          count: d.count,
+        }));
+        const todayCount = dailyStats.find((d: { date: string; count: number }) => d.date === today)?.count || 0;
+        const yesterdayCount = dailyStats.find((d: { date: string; count: number }) => d.date === yesterday)?.count || 0;
+        const last7 = dailyStats.slice(-7).reduce((sum: number, d: { count: number }) => sum + d.count, 0);
+        const last30 = dailyStats.slice(-30).reduce((sum: number, d: { count: number }) => sum + d.count, 0);
+        setStats({
+          today: todayCount,
+          yesterday: yesterdayCount,
+          last7Days: last7,
+          last30Days: last30,
+          totalVisits: data.totalVisits || 0,
+          dailyStats,
+          countryStats: (data.countryStats || []).map((c: { country: string; count: number }) => ({
+            country: c.country || '未知',
+            count: c.count,
+          })),
+          referrerStats: [],
+          searchTerms: (data.keywordStats || []).map((k: { keyword: string; count: number }) => ({
+            term: k.keyword || '',
+            count: k.count,
+          })),
+          pageStats: (data.pageStats || []).map((p: { path: string; count: number }) => ({
+            path: p.path,
+            count: p.count,
+          })),
+        });
       } else {
-        setError('Failed to load statistics');
+        setError('加载统计数据失败');
       }
     } catch {
-      setError('Network error');
+      setError('网络错误');
     } finally {
       setLoading(false);
     }
@@ -58,7 +90,7 @@ export default function AnalyticsPage() {
     return (
       <div className="flex items-center justify-center py-20">
         <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="ml-3 text-gray-600">Loading statistics...</span>
+        <span className="ml-3 text-gray-600">正在加载统计数据...</span>
       </div>
     );
   }
@@ -68,7 +100,7 @@ export default function AnalyticsPage() {
       <div className="text-center py-20">
         <p className="text-red-500">{error}</p>
         <button onClick={fetchStats} className="mt-4 text-blue-600 hover:underline">
-          Retry
+          重试
         </button>
       </div>
     );
@@ -82,8 +114,8 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Traffic Analytics</h1>
-          <p className="text-gray-500 mt-1">Monitor website traffic and visitor sources</p>
+          <h1 className="text-2xl font-bold text-gray-900">流量统计</h1>
+          <p className="text-gray-500 mt-1">监控网站流量和访客来源</p>
         </div>
         <button
           onClick={fetchStats}
@@ -99,7 +131,7 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Today</p>
+              <p className="text-sm text-gray-500">今日</p>
               <p className="text-2xl font-bold text-gray-900 mt-1">{stats.today}</p>
             </div>
             <div className="h-12 w-12 bg-blue-50 rounded-xl flex items-center justify-center">
@@ -123,7 +155,7 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Last 7 Days</p>
+              <p className="text-sm text-gray-500">近7天</p>
               <p className="text-2xl font-bold text-gray-900 mt-1">{stats.last7Days}</p>
             </div>
             <div className="h-12 w-12 bg-green-50 rounded-xl flex items-center justify-center">
@@ -138,7 +170,7 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Last 30 Days</p>
+              <p className="text-sm text-gray-500">近30天</p>
               <p className="text-2xl font-bold text-gray-900 mt-1">{stats.last30Days}</p>
             </div>
             <div className="h-12 w-12 bg-purple-50 rounded-xl flex items-center justify-center">
@@ -153,7 +185,7 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Visits</p>
+              <p className="text-sm text-gray-500">总访问量</p>
               <p className="text-2xl font-bold text-gray-900 mt-1">{stats.totalVisits}</p>
             </div>
             <div className="h-12 w-12 bg-orange-50 rounded-xl flex items-center justify-center">
@@ -166,7 +198,7 @@ export default function AnalyticsPage() {
 
       {/* Daily Traffic Chart */}
       <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Daily Traffic (Last 7 Days)</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">每日流量（近7天）</h2>
         <div className="flex items-end gap-2 h-40">
           {stats.dailyStats.map((day) => (
             <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
@@ -188,10 +220,10 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Globe className="h-5 w-5 text-blue-600" />
-            Traffic by Country
+            按国家/地区分布
           </h2>
           {stats.countryStats.length === 0 ? (
-            <p className="text-gray-400 text-sm py-4">No data yet</p>
+            <p className="text-gray-400 text-sm py-4">暂无数据</p>
           ) : (
             <div className="space-y-3">
               {stats.countryStats.slice(0, 8).map((item) => (
@@ -216,10 +248,10 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Search className="h-5 w-5 text-green-600" />
-            Traffic Sources
+            流量来源
           </h2>
           {stats.referrerStats.length === 0 ? (
-            <p className="text-gray-400 text-sm py-4">No data yet</p>
+            <p className="text-gray-400 text-sm py-4">暂无数据</p>
           ) : (
             <div className="space-y-3">
               {stats.referrerStats.slice(0, 8).map((item) => (
@@ -236,10 +268,10 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Search className="h-5 w-5 text-purple-600" />
-            Search Keywords
+            搜索关键词
           </h2>
           {stats.searchTerms.length === 0 ? (
-            <p className="text-gray-400 text-sm py-4">No data yet</p>
+            <p className="text-gray-400 text-sm py-4">暂无数据</p>
           ) : (
             <div className="flex flex-wrap gap-2">
               {stats.searchTerms.slice(0, 15).map((item) => (
@@ -259,10 +291,10 @@ export default function AnalyticsPage() {
         <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-orange-600" />
-            Popular Pages
+            热门页面
           </h2>
           {stats.pageStats.length === 0 ? (
-            <p className="text-gray-400 text-sm py-4">No data yet</p>
+            <p className="text-gray-400 text-sm py-4">暂无数据</p>
           ) : (
             <div className="space-y-3">
               {stats.pageStats.slice(0, 8).map((item) => (

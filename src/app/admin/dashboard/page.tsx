@@ -10,8 +10,8 @@ interface Inquiry {
   email: string;
   phone: string;
   message: string;
-  createdAt: string;
-  read: boolean;
+  created_at: string;
+  is_read: boolean;
 }
 
 export default function DashboardPage() {
@@ -37,10 +37,10 @@ export default function DashboardPage() {
   };
 
   const totalInquiries = inquiries.length;
-  const unreadCount = inquiries.filter((i) => !i.read).length;
+  const unreadCount = inquiries.filter((i) => !i.is_read).length;
   const todayCount = inquiries.filter((i) => {
     const today = new Date().toDateString();
-    return new Date(i.createdAt).toDateString() === today;
+    return new Date(i.created_at).toDateString() === today;
   }).length;
 
   const recentInquiries = inquiries.slice(0, 5);
@@ -55,14 +55,14 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-gray-900">仪表盘</h1>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Inquiries</p>
+              <p className="text-sm text-gray-500">总咨询数</p>
               <p className="text-3xl font-bold text-gray-900 mt-1">{totalInquiries}</p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -74,7 +74,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Unread</p>
+              <p className="text-sm text-gray-500">未读消息</p>
               <p className="text-3xl font-bold text-orange-600 mt-1">{unreadCount}</p>
             </div>
             <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
@@ -86,7 +86,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Today</p>
+              <p className="text-sm text-gray-500">今日访问</p>
               <p className="text-3xl font-bold text-green-600 mt-1">{todayCount}</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
@@ -99,25 +99,25 @@ export default function DashboardPage() {
       {/* Recent Inquiries */}
       <div className="bg-white rounded-xl shadow-sm">
         <div className="p-6 border-b flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Recent Inquiries</h2>
+          <h2 className="text-lg font-semibold text-gray-900">最近咨询</h2>
           <Link href="/admin/inquiries" className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-            View All →
+            查看全部 →
           </Link>
         </div>
         <div className="divide-y">
           {recentInquiries.length === 0 ? (
             <div className="p-8 text-center text-gray-500">
-              No inquiries yet
+              暂无咨询
             </div>
           ) : (
             recentInquiries.map((inquiry) => (
               <div key={inquiry.id} className="p-4 flex items-center gap-4 hover:bg-gray-50">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${inquiry.read ? 'bg-gray-300' : 'bg-blue-500'}`} />
+                <div className={`w-2 h-2 rounded-full shrink-0 ${inquiry.is_read ? 'bg-gray-300' : 'bg-blue-500'}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="font-medium text-gray-900 truncate">{inquiry.name}</p>
-                    {!inquiry.read && (
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-600 text-xs font-medium rounded-full">New</span>
+                    {!inquiry.is_read && (
+                      <span className="px-2 py-0.5 bg-blue-100 text-blue-600 text-xs font-medium rounded-full">新</span>
                     )}
                   </div>
                   <p className="text-sm text-gray-500 truncate">{inquiry.email} • {inquiry.phone}</p>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
                 <div className="text-right shrink-0">
                   <div className="flex items-center gap-1 text-xs text-gray-400">
                     <Clock className="w-3 h-3" />
-                    {new Date(inquiry.createdAt).toLocaleDateString()}
+                    {new Date(inquiry.created_at).toLocaleDateString()}
                   </div>
                 </div>
               </div>
@@ -136,25 +136,25 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <h3 className="font-semibold text-gray-900 mb-4">快捷操作</h3>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/admin/inquiries"
             className="px-4 py-2 bg-white rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            View All Inquiries
+            查看所有咨询
           </Link>
           <Link
             href="/admin/settings"
             className="px-4 py-2 bg-white rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Update WhatsApp Number
+            更新 WhatsApp 号码
           </Link>
           <Link
             href="/admin/settings"
             className="px-4 py-2 bg-white rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Configure Analytics
+            配置统计代码
           </Link>
         </div>
       </div>

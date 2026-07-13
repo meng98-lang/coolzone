@@ -9,8 +9,8 @@ interface Inquiry {
   email: string;
   phone: string;
   message: string;
-  createdAt: string;
-  read: boolean;
+  created_at: string;
+  is_read: boolean;
 }
 
 export default function InquiriesPage() {
@@ -47,7 +47,7 @@ export default function InquiriesPage() {
         body: JSON.stringify({ id, action: 'read' }),
       });
       setInquiries((prev) =>
-        prev.map((inq) => (inq.id === id ? { ...inq, read: true } : inq))
+        prev.map((inq) => (inq.id === id ? { ...inq, is_read: true } : inq))
       );
       if (selectedInquiry?.id === id) {
         setSelectedInquiry({ ...selectedInquiry, read: true });
@@ -58,7 +58,7 @@ export default function InquiriesPage() {
   };
 
   const deleteInquiry = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this inquiry?')) return;
+    if (!confirm('确定要删除这条咨询吗？')) return;
     
     try {
       await fetch(`/api/contact?id=${id}`, {
@@ -85,9 +85,9 @@ export default function InquiriesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Inquiries</h1>
+        <h1 className="text-2xl font-bold text-gray-900">客户咨询</h1>
         <span className="text-sm text-gray-500">
-          {inquiries.length} total • {inquiries.filter((i) => !i.read).length} unread
+          共 {inquiries.length} 条 • {inquiries.filter((i) => !i.is_read).length} 条未读
         </span>
       </div>
 
@@ -97,7 +97,7 @@ export default function InquiriesPage() {
           <div className="divide-y max-h-[600px] overflow-y-auto">
             {inquiries.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
-                No inquiries yet
+                暂无咨询
               </div>
             ) : (
               inquiries.map((inquiry) => (
@@ -105,21 +105,21 @@ export default function InquiriesPage() {
                   key={inquiry.id}
                   onClick={() => {
                     setSelectedInquiry(inquiry);
-                    if (!inquiry.read) markAsRead(inquiry.id);
+                    if (!inquiry.is_read) markAsRead(inquiry.id);
                   }}
                   className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${
                     selectedInquiry?.id === inquiry.id ? 'bg-blue-50' : ''
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    {!inquiry.read && (
+                    {!inquiry.is_read && (
                       <span className="w-2 h-2 bg-blue-500 rounded-full" />
                     )}
                     <p className="font-medium text-gray-900 truncate">{inquiry.name}</p>
                   </div>
                   <p className="text-sm text-gray-500 truncate">{inquiry.email}</p>
                   <p className="text-xs text-gray-400 mt-1">
-                    {new Date(inquiry.createdAt).toLocaleString()}
+                    {new Date(inquiry.created_at).toLocaleString()}
                   </p>
                 </button>
               ))
@@ -136,13 +136,13 @@ export default function InquiriesPage() {
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">{selectedInquiry.name}</h2>
                   <p className="text-sm text-gray-500 mt-1">
-                    {new Date(selectedInquiry.createdAt).toLocaleString()}
+                    {new Date(selectedInquiry.created_at).toLocaleString()}
                   </p>
                 </div>
                 <button
                   onClick={() => deleteInquiry(selectedInquiry.id)}
                   className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                  title="Delete"
+                  title="删除"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>
@@ -166,9 +166,9 @@ export default function InquiriesPage() {
 
               {/* Message */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Message</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">留言内容</h3>
                 <div className="p-4 bg-gray-50 rounded-xl text-gray-700 whitespace-pre-wrap">
-                  {selectedInquiry.message || 'No message provided'}
+                  {selectedInquiry.message || '无留言内容'}
                 </div>
               </div>
 
@@ -179,21 +179,21 @@ export default function InquiriesPage() {
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4" />
-                  Reply via Email
+                  邮件回复
                 </a>
                 <a
                   href={`tel:${selectedInquiry.phone}`}
                   className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4" />
-                  Call Now
+                  立即拨打
                 </a>
               </div>
             </div>
           ) : (
             <div className="p-12 text-center text-gray-500">
               <Mail className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p>Select an inquiry to view details</p>
+              <p>选择一条咨询查看详情</p>
             </div>
           )}
         </div>

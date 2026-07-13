@@ -95,13 +95,13 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+      <h1 className="text-2xl font-bold text-gray-900">网站设置</h1>
 
       {/* Status Messages */}
       {status === 'success' && (
         <div className="p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3 text-green-700">
           <Check className="w-5 h-5" />
-          Settings saved successfully
+          设置已保存
         </div>
       )}
       {status === 'error' && (
@@ -118,14 +118,14 @@ export default function SettingsPage() {
             <MessageCircle className="w-5 h-5 text-green-600" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">WhatsApp Contact</h2>
-            <p className="text-sm text-gray-500">Customer inquiries will be redirected to this number</p>
+            <h2 className="text-lg font-semibold text-gray-900">WhatsApp 联系方式</h2>
+            <p className="text-sm text-gray-500">客户咨询将跳转至此号码</p>
           </div>
         </div>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              WhatsApp Number (with country code)
+              WhatsApp 号码（含国家代码）
             </label>
             <input
               type="text"
@@ -135,12 +135,12 @@ export default function SettingsPage() {
               className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none"
             />
             <p className="mt-1 text-xs text-gray-400">
-              Enter number without + or spaces. Example: 491234567890 (Germany)
+              输入号码时不加 + 或空格。例如：491234567890（德国）
             </p>
           </div>
           <div className="p-3 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600">
-              Preview link: <code className="text-blue-600">https://wa.me/{settings.whatsappPhone || '491234567890'}</code>
+              预览链接：<code className="text-blue-600">https://wa.me/{settings.whatsappPhone || '491234567890'}</code>
             </p>
           </div>
         </div>
@@ -154,7 +154,7 @@ export default function SettingsPage() {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Facebook Pixel</h2>
-            <p className="text-sm text-gray-500">Track conversions and build audiences</p>
+            <p className="text-sm text-gray-500">跟踪转化和建立受众</p>
           </div>
         </div>
         <div>
@@ -169,7 +169,7 @@ export default function SettingsPage() {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
           />
           <p className="mt-1 text-xs text-gray-400">
-            Find your Pixel ID in Facebook Events Manager
+            在 Facebook 事件管理器中查找 Pixel ID
           </p>
         </div>
       </div>
@@ -182,7 +182,7 @@ export default function SettingsPage() {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Google Analytics</h2>
-            <p className="text-sm text-gray-500">Track website traffic and user behavior</p>
+            <p className="text-sm text-gray-500">跟踪网站流量和用户行为</p>
           </div>
         </div>
         <div>
@@ -197,7 +197,7 @@ export default function SettingsPage() {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all outline-none"
           />
           <p className="mt-1 text-xs text-gray-400">
-            Find your Measurement ID in Google Analytics Admin → Data Streams
+            在 Google Analytics 管理 → 数据流中查找 Measurement ID
           </p>
         </div>
       </div>
@@ -212,7 +212,7 @@ export default function SettingsPage() {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-gray-900">TikTok Pixel</h2>
-            <p className="text-sm text-gray-500">Track TikTok ad conversions and events</p>
+            <p className="text-sm text-gray-500">跟踪 TikTok 广告转化和事件</p>
           </div>
         </div>
         <div>
@@ -227,24 +227,24 @@ export default function SettingsPage() {
             className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-800 focus:border-transparent transition-all outline-none"
           />
           <p className="mt-1 text-xs text-gray-400">
-            Find your Pixel ID in TikTok Ads Manager → Assets → Events
+            在 TikTok 广告管理器 → 资产 → 事件中查找 Pixel ID
           </p>
         </div>
       </div>
 
       {/* Save Section */}
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Save Changes</h3>
+        <h3 className="font-semibold text-gray-900 mb-4">保存更改</h3>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Admin Password
+              确认管理员密码
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder="输入密码"
               className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
             />
           </div>
@@ -255,7 +255,7 @@ export default function SettingsPage() {
               className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-xl transition-colors flex items-center gap-2"
             >
               <Save className="w-4 h-4" />
-              {saving ? 'Saving...' : 'Save Settings'}
+              {saving ? '保存中...' : '保存设置'}
             </button>
           </div>
         </div>
