@@ -50,7 +50,7 @@ export default function InquiriesPage() {
         prev.map((inq) => (inq.id === id ? { ...inq, is_read: true } : inq))
       );
       if (selectedInquiry?.id === id) {
-        setSelectedInquiry({ ...selectedInquiry, read: true });
+        setSelectedInquiry({ ...selectedInquiry, is_read: true });
       }
     } catch (err) {
       console.error('Failed to mark as read:', err);
