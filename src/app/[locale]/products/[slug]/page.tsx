@@ -6,6 +6,7 @@ import { ProductReviews } from '@/components/product-reviews';
 import { getTranslations } from '@/i18n/translations';
 import { locales, primaryLocales, type Locale } from '@/i18n/config';
 import { Suspense } from 'react';
+import { getSettings } from '@/lib/db';
 
 interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -54,6 +55,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { locale, slug } = await params;
   const product = products.find((p) => p.id === slug);
   const t = getTranslations(locale as Locale);
+  const settings = await getSettings();
 
   if (!product) {
     notFound();
@@ -93,7 +95,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         />
       </div>
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-        <ProductDetail product={product} locale={locale as Locale} />
+        <ProductDetail product={product} locale={locale as Locale} whatsappPhone={settings.whatsappPhone} />
       </Suspense>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <ProductReviews productName={product.name} productSlug={product.id} />

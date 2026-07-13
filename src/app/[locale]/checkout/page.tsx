@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useCart } from '@/lib/store';
 import Link from 'next/link';
 import {
@@ -31,6 +31,16 @@ function CheckoutContent({ params }: CheckoutPageProps) {
   const locale = 'en';
   const t = getTranslations(locale as Locale);
   const { items, updateQuantity, removeItem, totalPrice } = useCart();
+  const [whatsappPhone, setWhatsappPhone] = useState('491234567890');
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.whatsappPhone) setWhatsappPhone(data.whatsappPhone);
+      })
+      .catch(() => {});
+  }, []);
 
   const shippingCost = totalPrice > 500 ? 0 : 29;
   const taxRate = 0.19;
@@ -59,7 +69,8 @@ function CheckoutContent({ params }: CheckoutPageProps) {
       name: item.product.name,
       quantity: item.quantity,
       price: item.product.price,
-    }))
+    })),
+    whatsappPhone
   );
 
   return (

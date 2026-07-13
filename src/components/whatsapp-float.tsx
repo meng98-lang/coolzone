@@ -1,17 +1,18 @@
 'use client';
 
 import { MessageCircle } from 'lucide-react';
-import { buildContactUrl } from '@/lib/whatsapp';
 
 /**
  * Floating WhatsApp button - always visible on all pages.
  * Provides quick access to WhatsApp contact from anywhere on the site.
  * Adjusted position to avoid overlap with cookie consent banner.
  */
-export function WhatsAppFloat() {
+export function WhatsAppFloat({ phone }: { phone: string }) {
+  const whatsappUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}`;
+
   return (
     <a
-      href={buildContactUrl()}
+      href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"

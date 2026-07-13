@@ -15,9 +15,10 @@ import type { Locale } from '@/i18n/config';
 interface ProductDetailProps {
   product: Product;
   locale?: string;
+  whatsappPhone?: string;
 }
 
-export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
+export function ProductDetail({ product, locale = 'en', whatsappPhone }: ProductDetailProps) {
   const { addItem } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -34,8 +35,8 @@ export function ProductDetail({ product, locale = 'en' }: ProductDetailProps) {
     setTimeout(() => setAddedToCart(false), 2000);
   };
 
-  const whatsappUrl = buildProductInquiryUrl(product.name, product.id);
-  const buyNowUrl = buildOrderUrl([{ name: product.name, quantity: 1, price: product.price }]);
+  const whatsappUrl = buildProductInquiryUrl(product.name, product.id, whatsappPhone);
+  const buyNowUrl = buildOrderUrl([{ name: product.name, quantity: 1, price: product.price }], whatsappPhone);
 
   return (
     <div className="min-h-screen bg-gray-50">

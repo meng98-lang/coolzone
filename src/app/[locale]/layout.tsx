@@ -10,6 +10,7 @@ import { TrafficTracker } from '@/components/traffic-tracker';
 import { CookieConsent } from '@/components/cookie-consent';
 import { LanguageProvider } from '@/i18n/language-context';
 import { Suspense } from 'react';
+import { getSettings } from '@/lib/db';
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -63,6 +64,17 @@ export default async function LocaleLayout({
 
   const translations = getTranslations(locale as Locale);
 
+  // 从数据库获取设置（WhatsApp号码等）
+  let whatsappPhone = '491234567890';
+  try {
+    const settings = await getSettings();
+    if (settings.whatsapp_phone) {
+      whatsappPhone = settings.whatsapp_phone;
+    }
+  } catch {
+    // 使用默认号码
+  }
+
   return (
     <html lang={locale}>
       <body className="min-h-screen flex flex-col">
@@ -71,7 +83,7 @@ export default async function LocaleLayout({
             <Header locale={locale as Locale} />
             <main className="flex-1">{children}</main>
             <Footer locale={locale as Locale} />
-            <WhatsAppFloat />
+            <WhatsAppFloat phone={whatsappPhone} />
             <TrackingScripts />
             <Suspense fallback={null}>
               <TrafficTracker />
