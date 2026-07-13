@@ -4,6 +4,7 @@ import { ProductCard } from '@/components/product-card';
 import { ContactForm } from '@/components/contact-form';
 import { getTranslations } from '@/i18n/translations';
 import { locales, defaultLocale, type Locale } from '@/i18n/config';
+import { getSettings } from '@/lib/db';
 import {
   Snowflake,
   Truck,
@@ -51,6 +52,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const t = getTranslations(locale as Locale);
   const featuredProducts = products;
+
+  let whatsappPhone: string | undefined;
+  try {
+    const settings = await getSettings();
+    whatsappPhone = settings.whatsappPhone || undefined;
+  } catch {
+    // 使用默认号码
+  }
 
   const orgJsonLd = {
     '@context': 'https://schema.org',
@@ -256,7 +265,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} locale={locale as Locale} />
+              <ProductCard key={product.id} product={product} locale={locale as Locale} phone={whatsappPhone} />
             ))}
           </div>
 

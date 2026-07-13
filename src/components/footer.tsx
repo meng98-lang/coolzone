@@ -6,9 +6,10 @@ import type { Locale } from '@/i18n/config';
 
 interface FooterProps {
   locale?: Locale;
+  phone?: string;
 }
 
-export function Footer({ locale = 'en' }: FooterProps) {
+export function Footer({ locale = 'en', phone }: FooterProps) {
   const t = getTranslations(locale);
 
   return (
@@ -42,7 +43,7 @@ export function Footer({ locale = 'en' }: FooterProps) {
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">{t['footer.customerService']}</h3>
             <ul className="space-y-2.5">
               <li><Link href={`/${locale}/contact`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.contactUs']}</Link></li>
-              <li><a href={buildContactUrl()} target="_blank" rel="noopener noreferrer" className="text-sm hover:text-blue-400 transition-colors">WhatsApp</a></li>
+              <li><a href={buildContactUrl(phone)} target="_blank" rel="noopener noreferrer" className="text-sm hover:text-blue-400 transition-colors">WhatsApp</a></li>
               <li><Link href={`/${locale}/faq`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.faq']}</Link></li>
               <li><Link href={`/${locale}/shipping`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.shipping']}</Link></li>
               <li><Link href={`/${locale}/returns`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.returns']}</Link></li>
@@ -67,7 +68,7 @@ export function Footer({ locale = 'en' }: FooterProps) {
           </p>
           <div className="flex items-center gap-4">
             <a
-              href={buildContactUrl()}
+              href={buildContactUrl(phone)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-1.5 bg-[#25D366]/10 hover:bg-[#25D366]/20 rounded-lg transition-colors"

@@ -10,10 +10,11 @@ import { getTranslations } from '@/i18n/translations';
 interface ProductCardProps {
   product: Product;
   locale?: Locale;
+  phone?: string;
 }
 
-export function ProductCard({ product, locale = 'en' }: ProductCardProps) {
-  const whatsappUrl = buildProductInquiryUrl(product.name, product.id);
+export function ProductCard({ product, locale = 'en', phone }: ProductCardProps) {
+  const whatsappUrl = buildProductInquiryUrl(product.name, product.id, phone);
   const t = getTranslations(locale);
 
   return (

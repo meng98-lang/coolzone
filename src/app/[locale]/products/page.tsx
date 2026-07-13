@@ -5,6 +5,7 @@ import { Filter } from 'lucide-react';
 import Link from 'next/link';
 import { getTranslations } from '@/i18n/translations';
 import { locales, type Locale } from '@/i18n/config';
+import { getSettings } from '@/lib/db';
 
 interface ProductsPageProps {
   params: Promise<{ locale: string }>;
@@ -41,6 +42,14 @@ export default async function ProductsPage({ params, searchParams }: ProductsPag
   const searchP = await searchParams;
   const activeCategory = searchP.category || 'all';
   const t = getTranslations(locale as Locale);
+
+  let whatsappPhone: string | undefined;
+  try {
+    const settings = await getSettings();
+    whatsappPhone = settings.whatsappPhone || undefined;
+  } catch {
+    // 使用默认号码
+  }
 
   const filteredProducts =
     activeCategory === 'all'
@@ -129,7 +138,7 @@ export default async function ProductsPage({ params, searchParams }: ProductsPag
             ) : (
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} locale={locale as Locale} />
+                  <ProductCard key={product.id} product={product} locale={locale as Locale} phone={whatsappPhone} />
                 ))}
               </div>
             )}

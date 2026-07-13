@@ -82,9 +82,9 @@ export default async function LocaleLayout({
       <body className="min-h-screen flex flex-col">
         <LanguageProvider locale={locale as Locale} translations={translations}>
           <CartProvider>
-            <Header locale={locale as Locale} />
+            <Header locale={locale as Locale} phone={whatsappPhone} />
             <main className="flex-1">{children}</main>
-            <Footer locale={locale as Locale} />
+            <Footer locale={locale as Locale} phone={whatsappPhone} />
             <WhatsAppFloat phone={whatsappPhone} />
             <TrackingScripts />
             <Suspense fallback={null}>

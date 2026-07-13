@@ -11,9 +11,10 @@ import { getTranslations } from '@/i18n/translations';
 
 interface HeaderProps {
   locale?: Locale;
+  phone?: string;
 }
 
-export function Header({ locale = 'en' }: HeaderProps) {
+export function Header({ locale = 'en', phone }: HeaderProps) {
   const { totalItems, toggleCart } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = getTranslations(locale);
@@ -46,7 +47,7 @@ export function Header({ locale = 'en' }: HeaderProps) {
           <div className="flex items-center gap-2">
             <LanguageSwitcher currentLocale={locale} />
             <a
-              href={buildContactUrl()}
+              href={buildContactUrl(phone)}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-medium rounded-xl transition-colors"

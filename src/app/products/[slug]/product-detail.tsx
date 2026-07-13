@@ -221,7 +221,7 @@ export function ProductDetail({ product, locale = 'en', whatsappPhone }: Product
             <h2 className="text-2xl font-bold text-gray-900 mb-6">{t['products.related']}</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} locale={locale as Locale} />
+                <ProductCard key={p.id} product={p} locale={locale as Locale} phone={whatsappPhone} />
               ))}
             </div>
           </div>
