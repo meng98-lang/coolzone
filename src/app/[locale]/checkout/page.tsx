@@ -65,12 +65,12 @@ function CheckoutContent({ params }: CheckoutPageProps) {
   }
 
   const whatsappUrl = buildOrderUrl(
-    whatsappPhone,
     items.map((item) => ({
       name: item.product.name,
       quantity: item.quantity,
       price: item.product.price,
-    }))
+    })),
+    whatsappPhone
   );
 
   return (

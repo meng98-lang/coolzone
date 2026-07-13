@@ -3,6 +3,9 @@ import { CheckCircle, MessageCircle } from 'lucide-react';
 import { buildContactUrl } from '@/lib/whatsapp';
 import { getTranslations } from '@/i18n/translations';
 import { locales, type Locale } from '@/i18n/config';
+import { getSettings } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
 
 interface ThankYouPageProps {
   params: Promise<{ locale: string }>;
@@ -31,6 +34,16 @@ export default async function ThankYouPage({ params }: ThankYouPageProps) {
   const { locale } = await params;
   const t = getTranslations(locale as Locale);
 
+  let whatsappPhone = '491234567890';
+  try {
+    const settings = await getSettings();
+    if (settings.whatsappPhone) {
+      whatsappPhone = settings.whatsappPhone;
+    }
+  } catch {
+    // 使用默认号码
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
@@ -49,7 +62,7 @@ export default async function ThankYouPage({ params }: ThankYouPageProps) {
 
           <div className="space-y-3">
             <a
-              href={buildContactUrl()}
+              href={buildContactUrl(whatsappPhone)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold rounded-xl transition-colors"

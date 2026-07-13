@@ -8,6 +8,8 @@ import { locales, primaryLocales, type Locale } from '@/i18n/config';
 import { Suspense } from 'react';
 import { getSettings } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 interface ProductPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }

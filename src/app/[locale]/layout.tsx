@@ -12,6 +12,8 @@ import { LanguageProvider } from '@/i18n/language-context';
 import { Suspense } from 'react';
 import { getSettings } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -68,8 +70,8 @@ export default async function LocaleLayout({
   let whatsappPhone = '491234567890';
   try {
     const settings = await getSettings();
-    if (settings.whatsapp_phone) {
-      whatsappPhone = settings.whatsapp_phone;
+    if (settings.whatsappPhone) {
+      whatsappPhone = settings.whatsappPhone;
     }
   } catch {
     // 使用默认号码

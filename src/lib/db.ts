@@ -4,7 +4,9 @@
  */
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 
-const client = getSupabaseClient();
+function getClient() {
+  return getSupabaseClient();
+}
 
 // 联系表单数据类型
 export interface Inquiry {
@@ -52,7 +54,7 @@ export interface TrafficRecord {
 
 // 获取所有联系表单
 export async function getInquiries(): Promise<Inquiry[]> {
-  const { data, error } = await client
+  const { data, error } = await getClient()
     .from('inquiries')
     .select('id, name, email, phone, message, product_name, created_at, is_read')
     .order('created_at', { ascending: false });
@@ -62,7 +64,7 @@ export async function getInquiries(): Promise<Inquiry[]> {
 
 // 添加联系表单
 export async function addInquiry(data: { name: string; email: string; phone: string; message: string; productName?: string }): Promise<Inquiry> {
-  const { data: result, error } = await client
+  const { data: result, error } = await getClient()
     .from('inquiries')
     .insert({
       name: data.name,
@@ -80,7 +82,7 @@ export async function addInquiry(data: { name: string; email: string; phone: str
 
 // 标记表单为已读
 export async function markInquiryAsRead(id: string): Promise<boolean> {
-  const { error } = await client
+  const { error } = await getClient()
     .from('inquiries')
     .update({ is_read: true })
     .eq('id', id);
@@ -90,7 +92,7 @@ export async function markInquiryAsRead(id: string): Promise<boolean> {
 
 // 删除联系表单
 export async function deleteInquiry(id: string): Promise<boolean> {
-  const { error } = await client
+  const { error } = await getClient()
     .from('inquiries')
     .delete()
     .eq('id', id);
@@ -100,7 +102,7 @@ export async function deleteInquiry(id: string): Promise<boolean> {
 
 // 获取未读数量
 export async function getUnreadCount(): Promise<number> {
-  const { count, error } = await client
+  const { count, error } = await getClient()
     .from('inquiries')
     .select('*', { count: 'exact', head: true })
     .eq('is_read', false);
@@ -112,7 +114,7 @@ export async function getUnreadCount(): Promise<number> {
 
 // 获取网站配置（key-value 结构）
 export async function getSettings(): Promise<SiteSettings> {
-  const { data, error } = await client
+  const { data, error } = await getClient()
     .from('settings')
     .select('key, value');
   if (error) throw new Error(`获取配置失败: ${error.message}`);
@@ -148,7 +150,7 @@ export async function updateSettings(updates: Partial<SiteSettings>): Promise<Si
   const entries = Object.entries(keyMap);
   if (entries.length > 0) {
     const rows = entries.map(([key, value]) => ({ key, value }));
-    const { error } = await client
+    const { error } = await getClient()
       .from('settings')
       .upsert(rows, { onConflict: 'key' });
     if (error) throw new Error(`更新配置失败: ${error.message}`);
@@ -167,7 +169,7 @@ export async function verifyAdminPassword(password: string): Promise<boolean> {
 
 // 记录访问
 export async function recordVisit(data: { date: string; path: string; country: string; referrer: string; userAgent: string; searchKeyword: string }): Promise<TrafficRecord> {
-  const { data: result, error } = await client
+  const { data: result, error } = await getClient()
     .from('traffic')
     .insert({
       date: data.date,
@@ -189,7 +191,7 @@ export async function getTrafficStats(days: number = 30) {
   startDate.setDate(startDate.getDate() - days);
   const startDateStr = startDate.toISOString().split('T')[0];
   
-  const { data, error } = await client
+  const { data, error } = await getClient()
     .from('traffic')
     .select('date, path, country, search_keyword')
     .gte('date', startDateStr)
