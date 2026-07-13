@@ -79,7 +79,7 @@ export async function addInquiry(data: { name: string; email: string; phone: str
 }
 
 // 标记表单为已读
-export async function markInquiryAsRead(id: number): Promise<boolean> {
+export async function markInquiryAsRead(id: string): Promise<boolean> {
   const { error } = await client
     .from('inquiries')
     .update({ is_read: true })
@@ -89,7 +89,7 @@ export async function markInquiryAsRead(id: number): Promise<boolean> {
 }
 
 // 删除联系表单
-export async function deleteInquiry(id: number): Promise<boolean> {
+export async function deleteInquiry(id: string): Promise<boolean> {
   const { error } = await client
     .from('inquiries')
     .delete()
@@ -110,42 +110,47 @@ export async function getUnreadCount(): Promise<number> {
 
 // ============ 网站配置操作 ============
 
-// 获取网站配置
+// 获取网站配置（key-value 结构）
 export async function getSettings(): Promise<SiteSettings> {
   const { data, error } = await client
     .from('settings')
-    .select('whatsapp_phone, facebook_pixel_id, google_analytics_id, tiktok_pixel_id, admin_password')
-    .eq('id', 1)
-    .maybeSingle();
+    .select('key, value');
   if (error) throw new Error(`获取配置失败: ${error.message}`);
-  
-  if (!data) {
+
+  if (!data || data.length === 0) {
     return DEFAULT_SETTINGS;
   }
-  
+
+  // 将 key-value 数组转为对象
+  const kvMap: Record<string, string> = {};
+  data.forEach((row: { key: string; value: string }) => {
+    kvMap[row.key] = row.value;
+  });
+
   return {
-    whatsappPhone: data.whatsapp_phone || DEFAULT_SETTINGS.whatsappPhone,
-    facebookPixelId: data.facebook_pixel_id || '',
-    googleAnalyticsId: data.google_analytics_id || '',
-    tiktokPixelId: data.tiktok_pixel_id || '',
-    adminPassword: data.admin_password || DEFAULT_SETTINGS.adminPassword,
+    whatsappPhone: kvMap['whatsappPhone'] || DEFAULT_SETTINGS.whatsappPhone,
+    facebookPixelId: kvMap['facebookPixelId'] || '',
+    googleAnalyticsId: kvMap['googleAnalyticsId'] || '',
+    tiktokPixelId: kvMap['tiktokPixelId'] || '',
+    adminPassword: kvMap['adminPassword'] || DEFAULT_SETTINGS.adminPassword,
   };
 }
 
-// 更新网站配置
+// 更新网站配置（key-value 结构，使用 upsert）
 export async function updateSettings(updates: Partial<SiteSettings>): Promise<SiteSettings> {
-  const dbUpdates: Record<string, string> = {};
-  if (updates.whatsappPhone !== undefined) dbUpdates.whatsapp_phone = updates.whatsappPhone;
-  if (updates.facebookPixelId !== undefined) dbUpdates.facebook_pixel_id = updates.facebookPixelId;
-  if (updates.googleAnalyticsId !== undefined) dbUpdates.google_analytics_id = updates.googleAnalyticsId;
-  if (updates.tiktokPixelId !== undefined) dbUpdates.tiktok_pixel_id = updates.tiktokPixelId;
-  if (updates.adminPassword !== undefined) dbUpdates.admin_password = updates.adminPassword;
-  
-  if (Object.keys(dbUpdates).length > 0) {
+  const keyMap: Record<string, string> = {};
+  if (updates.whatsappPhone !== undefined) keyMap['whatsappPhone'] = updates.whatsappPhone;
+  if (updates.facebookPixelId !== undefined) keyMap['facebookPixelId'] = updates.facebookPixelId;
+  if (updates.googleAnalyticsId !== undefined) keyMap['googleAnalyticsId'] = updates.googleAnalyticsId;
+  if (updates.tiktokPixelId !== undefined) keyMap['tiktokPixelId'] = updates.tiktokPixelId;
+  if (updates.adminPassword !== undefined) keyMap['adminPassword'] = updates.adminPassword;
+
+  const entries = Object.entries(keyMap);
+  if (entries.length > 0) {
+    const rows = entries.map(([key, value]) => ({ key, value }));
     const { error } = await client
       .from('settings')
-      .update({ ...dbUpdates, updated_at: new Date().toISOString() })
-      .eq('id', 1);
+      .upsert(rows, { onConflict: 'key' });
     if (error) throw new Error(`更新配置失败: ${error.message}`);
   }
   

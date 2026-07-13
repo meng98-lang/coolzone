@@ -79,6 +79,6 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
   }
 
-  const success = await deleteInquiry(parseInt(id, 10));
+  const success = await deleteInquiry(id);
   return NextResponse.json({ success });
 }
