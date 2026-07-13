@@ -1,0 +1,10 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+User-Agent: Googlebot
+Allow: /
+
+Host: https://coolzone-eu.com
+Sitemap: https://coolzone-eu.com/sitemap.xml
