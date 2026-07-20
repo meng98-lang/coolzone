@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'CoolZone - Premium Air Conditioning for Europe',
   description: 'Shop premium air conditioning units. Energy-efficient wall-mounted, portable, and central AC systems with free EU delivery.',
   robots: {
-    index: false,
+    index: true,
     follow: true,
   },
 };
