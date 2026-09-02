@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
       locale: locale.toUpperCase(),
       images: [{ url: product.image, width: 1024, height: 768 }],
       type: 'website',
-      siteName: 'CoolZone',
+      siteName: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
     },
   };
 }
@@ -71,7 +71,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     description: product.description,
     brand: {
       '@type': 'Brand',
-      name: 'CoolZone',
+      name: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
     },
     offers: {
       '@type': 'Offer',

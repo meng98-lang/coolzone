@@ -52,19 +52,21 @@ export function Footer({ locale = 'en', phone }: FooterProps) {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">CoolZone</h3>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-2.5">
-              <li><Link href={`/${locale}/faq`} className="text-sm hover:text-blue-400 transition-colors">About Us</Link></li>
-              <li><Link href={`/${locale}/privacy-policy`} className="text-sm hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-              <li><Link href={`/${locale}/terms`} className="text-sm hover:text-blue-400 transition-colors">Terms of Service</Link></li>
+              <li className="text-sm text-gray-400">Jinan Yuebei Amusement Equipment Co., Ltd.</li>
+              <li className="text-sm text-gray-400">Room 2304-24, Jingshu Talent Building</li>
+              <li className="text-sm text-gray-400">Weihai Road, Xingfu Street</li>
+              <li className="text-sm text-gray-400">Huaiyin District, Jinan City</li>
+              <li className="text-sm text-gray-400">Shandong Province, China</li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-500">
-            &copy; 2025 CoolZone. {t['footer.rights']}
+          <p className="text-base text-gray-400 font-medium">
+            &copy; 2025 Jinan Yuebei Amusement Equipment Co., Ltd. {t['footer.rights']}
           </p>
           <div className="flex items-center gap-4">
             <a

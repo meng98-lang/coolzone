@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.COZE_PROJECT_DOMAIN_DEFAULT ? `https://${process.env.COZE_PROJECT_DOMAIN_DEFAULT}` : 'https://coolzone.vercel.app'),
-  title: 'CoolZone - Premium Air Conditioning for Europe',
+  title: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
   description: 'Shop premium air conditioning units. Energy-efficient wall-mounted, portable, and central AC systems with free EU delivery.',
   robots: {
     index: true,

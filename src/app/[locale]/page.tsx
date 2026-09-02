@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t['seo.description'],
       locale: locale.toUpperCase(),
       type: 'website',
-      siteName: 'CoolZone',
+      siteName: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
       url: `${baseUrl}/${locale}`,
     },
     twitter: {
@@ -64,9 +64,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const orgJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'CoolZone',
+    name: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
     description: t['home.hero.subtitle'],
     url: process.env.COZE_PROJECT_DOMAIN_DEFAULT ? `https://${process.env.COZE_PROJECT_DOMAIN_DEFAULT}` : 'https://coolzone.vercel.app',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Room 2304-24, Jingshu Talent Building, Weihai Road, Xingfu Street',
+      addressLocality: 'Jinan City',
+      addressRegion: 'Shandong Province',
+      addressCountry: 'CN',
+    },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',

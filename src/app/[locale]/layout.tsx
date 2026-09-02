@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: {
       default: t['seo.siteName'],
-      template: `%s | CoolZone`,
+      template: `%s | Jinan Yuebei Amusement Equipment Co., Ltd.`,
     },
     description: t['seo.description'],
     keywords: t['seo.keywords'],
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t['seo.description'],
       locale: locale.toUpperCase(),
       type: 'website',
-      siteName: 'CoolZone',
+      siteName: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
     },
     twitter: {
       card: 'summary_large_image',

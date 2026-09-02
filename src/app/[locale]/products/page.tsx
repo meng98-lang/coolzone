@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t['products.subtitle'],
       locale: locale.toUpperCase(),
       type: 'website',
-      siteName: 'CoolZone',
+      siteName: 'Jinan Yuebei Amusement Equipment Co., Ltd.',
     },
   };
 }
