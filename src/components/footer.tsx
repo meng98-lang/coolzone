@@ -47,6 +47,8 @@ export function Footer({ locale = 'en', phone }: FooterProps) {
               <li><Link href={`/${locale}/faq`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.faq']}</Link></li>
               <li><Link href={`/${locale}/shipping`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.shipping']}</Link></li>
               <li><Link href={`/${locale}/returns`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.returns']}</Link></li>
+          <li><Link href={`/${locale}/privacy`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.privacy']}</Link></li>
+          <li><Link href={`/${locale}/about`} className="text-sm hover:text-blue-400 transition-colors">{t['footer.about']}</Link></li>
             </ul>
           </div>
 

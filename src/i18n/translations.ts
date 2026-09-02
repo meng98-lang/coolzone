@@ -78,6 +78,8 @@ type TranslationKeys = {
   'footer.contactUs': string;
   'footer.shipping': string;
   'footer.returns': string;
+  'footer.privacy': string;
+  'footer.about': string;
   'footer.faq': string;
   'footer.newsletter': string;
   'footer.newsletterDesc': string;
@@ -175,6 +177,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Contact Us',
     'footer.shipping': 'Shipping Info',
     'footer.returns': 'Returns',
+    'footer.privacy': 'Privacy Policy',
+    'footer.about': 'About Us',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Newsletter',
     'footer.newsletterDesc': 'Get the latest deals and cooling tips',
@@ -265,6 +269,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Contactez-nous',
     'footer.shipping': 'Informations livraison',
     'footer.returns': 'Retours',
+    'footer.privacy': 'Politique de Confidentialité',
+    'footer.about': 'À Propos',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Newsletter',
     'footer.newsletterDesc': 'Recevez les dernières offres et conseils',
@@ -355,6 +361,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Kontakt',
     'footer.shipping': 'Versandinformationen',
     'footer.returns': 'Rücksendungen',
+    'footer.privacy': 'Datenschutz',
+    'footer.about': 'Über Uns',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Newsletter',
     'footer.newsletterDesc': 'Erhalten Sie die neuesten Angebote und Tipps',
@@ -443,6 +451,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Contáctenos',
     'footer.shipping': 'Información de envío',
     'footer.returns': 'Devoluciones',
+    'footer.privacy': 'Política de Privacidad',
+    'footer.about': 'Sobre Nosotros',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Boletín',
     'footer.newsletterDesc': 'Reciba las últimas ofertas y consejos',
@@ -533,6 +543,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Contattaci',
     'footer.shipping': 'Informazioni spedizione',
     'footer.returns': 'Resi',
+    'footer.privacy': 'Privacy',
+    'footer.about': 'Chi Siamo',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Newsletter',
     'footer.newsletterDesc': 'Ricevi le ultime offerte e consigli',
@@ -623,6 +635,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Contact',
     'footer.shipping': 'Verzendinformatie',
     'footer.returns': 'Retourneren',
+    'footer.privacy': 'Privacybeleid',
+    'footer.about': 'Over Ons',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Nieuwsbrief',
     'footer.newsletterDesc': 'Ontvang de laatste aanbiedingen en tips',
@@ -713,6 +727,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Contacte-nos',
     'footer.shipping': 'Informações de envio',
     'footer.returns': 'Devoluções',
+    'footer.privacy': 'Política de Privacidade',
+    'footer.about': 'Sobre Nós',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Newsletter',
     'footer.newsletterDesc': 'Receba as últimas ofertas e dicas',
@@ -803,6 +819,8 @@ export const translations: Translations = {
     'footer.contactUs': 'Kontakt',
     'footer.shipping': 'Informacje o wysyłce',
     'footer.returns': 'Zwroty',
+    'footer.privacy': 'Polityka Prywatności',
+    'footer.about': 'O Nas',
     'footer.faq': 'FAQ',
     'footer.newsletter': 'Newsletter',
     'footer.newsletterDesc': 'Otrzymuj najnowsze oferty i porady',
