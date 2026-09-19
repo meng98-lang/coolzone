@@ -4,6 +4,14 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { S3Storage } from "coze-coding-dev-sdk";
+import { getSupabaseClient } from "@/storage/database/supabase-client";
+
+// ============================================================
+// 课程数据存储（多课程 catalog v2）
+//
+// 【主存储】Supabase course_catalog 表 —— Vercel 上可读写（真持久化）
+// 【兜底】对象存储 courses/catalog*.json —— 仅当表不可用时读取
+// ============================================================
 
 function getStorage() {
   return new S3Storage({
@@ -15,11 +23,6 @@ function getStorage() {
   });
 }
 
-/**
- * 课程数据字典（多课程），持久化到对象存储 courses/catalog.json。
- * 结构：{ version: 2, courses: Course[] }
- * 兼容旧结构：{ siteName, brand, lessons } -> 视为单课程。
- */
 const CONFIG_KEY = "courses/catalog.json";
 
 export interface Lesson {
@@ -42,7 +45,7 @@ export interface Course {
 }
 
 interface CatalogV2 {
-  version: 2;
+  version: number;
   courses: Course[];
 }
 
@@ -51,99 +54,88 @@ const DEFAULT_CATALOG: CatalogV2 = {
   version: 2,
   courses: [
     {
+      id: "yijing",
+      name: "易经课程",
+      brand: "易经课堂",
+      lessons: [{ id: "yijing", day: "正课", title: "易经 · 完整课程", desc: "《易经》系统课程，手机直接观看。", duration: "完整课程", points: ["易经基础", "卦象解读", "实践运用"], video: "/yijing/yijing.mp4", poster: "", hideDuration: false }],
+    },
+    {
       id: "hbs",
       name: "我的后半生",
       brand: "公益养生课堂",
       lessons: [
-        {
-          id: "day1",
-          day: "DAY 1",
-          title: "我的后半生 · 第1节",
-          desc: "更新于 2026-09-17",
-          duration: "约 60 分钟",
-          points: ["重新认识自己", "学会爱与被爱", "找到人生下半场的节奏"],
-          video:
-            "https://ysqfpsbfbscyqzqhdfsa.supabase.co/storage/v1/object/public/course-media/lesson1/index.m3u8",
-          hideDuration: false,
-        },
-        {
-          id: "day2",
-          day: "DAY 2",
-          title: "我的后半生 · 第2节",
-          desc: "",
-          duration: "约 60 分钟",
-          points: ["与情绪和解", "亲密关系的经营", "让内心安定下来"],
-          video:
-            "https://ysqfpsbfbscyqzqhdfsa.supabase.co/storage/v1/object/public/course-media/lesson2/index.m3u8",
-          hideDuration: false,
-        },
-        {
-          id: "day3",
-          day: "DAY 3",
-          title: "我的后半生 · 第3节",
-          desc: "",
-          duration: "约 60 分钟",
-          points: ["健康生活方式", "找到兴趣与热爱", "开启幸福后半生"],
-          video:
-            "https://ysqfpsbfbscyqzqhdfsa.supabase.co/storage/v1/object/public/course-media/lesson3/index.m3u8",
-          hideDuration: false,
-        },
+        { id: "day1", day: "DAY 1", title: "我的后半生 · 第1节", desc: "更新于 2026-09-17", duration: "约 60 分钟", points: ["重新认识自己", "学会爱与被爱", "找到人生下半场的节奏"], video: "https://ysqfpsbfbscyqzqhdfsa.supabase.co/storage/v1/object/public/course-media/lesson1/index.m3u8", poster: "", hideDuration: false },
+        { id: "day2", day: "DAY 2", title: "我的后半生 · 第2节", desc: "", duration: "约 60 分钟", points: ["与情绪和解", "亲密关系的经营", "让内心安定下来"], video: "https://ysqfpsbfbscyqzqhdfsa.supabase.co/storage/v1/object/public/course-media/lesson2/index.m3u8", poster: "", hideDuration: false },
+        { id: "day3", day: "DAY 3", title: "我的后半生 · 第3节", desc: "", duration: "约 60 分钟", points: ["健康生活方式", "找到兴趣与热爱", "开启幸福后半生"], video: "https://ysqfpsbfbscyqzqhdfsa.supabase.co/storage/v1/object/public/course-media/lesson3/index.m3u8", poster: "", hideDuration: false },
       ],
     },
   ],
 };
 
-/** 规范化任意输入为 v2 多课程结构。 */
-function normalize(raw: unknown): CatalogV2 {
-  if (raw && typeof raw === "object") {
-    const r = raw as Record<string, unknown>;
-    // v2 多课程
-    if (Array.isArray(r.courses)) {
-      return { version: 2, courses: r.courses as Course[] };
-    }
-    // 旧版单课程
-    if (Array.isArray(r.lessons) && typeof r.siteName === "string") {
-      return {
-        version: 2,
-        courses: [
-          {
-            id: "hbs",
-            name: r.siteName as string,
-            brand: (r.brand as string) || r.siteName,
-            lessons: r.lessons as Lesson[],
-          },
-        ],
-      };
-    }
+// ========== Supabase 持久化 ==========
+const CATALOG_ROW_ID = "main";
+const COURSE_TABLE = "course_catalog";
+
+async function readFromDb(): Promise<CatalogV2 | null> {
+  try {
+    const { data, error } = await getSupabaseClient()
+      .from(COURSE_TABLE)
+      .select("data")
+      .eq("id", CATALOG_ROW_ID)
+      .maybeSingle();
+    if (error || !data) return null;
+    const c = data.data as { courses?: Course[]; version?: number };
+    if (!c || !Array.isArray(c.courses) || c.courses.length === 0) return null;
+    return normalize(c as CatalogV2 & { version?: number });
+  } catch {
+    return null;
   }
-  return DEFAULT_CATALOG;
+}
+
+async function writeToDb(catalog: CatalogV2): Promise<boolean> {
+  try {
+    const { error } = await getSupabaseClient()
+      .from(COURSE_TABLE)
+      .upsert({ id: CATALOG_ROW_ID, data: catalog, updated_at: new Date().toISOString() });
+    if (error) return false;
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export async function GET() {
+  // 1) 主：Supabase 表
+  try {
+    const fromDb = await readFromDb();
+    if (fromDb) {
+      return NextResponse.json({ ok: true, ...fromDb });
+    }
+  } catch {
+    /* fall through */
+  }
+
+  // 2) 兜底：对象存储 catalog
   try {
     const storage = getStorage();
-    // uploadFile 会生成带随机后缀的 key，这里列出 courses/ 下所有 catalog 文件，取最新一份
     const listed = await storage.listFiles({ prefix: "courses/", maxKeys: 200 });
-    const keys: string[] = ((listed as { keys?: string[] }).keys || [])
-      .filter((k) => /courses\/catalog[^/]*\.json$/.test(k));
-
-    if (!keys.length) {
-      return NextResponse.json({ ok: true, ...DEFAULT_CATALOG });
+    const keys: string[] = ((listed as { keys?: string[] }).keys || []).filter((k) =>
+      /courses\/catalog[^/]*\.json$/.test(k),
+    );
+    if (keys.length) {
+      keys.sort();
+      const buf = await storage.readFile({ fileKey: keys[keys.length - 1] });
+      const catalog = normalize(JSON.parse(buf.toString("utf8")));
+      if (catalog.courses?.length) {
+        return NextResponse.json({ ok: true, ...catalog });
+      }
     }
-    // 文件名带时间戳后缀，字典序最大者即最新
-    keys.sort();
-    const latestKey = keys[keys.length - 1];
-    const buf = await storage.readFile({ fileKey: latestKey });
-    const data = JSON.parse(buf.toString("utf8"));
-    const catalog = normalize(data);
-    if (!catalog.courses || catalog.courses.length === 0) {
-      return NextResponse.json({ ok: true, ...DEFAULT_CATALOG });
-    }
-    return NextResponse.json({ ok: true, ...catalog });
-  } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : String(e);
-    return NextResponse.json({ ok: false, error: msg, ...DEFAULT_CATALOG }, { status: 200 });
+  } catch {
+    /* fall through */
   }
+
+  // 3) 最终兜底：默认课程
+  return NextResponse.json({ ok: true, ...DEFAULT_CATALOG });
 }
 
 export async function PUT(req: NextRequest) {
@@ -153,6 +145,7 @@ export async function PUT(req: NextRequest) {
     if (!Array.isArray(courses)) {
       return NextResponse.json({ ok: false, error: "bad_catalog: courses[] required" }, { status: 400 });
     }
+
     // 清洗与校验
     const clean: Course[] = [];
     courses.forEach((c, ci) => {
@@ -184,30 +177,62 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "至少需要一门课程且每门课至少一节课" }, { status: 400 });
     }
 
-    const storage = getStorage();
     const payload: CatalogV2 = { version: 2, courses: clean };
 
-    // 删除旧的 catalog 文件，保证 list 出来的只有本次这一份（最新）
+    // 主：写 Supabase 表（Vercel 可用）
+    const dbOk = await writeToDb(payload);
+
+    // 兜底：同步到对象存储（可选，尽力而为）
+    let ossKey: string | null = null;
     try {
+      const storage = getStorage();
       const old = await storage.listFiles({ prefix: "courses/", maxKeys: 200 });
       const oldKeys = ((old as { keys?: string[] }).keys || []).filter((k) =>
         /courses\/catalog[^/]*\.json$/.test(k),
       );
       await Promise.all(oldKeys.map((k) => storage.deleteFile({ fileKey: k }).catch(() => false)));
+      ossKey = await storage.uploadFile({
+        fileContent: Buffer.from(JSON.stringify(payload, null, 2), "utf8"),
+        fileName: CONFIG_KEY,
+        contentType: "application/json",
+      });
     } catch {
-      /* 清理失败不阻塞保存 */
+      ossKey = null; /* 对象存储兜底失败不影响主流程 */
     }
 
-    const key = await storage.uploadFile({
-      fileContent: Buffer.from(JSON.stringify(payload, null, 2), "utf8"),
-      fileName: CONFIG_KEY,
-      contentType: "application/json",
-    });
-    return NextResponse.json({ ok: true, key, courses: clean });
+    if (!dbOk && !ossKey) {
+      return NextResponse.json({ ok: false, error: "保存失败：既无法写入数据库也无法写入对象存储" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true, dbSaved: dbOk, ossKey, courses: clean });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
+}
+
+function normalize(data: unknown): CatalogV2 {
+  const d = (data || {}) as Partial<CatalogV2> & { lessons?: Lesson[]; siteName?: string; brand?: string };
+
+  // 旧单课程结构：{ siteName, brand, lessons }
+  if (Array.isArray(d.lessons) && !Array.isArray(d.courses)) {
+    return {
+      version: 2,
+      courses: [
+        {
+          id: slug(d.siteName || "course") || "course",
+          name: String(d.siteName || "课程"),
+          brand: String(d.brand || d.siteName || "课程"),
+          lessons: d.lessons,
+        },
+      ],
+    };
+  }
+
+  return {
+    version: 2,
+    courses: Array.isArray(d.courses) ? d.courses : DEFAULT_CATALOG.courses,
+  };
 }
 
 function slug(s: unknown): string {

@@ -193,18 +193,55 @@ export default function AdminCoursesPage() {
     const lessonId = slug(lesson.id) || `lesson_${i + 1}`;
     const key = `${course.id}:${lessonId}`;
     setUploadState((s) => ({ ...s, [key]: { loading: true } }));
+
+    // 加载公开访问配置（SUPABASE_URL / ANON_KEY），供前端直连 Supabase Storage
+    let supabaseUrl = '';
+    let supabaseAnon = '';
     try {
-      const fd = new FormData();
-      fd.append('video', file);
-      fd.append('course', courseDir);
-      fd.append('lessonId', lessonId);
-      const res = await fetch('/api/course-video-upload', { method: 'POST', body: fd });
-      const data = await res.json();
-      if (!data.ok) throw new Error(data.error || '上传失败');
-      // 存相对路径（换域名不失效）；如 id 与上传时不一致则同步
-      setLesson(i, { video: data.url, id: lessonId });
-      setUploadState((s) => ({ ...s, [key]: { loading: false, done: true } }));
-      setErr('');
+      const envRes = await fetch('/api/env', { cache: 'no-store' });
+      const envData = await envRes.json();
+      supabaseUrl = envData?.supabaseUrl || '';
+      supabaseAnon = envData?.supabaseAnonKey || '';
+    } catch {
+      /* 兜底走本地转码上传 */
+    }
+
+    try {
+      // 方案B：浏览器端直传 Supabase Storage（resumable 分片，支持大视频，绕开 Vercel 4.5MB 限制）
+      if (supabaseUrl && supabaseAnon && typeof window !== 'undefined') {
+        const mod = await import('@supabase/supabase-js');
+        const sb = mod.createClient(supabaseUrl, supabaseAnon, {
+          auth: { autoRefreshToken: false, persistSession: false },
+        });
+        const ext = (file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^\w]/g, '');
+        const safeExt = ext === 'mp4' ? 'mp4' : 'mp4'; // 统一转 mp4（浏览器端不转码，直接存原文件，播放兼容交给 hls/mp4 播放器）
+        const objectName = `${courseDir}/${lessonId}.${safeExt}`;
+        const { data, error } = await sb.storage
+          .from('course-media')
+          .upload(objectName, file, {
+            cacheControl: '3600',
+            contentType: 'video/mp4',
+            upsert: true, // 覆盖式，重传同节视频直接替换
+            duplex: 'half',
+          });
+        if (error) throw new Error(error.message || '上传到对象存储失败');
+        const url = `${supabaseUrl}/storage/v1/object/public/course-media/${data?.path || objectName}`;
+        setLesson(i, { video: url, id: lessonId });
+        setUploadState((s) => ({ ...s, [key]: { loading: false, done: true } }));
+        setErr('');
+      } else {
+        // 兜底A：Vercel 受限环境的本地转码上传（小文件可用）
+        const fd = new FormData();
+        fd.append('video', file);
+        fd.append('course', courseDir);
+        fd.append('lessonId', lessonId);
+        const res = await fetch('/api/course-video-upload', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || '上传失败');
+        setLesson(i, { video: data.url, id: lessonId });
+        setUploadState((s) => ({ ...s, [key]: { loading: false, done: true } }));
+        setErr('');
+      }
     } catch (eu) {
       setUploadState((s) => ({ ...s, [key]: { loading: false, error: eu instanceof Error ? eu.message : '上传失败' } }));
     } finally {
