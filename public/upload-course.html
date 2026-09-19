@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>课程大文件上传器 · 分片续传（最高 8GB）</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#0f1420;color:#e6e9f2}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+  h1{font-size:20px;margin:8px 0}
+  .sub{color:#9aa4bd;font-size:13px;line-height:1.7}
+  .warn{color:#ffb84d}
+  .card{background:#161c2c;border:1px solid #232c44;border-radius:14px;padding:16px;margin-top:16px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .meta label{font-size:13px;color:#9aa4bd;display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
+  .meta input{background:#0f1420;border:1px solid #2c3754;color:#e6e9f2;border-radius:9px;padding:9px 11px;font-size:14px}
+  .drop{border:2px dashed #3a476b;border-radius:14px;padding:30px 16px;text-align:center;cursor:pointer;background:#111728;transition:.15s}
+  .drop.drag{border-color:#4d7cff;background:#16204a}
+  .big{font-size:15px}
+  .browse{color:#6d8dff;font-weight:600}
+  .sml{font-size:12px;color:#7d87a3;margin-top:8px}
+  input[type=file]{display:none}
+  .files{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .file{background:#0f1420;border:1px solid #232c44;border-radius:11px;padding:11px 12px}
+  .fhead{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+  .fname{word-break:break-all}
+  .fsize{color:#9aa4bd;white-space:nowrap}
+  .day-pick{margin-top:8px;font-size:12px;color:#9aa4bd;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .day-pick select,.day-pick input{background:#161c2c;border:1px solid #2c3754;color:#e6e9f2;border-radius:7px;padding:5px 8px;font-size:12px}
+  .day-pick input{width:110px}
+  .status{font-size:12px;padding:2px 8px;border-radius:20px;background:#26304d;color:#aeb8d6}
+  .st-ok{background:#143b2a;color:#57d992}
+  .st-err{background:#3d1820;color:#ff7a8a}
+  .pbar{height:6px;background:#202a44;border-radius:6px;margin-top:9px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4d7cff,#7aa0ff);transition:width .2s}
+  .actions{margin-top:16px;display:flex;gap:10px}
+  .btn{border:0;border-radius:10px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-p{background:#3d6cff;color:#fff}
+  .notes{color:#8a93af;font-size:12px;line-height:1.8;margin-top:16px}
+  code{background:#0f1420;padding:1px 6px;border-radius:5px;color:#9db4ff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>课程大文件上传器（分片续传，最高 8GB）</h1>
+  <p class="sub">把课程视频传到服务器，由管理员转码后打进正式课程包并上线。单文件最高 <b class="warn">8 GB</b>，6MB 分片并发上传（免梯子），断网/刷新后可续传已完成的片段。</p>
+
+  <div class="card">
+    <div class="meta">
+      <label>课程标识（英文/拼音，唯一，如 taiji）
+        <input id="courseKey" type="text" placeholder="例如 taiji / yangsheng / hbs" />
+      </label>
+    </div>
+    <div class="drop" id="drop">
+      <div class="big">把视频拖到这里，或 <span class="browse">点击选择文件</span></div>
+      <div class="sml">支持 MP4 / MOV，单个最大 8GB；可一次选多个文件（每节一个）</div>
+      <input type="file" id="fileInput" multiple accept="video/*">
+    </div>
+    <div class="files" id="fileList"></div>
+    <div class="actions">
+      <button class="btn btn-p" id="startBtn" disabled>开始上传</button>
+    </div>
+  </div>
+
+  <p class="notes">
+    <b>使用方法：</b>先填「课程标识」→ 选择视频 → 为每个文件填写<b>节次id（如 day1/day2）和节标题</b>→ 点「开始上传」。<br>
+    上传过程中<b>不要关闭页面</b>；若中断，用<b>同一个课程标识 + 同一个文件</b>重新上传会自动跳过已完成片段（断点续传）。<br>
+    全部显示「已完成」后，把<b>课程标识、课程名、各节标题</b>告诉管理员，即可转码并入正式课程链接。
+  </p>
+</div>
+
+<script>
+(function(){
+  var MAX_FILES = 30, MAX_BYTES = 8*1024*1024*1024, CHUNK = 6*1024*1024, CONCURRENT = 6;
+  var courseInput=document.getElementById("courseKey");
+  var fileInput=document.getElementById("fileInput"), drop=document.getElementById("drop");
+  var listEl=document.getElementById("fileList"), startBtn=document.getElementById("startBtn");
+  var items=[];
+
+  function courseSlug(){
+    return (courseInput.value||"").trim().replace(/[^\w-]+/g,"_").replace(/^_+|_+$/g,"") || ("course_"+Date.now().toString(36));
+  }
+  function lessonSlug(s,idx){
+    var v=(s||"").trim().replace(/[^\w-]+/g,"_").replace(/^_+|_+$/g,"");
+    return v || ("day"+(idx+1));
+  }
+  function hsize(b){if(b>=1073741824)return (b/1073741824).toFixed(2)+" GB";if(b>=1048576)return (b/1048576).toFixed(1)+" MB";return Math.round(b/1024)+" KB";}
+
+  function render(){
+    listEl.innerHTML=items.map(function(it,i){
+      return '<div class="file" data-i="'+i+'">'+
+        '<div class="fhead"><span class="fname">'+it.file.name+'</span><span class="fsize">'+hsize(it.file.size)+'</span></div>'+
+        '<div class="day-pick">'+
+          '节次id：<input data-lid="'+i+'" value="'+(it.lid||("day"+(i+1)))+'" placeholder="day1" />'+
+          '节标题：<input data-title="'+i+'" value="'+(it.title||("第"+(i+1)+"节"))+'" placeholder="第1节标题" />'+
+          '<span class="status st-wait" data-status="'+i+'">等待上传</span>'+
+        '</div>'+
+        '<div class="pbar"><i data-bar="'+i+'"></i></div>'+
+      '</div>';
+    }).join("");
+    listEl.querySelectorAll("[data-lid]").forEach(function(inp){inp.addEventListener("input",function(){items[+inp.getAttribute("data-lid")].lid=inp.value;});});
+    listEl.querySelectorAll("[data-title]").forEach(function(inp){inp.addEventListener("input",function(){items[+inp.getAttribute("data-title")].title=inp.value;});});
+    startBtn.disabled=items.length===0;
+    items.forEach(function(it,i){if(it.done===true){var s=listEl.querySelector('[data-status="'+i+'"]');if(s){s.textContent="已完成";s.className="status st-ok";}}});
+  }
+
+  function addFiles(fl){
+    Array.prototype.slice.call(fl).forEach(function(f){
+      if(items.length>=MAX_FILES) return;
+      if(f.size>MAX_BYTES){alert("文件 "+f.name+" 超过 8GB，无法上传");return;}
+      items.push({file:f, lid:"day"+(items.length+1), title:"第"+(items.length+1)+"节", done:false});
+    });
+    render();
+  }
+  fileInput.addEventListener("change",function(){addFiles(fileInput.files);fileInput.value="";});
+  drop.addEventListener("click",function(){fileInput.click();});
+  ["dragover","dragenter"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add("drag");});});
+  ["dragleave","drop"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove("drag");});});
+  drop.addEventListener("drop",function(e){e.preventDefault();drop.classList.remove("drag");var fl=e.dataTransfer&&e.dataTransfer.files;if(fl)addFiles(fl);});
+
+  function uploadFile(it,i){
+    return new Promise(function(resolve){
+      var cslug=courseSlug();
+      var lslug=lessonSlug(it.lid,i);
+      var base=[cslug,lslug,Date.now().toString(36)].join("_");
+      var dir=cslug+"/"+base; // 落盘到 /tmp/yijing_upload/<course>/<base>
+      var parts=Math.ceil(it.file.size/CHUNK);
+      var el=listEl.querySelector('[data-i="'+i+'"]');
+      if(!el){resolve();return;}
+      var bar=el.querySelector('[data-bar="'+i+'"]'), st=el.querySelector('[data-status="'+i+'"]');
+      function setS(t,c){if(st){st.textContent=t;st.className="status "+(c||"");}}
+      function setBar(v){if(bar)bar.style.width=Math.min(100,v).toFixed(1)+"%";}
+
+      setS("准备分片 ("+parts+" 片)","");
+      var key="mv_up3_"+base+"_done";
+      var doneParts=new Set();
+      try{ var arr=JSON.parse(localStorage.getItem(key)||"[]"); (Array.isArray(arr)?arr:[]).forEach(function(v){doneParts.add(v);}); }catch(e){}
+      var doneCount=doneParts.size;
+      function saveDone(){ try{localStorage.setItem(key,JSON.stringify(Array.from(doneParts)));}catch(e){} }
+      function paint(){ setS("上传中 "+((doneCount/parts*100)|0)+"% ("+doneCount+"/"+parts+")",""); setBar(doneCount/parts*100); }
+
+      function uploadOne(p){
+        var start=p*CHUNK, end=Math.min(it.file.size,(p+1)*CHUNK);
+        var blob=it.file.slice(start,end);
+        var path=dir+"/"+String(p).padStart(5,"0");
+        return new Promise(function(fin){
+          var apiUrl=(location.origin||"")+"/api/upload-chunk?path="+encodeURIComponent(path);
+          function failOnce(n){ if(n>=3){ try{st.textContent="第"+(p+1)+"片失败，请重试";st.className="status st-err";}catch(e){} fin(); } else{ setTimeout(function(){tryUp(n+1);},1500);} }
+          function tryUp(n){
+            fetch(apiUrl,{method:"PUT",body:blob})
+              .then(function(r){return Promise.all([r,r.json().catch(function(){return null;})]);})
+              .then(function(a){ var r=a[0],j=a[1]; if(r.ok&&j&&j.ok===true){doneParts.add(p);doneCount=doneParts.size;saveDone();paint();fin();} else {failOnce(n);} })
+              .catch(function(){failOnce(n);});
+          }
+          tryUp(0);
+        });
+      }
+
+      var idx=0, active=0;
+      function next(){
+        while(active<CONCURRENT && idx<parts){
+          if(doneParts.has(idx)){ idx++; continue; }
+          active++;
+          (function(p){ uploadOne(p).then(function(){ active--; next(); }); })(idx);
+          idx++;
+        }
+        if(active===0 && idx>=parts){ finishAll(); }
+      }
+      function finishAll(){
+        setS("已完成","st-ok"); setBar(100); it.done=true;
+        try{
+          var rec=JSON.parse(localStorage.getItem("mv_course_dirs")||"[]");
+          rec.push({course:cslug, lid:lslug, title:it.title, dir:dir, parts:parts, name:it.file.name, size:it.file.size, key:key});
+          localStorage.setItem("mv_course_dirs",JSON.stringify(rec));
+        }catch(e){}
+        resolve();
+      }
+      next();
+    });
+  }
+
+  startBtn.addEventListener("click", async function(){
+    if(!courseInput.value.trim()){ alert("请先填写课程标识（如 taiji）"); courseInput.focus(); return; }
+    startBtn.disabled=true; startBtn.textContent="上传中…请不要关闭页面";
+    for(var i=0;i<items.length;i++){ await uploadFile(items[i], i); }
+    var allOk=items.every(function(x){return x.done;});
+    startBtn.textContent= allOk ? "全部完成" : "部分失败，可重试";
+    startBtn.disabled=false;
+    alert(allOk ? "全部上传成功！请把课程标识「"+courseSlug()+"」、课程名和各节标题告诉管理员，即可转码上线。" : "有文件未传完，重新选择同一文件可断点续传。");
+  });
+})();
+</script>
+</body>
+</html>

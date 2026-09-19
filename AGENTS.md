@@ -122,4 +122,13 @@ src/
 3. 每节课：点「选择视频文件上传」自动转码回填，**或**在「视频直链」填对象存储 HLS（`.../index.m3u8`）；按需勾选「隐藏视频总时长」。
 4. 点保存（PUT /api/courses 持久化到对象存储）。前台 `/course` 与每节课链接立即生效。
 5. 点每节课旁「复制链接」发给客户，格式 `watch.html?c=<课程id>&l=<节id>`。
-- **关键约定**：视频一律持久化（对象存储或 `public/course/videos/`），严禁只放 `/tmp`；`config.js` 是 API 不可用时的静态兜底，主数据以 /api/courses 对象存储为准。
+- **关键约定**：视频一律持久化（对象存储或 `public/course/videos/`），严禁只放 `/tmp`；`config.js` 是 API 不可用时的静态兜底。
+- **catalog 主存储（已迁移）**：`/api/courses` 主存 Supabase `course_catalog` 表（行 id='main', `data jsonb`，RLS 已 DISABLE 并 GRANT anon 读写），对象存储 catalog*.json 与内置 DEFAULT_CATALOG 依次兜底；PUT 先写表（dbSaved），尽力同步 OSS。
+
+### 大视频发布（路径一：沙箱分片上传 → 转码进静态包，绕开 50MB 上限）
+> 背景：正式部署在 Vercel，函数请求体上限 4.5MB、文件系统只读；Supabase 托管 free 单对象硬上限 **50MB**。超过 50MB 的课程视频无法用后台直传，统一走本路径。
+- **上传页**：`public/upload-course.html`（路由 `/upload-course.html`）。填「课程标识」（英文/拼音 slug）→ 选视频（每个一节）→ 填节次id（day1…）与节标题 → 开始。6MB 分片、6 路并发、单文件上限 8GB、localStorage 断点续传。
+- **分片接口**：`src/app/api/upload-chunk/route.ts`，`PUT ?path=<course>/<base>/NNNNN` 落盘 `/tmp/yijing_upload/<course>/<base>/NNNNN`（已存在等长则跳过）；`GET ?course=&dir=` 列已有分片。**仅开发沙箱可写**（Vercel 只读盘），所以上传动作必须在沙箱预览域名完成，不能在 gongyike.shop。
+- **合并转码**：`bash scripts/merge-course-video.sh <course> <base> <lessonId>` → cat 分片为临时 mp4 → ffmpeg（libx264/aac、`-movflags +faststart`、半核 `-threads`）→ `public/course/videos/<course>/<lessonId>.mp4`（随代码包部署，Vercel 静态支持 206 Range，无大小门槛）。
+- **登记上线**：转码后在 Supabase `course_catalog` 表（或后台课程编辑）对应课程 lesson 的 `video` 填同域相对路径 `/course/videos/<course>/<lessonId>.mp4`；push prod 分支 → Vercel 重新部署 → 观看链接 `https://www.gongyike.shop/course/watch.html?c=<course>&l=<lesson>`。
+- `/tmp/yijing_upload` 只是上传中转（会被沙箱回收清理），最终视频必须落进 `public/course/videos/` 才持久。
