@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="易经课程播放中" />
+    <meta name="theme-color" content="#0f1420" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="易经课堂" />
+    <meta property="og:description" content="点击即可在手机上观看。" />
+    <title>易经课堂</title>
+    <link rel="stylesheet" href="styles/main.css?v=090" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div class="logo"><span class="dot"></span><span>易经课堂</span></div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="watch-title">
+        <span class="day-tag" id="dayTag"></span>
+        <h1 id="lessonTitle"></h1>
+        <div class="dur" id="lessonDur"></div>
+      </div>
+
+      <div id="playerHost"></div>
+
+      <section class="points">
+        <h2>本节要点</h2>
+        <ul id="pointList"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">易经课堂 · 内容仅供学习参考</div>
+    </footer>
+
+    <script src="vendor/hls.min.js?v=090"></script>
+    <script src="config.js?v=090"></script>
+    <script src="js/player.js?v=090"></script>
+    <script>
+      (function () {
+        var id = new URLSearchParams(location.search).get("id");
+        var C = window.COURSE;
+        var lesson = (C.lessons || []).find(function (l) { return l.id === id; }) || C.lessons[0];
+
+        document.title = lesson.title + " | " + C.siteName;
+        document.getElementById("dayTag").textContent = lesson.day;
+        document.getElementById("lessonTitle").textContent = lesson.title;
+        document.getElementById("lessonDur").textContent = "⏱ " + lesson.duration;
+        document.getElementById("pointList").innerHTML = (lesson.points || [])
+          .map(function (p) { return "<li>" + p + "</li>"; })
+          .join("");
+
+        window.MiniPlayer.mount(document.getElementById("playerHost"), lesson);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,852 @@
+[
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783900325686_4zpyw9",
+    "timestamp": "2026-07-12T23:52:05.686Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783900284029_kv3ci7",
+    "timestamp": "2026-07-12T23:51:24.029Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783900240356_97fswm",
+    "timestamp": "2026-07-12T23:50:40.356Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899990078_uqawmx",
+    "timestamp": "2026-07-12T23:46:30.078Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899885415_p2a5we",
+    "timestamp": "2026-07-12T23:44:45.415Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899814201_yflqan",
+    "timestamp": "2026-07-12T23:43:34.201Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899744651_apwwly",
+    "timestamp": "2026-07-12T23:42:24.651Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899664175_6dooii",
+    "timestamp": "2026-07-12T23:41:04.175Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899582246_5589vm",
+    "timestamp": "2026-07-12T23:39:42.246Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783899434998_wmon8f",
+    "timestamp": "2026-07-12T23:37:14.998Z"
+  },
+  {
+    "path": "/en/products/arctic-breeze-9000",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en/products/arctic-breeze-9000",
+    "searchKeyword": "",
+    "id": "trf_1783899405684_ba4hfx",
+    "timestamp": "2026-07-12T23:36:45.684Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783899397214_eyhvqw",
+    "timestamp": "2026-07-12T23:36:37.214Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783899390780_s2lix0",
+    "timestamp": "2026-07-12T23:36:30.780Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899361330_mxgt7d",
+    "timestamp": "2026-07-12T23:36:01.330Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783899041433_3hpxam",
+    "timestamp": "2026-07-12T23:30:41.433Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898875571_1s9asj",
+    "timestamp": "2026-07-12T23:27:55.571Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898859612_8rkie0",
+    "timestamp": "2026-07-12T23:27:39.612Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898765197_dldpt6",
+    "timestamp": "2026-07-12T23:26:05.197Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898744534_tfvemu",
+    "timestamp": "2026-07-12T23:25:44.534Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898731821_wfhysj",
+    "timestamp": "2026-07-12T23:25:31.821Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898721863_rw8tpr",
+    "timestamp": "2026-07-12T23:25:21.863Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898716991_05amws",
+    "timestamp": "2026-07-12T23:25:16.991Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898660294_6j4tuk",
+    "timestamp": "2026-07-12T23:24:20.294Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898576990_oj54et",
+    "timestamp": "2026-07-12T23:22:56.990Z"
+  },
+  {
+    "path": "/en/products/arctic-breeze-9000",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en/products/arctic-breeze-9000",
+    "searchKeyword": "",
+    "id": "trf_1783898534832_5qcs93",
+    "timestamp": "2026-07-12T23:22:14.832Z"
+  },
+  {
+    "path": "/en/products",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en/products",
+    "searchKeyword": "",
+    "id": "trf_1783898531823_z7pkjx",
+    "timestamp": "2026-07-12T23:22:11.823Z"
+  },
+  {
+    "path": "/en/products/frostline-tower-24000",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en/products/frostline-tower-24000",
+    "searchKeyword": "",
+    "id": "trf_1783898525832_j4z7ov",
+    "timestamp": "2026-07-12T23:22:05.832Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898517974_v3f6iu",
+    "timestamp": "2026-07-12T23:21:57.974Z"
+  },
+  {
+    "path": "/en/products/arctic-breeze-9000",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en/products/arctic-breeze-9000",
+    "searchKeyword": "",
+    "id": "trf_1783898486964_mlg1l0",
+    "timestamp": "2026-07-12T23:21:26.964Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898484693_cc65om",
+    "timestamp": "2026-07-12T23:21:24.693Z"
+  },
+  {
+    "path": "/en/products/arctic-breeze-9000",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en/products/arctic-breeze-9000",
+    "searchKeyword": "",
+    "id": "trf_1783898470331_akonx2",
+    "timestamp": "2026-07-12T23:21:10.331Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898463125_f8nqyz",
+    "timestamp": "2026-07-12T23:21:03.125Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898418215_o95dcu",
+    "timestamp": "2026-07-12T23:20:18.215Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783898402081_5fp1jw",
+    "timestamp": "2026-07-12T23:20:02.081Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783898056992_sjag8d",
+    "timestamp": "2026-07-12T23:14:16.992Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783897999871_klq48p",
+    "timestamp": "2026-07-12T23:13:19.871Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783897666195_aaxy0q",
+    "timestamp": "2026-07-12T23:07:46.195Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783897445847_nas48x",
+    "timestamp": "2026-07-12T23:04:05.847Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783897429314_g95ojp",
+    "timestamp": "2026-07-12T23:03:49.314Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783897355573_73l0l5",
+    "timestamp": "2026-07-12T23:02:35.573Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783886768370_xt9g6m",
+    "timestamp": "2026-07-12T20:06:08.371Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783836919331_sdk07i",
+    "timestamp": "2026-07-12T06:15:19.331Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783824376759_znvnd6",
+    "timestamp": "2026-07-12T02:46:16.759Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824272802_8scgto",
+    "timestamp": "2026-07-12T02:44:32.802Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824243469_nsxhbx",
+    "timestamp": "2026-07-12T02:44:03.469Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824226545_lemytz",
+    "timestamp": "2026-07-12T02:43:46.545Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824218656_lef56e",
+    "timestamp": "2026-07-12T02:43:38.656Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824213246_ugge5v",
+    "timestamp": "2026-07-12T02:43:33.246Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824207781_ewdtym",
+    "timestamp": "2026-07-12T02:43:27.781Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824202570_j27xcu",
+    "timestamp": "2026-07-12T02:43:22.570Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824185184_hzsr59",
+    "timestamp": "2026-07-12T02:43:05.184Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824170778_jhyyv1",
+    "timestamp": "2026-07-12T02:42:50.778Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783824160222_ry5p7t",
+    "timestamp": "2026-07-12T02:42:40.222Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783823861766_l5xkvx",
+    "timestamp": "2026-07-12T02:37:41.766Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783823854971_8y6t5v",
+    "timestamp": "2026-07-12T02:37:34.971Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783823854964_395ds4",
+    "timestamp": "2026-07-12T02:37:34.964Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783822032710_ie95c9",
+    "timestamp": "2026-07-12T02:07:12.710Z"
+  },
+  {
+    "path": "/en",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/en",
+    "searchKeyword": "",
+    "id": "trf_1783822009784_b4fauj",
+    "timestamp": "2026-07-12T02:06:49.784Z"
+  },
+  {
+    "path": "/fr",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/fr",
+    "searchKeyword": "",
+    "id": "trf_1783821371625_an3df3",
+    "timestamp": "2026-07-12T01:56:11.626Z"
+  },
+  {
+    "path": "/fr",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/fr",
+    "searchKeyword": "",
+    "id": "trf_1783821371313_nwi5el",
+    "timestamp": "2026-07-12T01:56:11.313Z"
+  },
+  {
+    "path": "/en",
+    "ip": "13.250.50.39",
+    "country": "EU",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/en",
+    "searchKeyword": "",
+    "id": "trf_1783820563456_pfj80l",
+    "timestamp": "2026-07-12T01:42:43.456Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783819479147_zkal8x",
+    "timestamp": "2026-07-12T01:24:39.147Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783819147624_t99rvl",
+    "timestamp": "2026-07-12T01:19:07.624Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783819071382_exzsb8",
+    "timestamp": "2026-07-12T01:17:51.382Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783818958180_v2wkcj",
+    "timestamp": "2026-07-12T01:15:58.180Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783818892385_82hky7",
+    "timestamp": "2026-07-12T01:14:52.385Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783818189677_ygvsjx",
+    "timestamp": "2026-07-12T01:03:09.677Z"
+  },
+  {
+    "path": "/products/frost-free-18000",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/products/frost-free-18000",
+    "searchKeyword": "",
+    "id": "trf_1783818174493_do1cfr",
+    "timestamp": "2026-07-12T01:02:54.493Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783818130039_1s868c",
+    "timestamp": "2026-07-12T01:02:10.039Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783818076458_hmn9yn",
+    "timestamp": "2026-07-12T01:01:16.458Z"
+  },
+  {
+    "path": "/products/frostline-tower-24000",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/products/frostline-tower-24000",
+    "searchKeyword": "",
+    "id": "trf_1783817995396_t3x3dk",
+    "timestamp": "2026-07-12T00:59:55.396Z"
+  },
+  {
+    "path": "/products/frostline-tower-24000",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/products/frostline-tower-24000",
+    "searchKeyword": "",
+    "id": "trf_1783817975170_uswjx8",
+    "timestamp": "2026-07-12T00:59:35.170Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783817967193_2g1w7x",
+    "timestamp": "2026-07-12T00:59:27.193Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783816948450_rarpcl",
+    "timestamp": "2026-07-12T00:42:28.450Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816842980_d3cxyo",
+    "timestamp": "2026-07-12T00:40:42.980Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816837522_l6rnch",
+    "timestamp": "2026-07-12T00:40:37.522Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816832007_3ol63o",
+    "timestamp": "2026-07-12T00:40:32.007Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816827464_dys3fq",
+    "timestamp": "2026-07-12T00:40:27.464Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816822651_01gn8v",
+    "timestamp": "2026-07-12T00:40:22.651Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816816386_woz9qo",
+    "timestamp": "2026-07-12T00:40:16.386Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816811388_e0g0b3",
+    "timestamp": "2026-07-12T00:40:11.388Z"
+  },
+  {
+    "path": "/",
+    "ip": "::ffff:127.0.0.1",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
+    "referer": "http://localhost:5000/",
+    "searchKeyword": "",
+    "id": "trf_1783816651702_4buzwy",
+    "timestamp": "2026-07-12T00:37:31.702Z"
+  },
+  {
+    "path": "/",
+    "ip": "::1",
+    "country": "Unknown",
+    "userAgent": "curl/8.5.0",
+    "referer": "",
+    "searchKeyword": "",
+    "id": "trf_1783816609981_r8c5q1",
+    "timestamp": "2026-07-12T00:36:49.981Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816550712_wemoc5",
+    "timestamp": "2026-07-12T00:35:50.712Z"
+  },
+  {
+    "path": "/",
+    "ip": "2409:8a3c:312:7ac0:c809:7b5f:fd5b:b5f9",
+    "country": "Unknown",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+    "referer": "https://4f6bfb89-352b-47e2-8557-c81a2c399a92-5000.dev.coze.site/",
+    "searchKeyword": "",
+    "id": "trf_1783816486652_mrwnan",
+    "timestamp": "2026-07-12T00:34:46.652Z"
+  }
+]

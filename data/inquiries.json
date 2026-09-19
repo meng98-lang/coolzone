@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Test User",
+    "email": "test@example.com",
+    "phone": "+49123456789",
+    "message": "Hello, I am interested in your products.",
+    "id": "inq_1783813656401_ws0lns",
+    "createdAt": "2026-07-11T23:47:36.401Z",
+    "read": false
+  }
+]

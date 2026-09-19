@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="课程播放中" />
+    <meta name="theme-color" content="#0f1420" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content="公益养生课" />
+    <meta property="og:description" content="点击即可在手机上观看。" />
+    <title>公益养生课</title>
+    <link rel="stylesheet" href="styles/main.css?v=091" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div class="logo"><span class="dot"></span><span data-brand>公益养生课堂</span></div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="watch-title">
+        <span class="day-tag" id="dayTag"></span>
+        <h1 id="lessonTitle">加载中…</h1>
+        <div class="dur" id="lessonDur"></div>
+      </div>
+
+      <div id="playerHost"></div>
+      <div id="playerError" class="watch-error" style="display:none"></div>
+
+      <section class="points" id="pointsBox">
+        <h2>本节要点</h2>
+        <ul id="pointList"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap"><span data-brand>公益养生课堂</span> · 内容仅供学习参考</div>
+    </footer>
+
+    <script src="vendor/hls.min.js?v=091"></script>
+    <script src="config.js?v=091"></script>
+    <script src="js/player.js?v=091"></script>
+    <script src="js/loader.js?v=091"></script>
+    <script>
+      (function () {
+        var params = new URLSearchParams(location.search);
+
+        function esc(s) {
+          return String(s == null ? "" : s).replace(/[&<>"]/g, function (m) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m];
+          });
+        }
+
+        window.CourseStore.load().then(function (catalog) {
+          var hit = window.CourseStore.resolveLesson(catalog, params);
+          if (!hit || !hit.lesson || !hit.lesson.video) {
+            document.getElementById("lessonTitle").textContent = "课程暂不可用";
+            var box = document.getElementById("playerError");
+            box.style.display = "block";
+            box.textContent = "未找到该课程或视频尚未上传，请联系发布者。";
+            return;
+          }
+          var c = hit.course;
+          var lesson = hit.lesson;
+
+          document.title = esc(lesson.title) + " | " + esc(c.name);
+          document.querySelectorAll("[data-brand]").forEach(function (el) {
+            el.textContent = c.brand || c.name;
+          });
+          document.getElementById("dayTag").textContent = lesson.day || ("第 " + (hit.index + 1) + " 节");
+          document.getElementById("lessonTitle").textContent = lesson.title;
+          document.getElementById("lessonDur").textContent = lesson.duration ? "⏱ " + lesson.duration : "";
+
+          var points = (lesson.points || []).filter(Boolean);
+          document.getElementById("pointsBox").style.display = points.length ? "" : "none";
+          document.getElementById("pointList").innerHTML = points
+            .map(function (p) { return "<li>" + esc(p) + "</li>"; })
+            .join("");
+
+          // 隐藏时长开关由播放器读取 lesson.hideDuration
+          window.MiniPlayer.mount(document.getElementById("playerHost"), lesson);
+        });
+      })();
+    </script>
+  </body>
+</html>

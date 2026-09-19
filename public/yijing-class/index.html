@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="易经课程，手机打开即可观看。" />
+    <meta name="theme-color" content="#0f1420" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="易经课堂" />
+    <meta property="og:description" content="易经课程，点击即可在手机上观看。" />
+    <title>易经课堂</title>
+    <link rel="stylesheet" href="styles/main.css?v=090" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <div class="logo"><span class="dot"></span><span data-brand>易经课堂</span></div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <span class="badge">易经课程 · 手机观看</span>
+        <h1>易经</h1>
+        <p>《易经》系统课程，点开即可在手机上直接观看。</p>
+      </section>
+
+      <section class="lessons" id="lessonList"></section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">易经课堂 · 内容仅供学习参考</div>
+    </footer>
+
+    <script src="config.js?v=090"></script>
+    <script>
+      (function () {
+        var C = window.COURSE;
+        document.title = C.siteName;
+        var list = document.getElementById("lessonList");
+        list.innerHTML = C.lessons
+          .map(function (l) {
+            return (
+              '<a class="lesson-card" href="watch.html?id=' + l.id + '">' +
+              '<div class="lesson-num"><span class="d">▶</span></div>' +
+              '<div class="lesson-body">' +
+              "<h3>" + l.title + "</h3>" +
+              '<p class="desc">' + l.desc + "</p>" +
+              '<div class="lesson-meta"><span class="tag dur">⏱ ' + l.duration + "</span>" +
+              '<span class="tag">手机直接观看</span></div>' +
+              "</div>" +
+              '<span class="lesson-go">观看' +
+              '<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>' +
+              "</span></a>"
+            );
+          })
+          .join("");
+      })();
+    </script>
+  </body>
+</html>

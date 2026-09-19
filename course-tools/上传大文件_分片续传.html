@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大文件上传器 · 分片续传（最高 8GB）</title>
+<style>
+  :root{--bg:#0f1420;--card:#1c2438;--line:#2a3350;--muted:#9aa6c2;--accent:#4f7cff;--ok:#2dd4bf;--err:#ff5c7a;--warn:#ffd479;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Roboto,Arial,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,#1d2a4d 0%,#0f1420 55%);color:#eef2fb;min-height:100vh;margin:0;padding:24px 16px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 20px;line-height:1.7}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .drop{border:2px dashed var(--line);border-radius:14px;padding:34px 16px;text-align:center;cursor:pointer;transition:.15s}
+  .drop:hover,.drop.drag{border-color:var(--accent);background:rgba(79,124,255,.07)}
+  .browse{color:var(--accent);font-weight:600}
+  .sml{color:var(--muted);font-size:12.5px;margin-top:6px}
+  input{display:none}
+  .files{margin-top:16px;display:grid;gap:12px}
+  .file{background:#18203a;border:1px solid var(--line);border-radius:12px;padding:13px}
+  .fhead{display:flex;justify-content:space-between;gap:10px;font-size:13.5px}
+  .fname{word-break:break-all}
+  .fsize{white-space:nowrap;color:var(--muted)}
+  .day-pick{display:flex;align-items:center;gap:8px;margin-top:9px;font-size:12.5px;color:var(--muted)}
+  .day-pick select{background:#0f1420;color:#eef2fb;border:1px solid var(--line);border-radius:7px;padding:3px 7px;font-size:12.5px}
+  .pbar{height:9px;background:#0f1420;border-radius:99px;margin-top:9px;overflow:hidden}
+  .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .15s}
+  .status{font-size:12px;margin-top:6px}
+  .st-ok{color:var(--ok)}.st-err{color:var(--err)}.st-wait{color:var(--muted)}
+  .actions{margin-top:16px;display:flex;gap:10px}
+  .btn{flex:1;border:none;border-radius:11px;padding:13px;font-size:15px;font-weight:700;cursor:pointer}
+  .btn-p{background:linear-gradient(135deg,var(--accent),var(--ok));color:#fff}
+  .btn-p:disabled{opacity:.4;cursor:not-allowed}
+  .notes{color:var(--muted);font-size:12.5px;margin-top:18px;line-height:1.9}
+  b.warn{color:var(--warn)}
+  code{background:#0f1420;padding:2px 6px;border-radius:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>大文件上传器（分片续传，最高 8GB）</h1>
+  <p class="sub">上传《易经》课程视频。单文件最高 <b class="warn">8 GB</b>。方案：文件按 6MB 分片逐个上传，断网/刷新后可续传已完成的片段。</p>
+
+  <div class="card">
+    <div class="drop" id="drop">
+      <div class="big">把视频拖到这里，或 <span class="browse">点击选择文件</span></div>
+      <div class="sml">支持 MP4 / MOV，单个最大 8GB；一次最多 3 个文件</div>
+      <input type="file" id="fileInput" multiple>
+    </div>
+    <div class="files" id="fileList"></div>
+    <div class="actions">
+      <button class="btn btn-p" id="startBtn" disabled>开始上传</button>
+    </div>
+  </div>
+
+  <p class="notes">
+    <b>使用方法：</b>选择视频 → 为每个文件标记节次（第1节/第2节/第3节，同课按顺序）→ 点「开始上传」。<br>
+    上传过程中<b>不要关闭页面</b>；若中断，重新选择<b>同一个文件</b>再点开始，会自动跳过已上传的片段（断点续传）。<br>
+    全部完成后会给出提示，把<b>课程名《易经》+ 各节标题</b>告诉我即可转码上线。<br>
+    本次存储到私有桶 <code>course-upload/yijing_&lt;本轮&gt;/</code>，不影响旧课程。
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SUPA_URL = "https://br-sharp-roan-02ea13e0.supabase2.aidap-global.cn-beijing.volces.com";
+  var SUPA_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMzNjQ0NzI4NTksInJvbGUiOiJhbm9uIn0.-Jz0VBg12znq79N8WEpoTA-HjHMEU_nlcUzRdaN87Rc";
+  var BUCKET = "course-upload";
+  var MAX_FILES = 3, MAX_BYTES = 8*1024*1024*1024, CHUNK = 6*1024*1024;
+  var CONCURRENT = 6; // 同时上传的分片数（大幅提速）
+
+  var client = window.supabase.createClient(SUPA_URL, SUPA_ANON);
+  var fileInput=document.getElementById("fileInput"), drop=document.getElementById("drop");
+  var listEl=document.getElementById("fileList"), startBtn=document.getElementById("startBtn");
+  var items=[];
+
+  function safeName(n){return n.replace(/[^\w.\-\u4e00-\u9fa5]/g,"_").slice(0,100);}
+  function hsize(b){if(b>=1073741824)return (b/1073741824).toFixed(2)+" GB";if(b>=1048576)return (b/1048576).toFixed(1)+" MB";return Math.round(b/1024)+" KB";}
+
+  function render(){
+    listEl.innerHTML=items.map(function(it,i){
+      return '<div class="file" data-i="'+i+'">'+
+        '<div class="fhead"><span class="fname">'+it.file.name+'</span><span class="fsize">'+hsize(it.file.size)+'</span></div>'+
+        '<div class="day-pick">标记为：<select data-day="'+i+'">'+
+          '<option'+(i===0?' selected':'')+'>第1节</option>'+
+          '<option'+(i===1?' selected':'')+'>第2节</option>'+
+          '<option'+(i===2?' selected':'')+'>第3节</option>'+
+        '</select><span class="status st-wait" data-status="'+i+'">等待上传</span></div>'+
+        '<div class="pbar"><i data-bar="'+i+'"></i></div>'+
+      '</div>';
+    }).join("");
+    listEl.querySelectorAll("[data-day]").forEach(function(sel){sel.addEventListener("change",function(){items[+sel.getAttribute("data-day")].day=sel.value;});});
+    startBtn.disabled=items.length===0;
+    items.forEach(function(it,i){if(it.done===true){var s=listEl.querySelector('[data-status="'+i+'"]');if(s){s.textContent="已完成";s.className="status st-ok";}}});
+  }
+
+  function addFiles(fl){
+    Array.prototype.slice.call(fl).forEach(function(f){
+      if(items.length>=MAX_FILES) return;
+      if(f.size>MAX_BYTES){alert("文件 "+f.name+" 超过 8GB，无法上传");return;}
+      items.push({file:f, day:"第"+(items.length+1)+"节"});
+    });
+    render();
+  }
+  fileInput.addEventListener("change",function(){addFiles(fileInput.files);fileInput.value="";});
+  drop.addEventListener("click",function(){fileInput.click();});
+  ["dragover","dragenter"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add("drag");});});
+  ["dragleave","drop"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove("drag");});});
+  drop.addEventListener("drop",function(e){e.preventDefault();drop.classList.remove("drag");var fl=e.dataTransfer&&e.dataTransfer.files;if(fl)addFiles(fl);});
+
+  function uploadFile(it,i){
+    return new Promise(function(resolve){
+      var base=[ "yijing_s", Date.now().toString(36), i ].join("_");
+      var dir="yijing/"+base;
+      var parts=Math.ceil(it.file.size/CHUNK);
+      var el=listEl.querySelector('[data-i="'+i+'"]');
+      if(!el){resolve();return;}
+      var bar=el.querySelector('[data-bar="'+i+'"]'), st=el.querySelector('[data-status="'+i+'"]');
+      function setS(t,c){if(st){st.textContent=t;st.className="status "+(c||"");}}
+      function setBar(v){if(bar)bar.style.width=Math.min(100,v).toFixed(1)+"%";}
+
+      setS("准备分片 ("+parts+" 片)","");
+      // 断点续传：读取 localStorage 已完成的片号集合
+      var key="mv_up2_"+base+"_done";
+      var doneParts=new Set();
+      try{ var arr=JSON.parse(localStorage.getItem(key)||"[]"); (Array.isArray(arr)?arr:[]).forEach(function(v){doneParts.add(v);}); }catch(e){}
+      var doneCount=doneParts.size;
+
+      function saveDone(){ try{localStorage.setItem(key,JSON.stringify(Array.from(doneParts)));}catch(e){} }
+      function paint(){
+        setS("上传中 "+((doneCount/parts*100)|0)+"% ("+doneCount+"/"+parts+") · 并发"+CONCURRENT);
+        setBar(doneCount/parts*100);
+      }
+
+      function uploadOne(p){
+        var start=p*CHUNK, end=Math.min(it.file.size,(p+1)*CHUNK);
+        var blob=it.file.slice(start,end);
+        var path=dir+"/"+String(p).padStart(5,"0");
+        return new Promise(function(fin){
+          var apiUrl="https://4f6bfb89-352b-47e2-8557-c81a2c399a92.dev.coze.site/api/upload-chunk?path="+encodeURIComponent(path);
+          function failOnce(n){
+            if(n>=3){ try{st.textContent="第"+(p+1)+"片失败，请重试";st.className="status st-err";}catch(e){} fin(); }
+            else{ setTimeout(function(){tryUp(n+1);}, 1500); }
+          }
+          function tryUp(n){
+            fetch(apiUrl,{method:"PUT",body:blob})
+              .then(function(r){return Promise.all([r,r.json().catch(function(){return null;})]);})
+              .then(function(a){
+                var r=a[0], j=a[1];
+                if(r.ok && j && j.ok===true){ doneParts.add(p); doneCount=doneParts.size; saveDone(); paint(); st.className="status"; fin(); }
+                else{ failOnce(n); }
+              })
+              .catch(function(){ failOnce(n); });
+          }
+          tryUp(0);
+        });
+      }
+
+      function run(){
+        if(doneCount>=parts){ setS("已完成","st-ok"); setBar(100); paint(); setS("已完成","st-ok"); it.done=true; try{ var rec=JSON.parse(localStorage.getItem("mv_yijing_dirs")||"[]"); rec.push({dir:dir,parts:parts,day:it.day,name:it.file.name,key:key}); localStorage.setItem("mv_yijing_dirs",JSON.stringify(rec)); }catch(e){} resolve(); return; }
+        // 并联任务前先处理好失败（无法上报全局，逐片计数即可）
+        var idx=0, active=0, failed=0;
+        return new Promise(function(done){
+          function next(){
+            while(active<CONCURRENT && idx<parts){
+              if(doneParts.has(idx)){ idx++; continue; }
+              active++;
+              (function(p){
+                uploadOne(p).then(function(){ active--; next(); });
+              })(idx);
+              idx++;
+            }
+            if(active===0 && idx>=parts){
+              var total_parts = parts;
+              setS(doneCount+"/"+total_parts+" 已传","");
+              resolveDone();
+            }
+          }
+          function resolveDone(){ done(); }
+          next();
+        }).then(function(){
+          setS("已完成","st-ok"); setBar(100); it.done=true;
+          try{ var rec=JSON.parse(localStorage.getItem("mv_yijing_dirs")||"[]"); rec.push({dir:dir,parts:parts,day:it.day,name:it.file.name,key:key}); localStorage.setItem("mv_yijing_dirs",JSON.stringify(rec)); }catch(e){}
+          resolve();
+        });
+      }
+      run();
+    });
+  }
+
+  startBtn.addEventListener("click", async function(){
+    startBtn.disabled=true; startBtn.textContent="上传中…请不要关闭页面";
+    for(var i=0;i<items.length;i++){ await uploadFile(items[i], i); }
+    startBtn.textContent="开始上传（本轮已完成）";
+    alert("本轮上传结束。若某项显示“已完成”即成功。请把课程名《易经》与各节标题告诉我，我会合并转码上线。");
+  });
+})();
+</script>
+</body>

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/v1", "destination": "/watch.html?id=day1", "permanent": false },
+    { "source": "/v2", "destination": "/watch.html?id=day2", "permanent": false },
+    { "source": "/v3", "destination": "/watch.html?id=day3", "permanent": false }
+  ]
+}
