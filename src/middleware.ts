@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { locales, defaultLocale, type Locale } from '@/i18n/config';
 
 // Paths that should NOT be localized
-const SKIP_PREFIXES = ['/api', '/admin', '/_next', '/favicon', '/products/hero', '/yijing', '/yijing-class', '/course', '/course-template'];
+const SKIP_PREFIXES = ['/api', '/admin', '/_next', '/favicon', '/products/hero', '/yijing', '/yijing-class', '/course', '/course-template', '/sports'];
 
 function getLocaleFromPath(pathname: string): Locale | null {
   const segments = pathname.split('/');
