@@ -22,7 +22,7 @@ import {
  *
  * TikTok Pixel ID is configurable below. Replace with your own ID.
  */
-const TIKTOK_PIXEL_ID = 'YOUR_TIKTOK_PIXEL_ID';
+const TIKTOK_PIXEL_ID = 'DAQ0T3RC77U17TEHS070';
 const WHATSAPP_NUMBER = '18014052006'; // +1 801 405 2006
 const WA_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   'Hi, I\'m interested in your products. Could you send me the price list?'
