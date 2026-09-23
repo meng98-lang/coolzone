@@ -42,7 +42,19 @@ function detectBrowserLocale(request: NextRequest): Locale {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+  const host = request.headers.get('host') || '';
+
+  // jiangtang.store 独立站：根路径直接展示 /sports 落地页（地址栏保持域名，不跳转）。
+  // 其余明确路径（/sports、静态资源、_next）正常放行，避免该域名落到多语言首页。
+  if (/^(www\.)?jiangtang\.store$/i.test(host)) {
+    if (pathname === '/' || pathname === '') {
+      const u = request.nextUrl.clone();
+      u.pathname = '/sports';
+      return NextResponse.rewrite(u);
+    }
+    return NextResponse.next();
+  }
+
   // Skip API routes, admin, static files, and special paths
   if (SKIP_PREFIXES.some(prefix => pathname.startsWith(prefix))) {
     return NextResponse.next();
