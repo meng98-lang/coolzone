@@ -82,6 +82,17 @@ function track(event: string, params?: Record<string, unknown>) {
   }
 }
 
+/**
+ * WhatsApp click: always fire the STANDARD event 'ClickButton' so it can be
+ * selected as an optimization target (even with zero prior events), plus the
+ * custom 'WhatsAppClick' for finer segmentation once it accumulates data.
+ */
+function trackWhatsAppClick(location: string) {
+  const p = { content_name: location };
+  track('ClickButton', p);
+  track('WhatsAppClick', p);
+}
+
 export default function SportsLanding() {
   const [active, setActive] = useState('');
 
@@ -137,7 +148,7 @@ export default function SportsLanding() {
               href={WA_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track('WhatsAppClick', { content_name: 'header_cta' })}
+              onClick={() => trackWhatsAppClick('header_cta')}
               className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-bold text-black transition hover:bg-[#1ebe5d]"
             >
               <MessageCircle className="h-4 w-4" />
@@ -168,7 +179,7 @@ export default function SportsLanding() {
                   href={WA_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => track('WhatsAppClick', { content_name: 'hero_cta' })}
+                  onClick={() => trackWhatsAppClick('hero_cta')}
                   className="wa-cta"
                 >
                   <MessageCircle className="h-5 w-5" />
@@ -241,7 +252,7 @@ export default function SportsLanding() {
                     href={WA_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => track('WhatsAppClick', { content_name: 'product_' + p.id })}
+                    onClick={() => trackWhatsAppClick('product_' + p.id)}
                     className="mt-4 flex items-center justify-center gap-2 rounded-full border border-[#25D366]/50 bg-[#25D366]/10 px-4 py-2.5 text-sm font-bold text-[#4be388] transition hover:bg-[#25D366] hover:text-black"
                   >
                     <MessageCircle className="h-4 w-4" />
@@ -296,7 +307,7 @@ export default function SportsLanding() {
                 href={WA_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => track('Lead', { content_name: 'final_cta' })}
+                onClick={() => { track('ClickButton', { content_name: 'final_cta' }); track('Lead', { content_name: 'final_cta' }); }}
                 className="wa-cta pulse"
               >
                 <MessageCircle className="h-5 w-5" />
@@ -333,7 +344,7 @@ export default function SportsLanding() {
           href={WA_LINK}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => track('WhatsAppClick', { content_name: 'floating' })}
+          onClick={() => trackWhatsAppClick('floating')}
           className="fixed bottom-6 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-black shadow-[0_10px_30px_rgba(37,211,102,0.4)] transition hover:scale-105 hover:bg-[#1ebe5d]"
           aria-label="Chat on WhatsApp"
         >
