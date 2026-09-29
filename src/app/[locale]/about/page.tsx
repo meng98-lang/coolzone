@@ -26,7 +26,7 @@ export default function AboutPage() {
               聊城拓威机械制造
             </p>
             <p className="text-blue-700 mt-2">
-              山东省临沂市兰山区银雀山街道通达路与启阳路交汇澳尔诺财富中心8楼809室
+              山东省聊城市东昌府区通达路与启阳路交汇澳尔诺财富中心8楼809室
             </p>
           </div>
         </section>
@@ -120,7 +120,7 @@ export default function AboutPage() {
           <h2 className="text-xl font-semibold text-gray-800 mb-3">Contact Us</h2>
           <p className="text-gray-600 leading-relaxed">
             <strong>Company:</strong> 聊城拓威机械制造<br />
-            <strong>Address:</strong> 山东省临沂市兰山区银雀山街道通达路与启阳路交汇澳尔诺财富中心8楼809室<br />
+            <strong>Address:</strong> 山东省聊城市东昌府区通达路与启阳路交汇澳尔诺财富中心8楼809室<br />
             <strong>Email:</strong> info@coolzone.eu<br />
             <strong>WhatsApp:</strong> +49 987 654 321<br />
             <strong>Website:</strong> www.coolzone.eu

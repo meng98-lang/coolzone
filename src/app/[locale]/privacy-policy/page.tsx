@@ -34,7 +34,7 @@ export default function PrivacyPolicyPage({ params }: { params: Promise<{ locale
           <h2 className="text-xl font-semibold text-gray-800 mb-3">2. Data Controller</h2>
           <p className="text-gray-600 leading-relaxed">
             聊城拓威机械制造<br />
-            山东省临沂市兰山区银雀山街道通达路与启阳路交汇澳尔诺财富中心8楼809室<br />
+            山东省聊城市东昌府区通达路与启阳路交汇澳尔诺财富中心8楼809室<br />
             Email: privacy@coolzone.eu<br />
             Phone: +33 1 23 45 67 89
           </p>

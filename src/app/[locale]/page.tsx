@@ -69,8 +69,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     url: process.env.COZE_PROJECT_DOMAIN_DEFAULT ? `https://${process.env.COZE_PROJECT_DOMAIN_DEFAULT}` : 'https://coolzone.vercel.app',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '山东省临沂市兰山区银雀山街道通达路与启阳路交汇',
-      addressLocality: '临沂市',
+      streetAddress: '山东省聊城市东昌府区通达路与启阳路交汇',
+      addressLocality: '聊城市',
       addressRegion: '山东省',
       addressCountry: 'CN',
     },
