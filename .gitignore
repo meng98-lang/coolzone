@@ -45,3 +45,4 @@ coverage/
 .preview
 .cozeproj/reduction
 .codegraph
+.env*
