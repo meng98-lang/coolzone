@@ -56,7 +56,7 @@ export function Footer({ locale = 'en', phone }: FooterProps) {
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-2.5">
-              <li className="text-sm text-gray-400">济南云顶久嘉商贸有限公司</li>
+              <li className="text-sm text-gray-400">聊城拓威机械制造</li>
               <li className="text-sm text-gray-400">山东省临沂市兰山区银雀山街道通达路与启阳路交汇</li>
               <li className="text-sm text-gray-400">澳尔诺财富中心8楼809室</li>
             </ul>
@@ -66,7 +66,7 @@ export function Footer({ locale = 'en', phone }: FooterProps) {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-base text-gray-400 font-medium">
-            &copy; 2025 济南云顶久嘉商贸有限公司 {t['footer.rights']}
+            &copy; 2025 聊城拓威机械制造 {t['footer.rights']}
           </p>
           <div className="flex items-center gap-4">
             <a

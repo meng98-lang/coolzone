@@ -197,7 +197,7 @@ export const translations: Translations = {
     'common.price': 'Price',
     'common.currency': '€',
     'seo.keywords': 'air conditioning, AC unit, wall mounted air conditioner, portable air conditioner, split AC, inverter air conditioning, energy efficient AC, R32 refrigerant, cooling system, heat pump, EU energy label, bedroom AC, living room cooling, commercial air conditioning, quiet air conditioner, smart WiFi AC, Europe air conditioning',
-    'seo.siteName': '济南云顶久嘉商贸有限公司',
+    'seo.siteName': '聊城拓威机械制造',
     'seo.description': 'Buy energy-efficient air conditioners in Europe. Wall-mounted, portable, central & floor-standing AC units with EU warranty. Free shipping across EU.',
   },
 

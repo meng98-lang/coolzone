@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: ProductPageProps) {
       locale: locale.toUpperCase(),
       images: [{ url: product.image, width: 1024, height: 768 }],
       type: 'website',
-      siteName: '济南云顶久嘉商贸有限公司',
+      siteName: '聊城拓威机械制造',
     },
   };
 }
@@ -71,7 +71,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     description: product.description,
     brand: {
       '@type': 'Brand',
-      name: '济南云顶久嘉商贸有限公司',
+      name: '聊城拓威机械制造',
     },
     offers: {
       '@type': 'Offer',

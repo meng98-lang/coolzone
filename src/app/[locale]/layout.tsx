@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: {
       default: t['seo.siteName'],
-      template: `%s | 济南云顶久嘉商贸有限公司`,
+      template: `%s | 聊城拓威机械制造`,
     },
     description: t['seo.description'],
     keywords: t['seo.keywords'],
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t['seo.description'],
       locale: locale.toUpperCase(),
       type: 'website',
-      siteName: '济南云顶久嘉商贸有限公司',
+      siteName: '聊城拓威机械制造',
     },
     twitter: {
       card: 'summary_large_image',

@@ -34,7 +34,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-800 mb-3">1. Data Controller</h2>
           <p className="text-gray-600 leading-relaxed">
-            <strong>Company:</strong> 济南云顶久嘉商贸有限公司<br />
+            <strong>Company:</strong> 聊城拓威机械制造<br />
             <strong>Address:</strong> 山东省临沂市兰山区银雀山街道通达路与启阳路交汇澳尔诺财富中心8楼809室<br />
             <strong>Email:</strong> privacy@coolzone.eu<br />
             <strong>WhatsApp:</strong> +49 987 654 321

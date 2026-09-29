@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t['products.subtitle'],
       locale: locale.toUpperCase(),
       type: 'website',
-      siteName: '济南云顶久嘉商贸有限公司',
+      siteName: '聊城拓威机械制造',
     },
   };
 }

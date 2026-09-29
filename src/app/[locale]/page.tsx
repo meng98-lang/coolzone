@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t['seo.description'],
       locale: locale.toUpperCase(),
       type: 'website',
-      siteName: '济南云顶久嘉商贸有限公司',
+      siteName: '聊城拓威机械制造',
       url: `${baseUrl}/${locale}`,
     },
     twitter: {
@@ -64,7 +64,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const orgJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: '济南云顶久嘉商贸有限公司',
+    name: '聊城拓威机械制造',
     description: t['home.hero.subtitle'],
     url: process.env.COZE_PROJECT_DOMAIN_DEFAULT ? `https://${process.env.COZE_PROJECT_DOMAIN_DEFAULT}` : 'https://coolzone.vercel.app',
     address: {
