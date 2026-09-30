@@ -55,6 +55,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // nexuspharma.online 商城独立站：根路径展示 /shop（GSJ Outdoor Tech 商城）。
+  // 其余明确路径正常放行，避免该域名落到多语言首页。
+  if (/^(www\.)?nexuspharma\.online$/i.test(host)) {
+    if (pathname === '/' || pathname === '') {
+      const u = request.nextUrl.clone();
+      u.pathname = '/shop';
+      return NextResponse.rewrite(u);
+    }
+    return NextResponse.next();
+  }
+
   // Skip API routes, admin, static files, and special paths
   if (SKIP_PREFIXES.some(prefix => pathname.startsWith(prefix))) {
     return NextResponse.next();
