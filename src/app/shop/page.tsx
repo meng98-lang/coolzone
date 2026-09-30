@@ -1,17 +1,33 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import Script from 'next/script';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ShoppingCart, X, MessageCircle, Plus, Minus, Trash2, ShieldCheck,
-  Truck, Lock, Star, Menu, ChevronDown, CreditCard, ArrowRight,
+  Truck, Lock, Star, Menu, CreditCard,
 } from 'lucide-react';
-import { loadStripe, type Stripe } from '@stripe/stripe-js';
-import {
-  Elements, PaymentElement, useStripe, useElements,
-} from '@stripe/react-stripe-js';
 
 /* vim: set ts=2 sw=2: */
+
+// Square Web Payments SDK global
+declare global {
+  interface Window {
+    Square?: SquareNamespace;
+  }
+}
+
+interface SquareNamespace {
+  payments: (applicationId: string, locationId?: string) => Promise<PaymentsInstance>;
+}
+interface PaymentsInstance {
+  card: () => Promise<CardInstance>;
+}
+interface CardInstance {
+  attach: (selector: string) => Promise<unknown>;
+  tokenize: () => Promise<{ status: string; token?: string; errors?: Array<{ message: string }> }>;
+  destroy?: () => Promise<unknown>;
+}
 
 interface ShopProduct {
   id: string;
@@ -34,7 +50,9 @@ interface ShopProductData {
   companyName: string;
   companyAddress: string;
   companyPhone: string;
-  stripePublishableKey: string | null;
+  squareApplicationId: string | null;
+  squareLocationId: string | null;
+  squareEnvironment: string;
 }
 
 interface CartItem {
@@ -54,85 +72,84 @@ function waLink(number: string, message: string, productName?: string) {
   return `https://wa.me/${number.replace(/\+/g, '').replace(/\D/g, '')}?text=${encodeURIComponent(text)}`;
 }
 
-// ===================== Checkout Form =====================
-function CheckoutForm({
-  onSuccess, onDone, total, currency,
+// ===================== Square Card Modal =====================
+function SquareCardModal({
+  applicationId, locationId, total, currency, items, onClose, onPaid,
 }: {
-  onSuccess: () => void;
-  onDone: () => void;
+  applicationId: string;
+  locationId: string | null;
   total: number;
   currency: string;
+  items: CartItem[];
+  onClose: () => void;
+  onPaid: () => void;
 }) {
-  const stripe = useStripe();
-  const elements = useElements();
+  const [card, setCard] = useState<CardInstance | null>(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async () => {
-    if (!stripe || !elements) return;
+  useEffect(() => {
+    let destroyed = false;
+    const init = async () => {
+      // 等待 Square SDK 脚本加载
+      let tries = 0;
+      while (!window.Square && tries < 50) {
+        await new Promise((r) => setTimeout(r, 100));
+        tries++;
+      }
+      if (!window.Square || destroyed) return;
+      const payments = await window.Square.payments(applicationId, locationId || undefined);
+      const cardInstance = await payments.card();
+      await cardInstance.attach('#card-container');
+      if (!destroyed) setCard(cardInstance);
+    };
+    init();
+    return () => {
+      destroyed = true;
+      card?.destroy?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [applicationId, locationId]);
+
+  const handlePay = async () => {
+    if (!card) return;
     setProcessing(true);
     setError('');
+    try {
+      const result = await card.tokenize();
+      if (result.status !== 'OK' || !result.token) {
+        setError(result.errors?.[0]?.message || 'Card tokenization failed.');
+        setProcessing(false);
+        return;
+      }
 
-    const { error: submitError } = await stripe.confirmPayment({
-      elements,
-      confirmParams: { return_url: window.location.origin + '/shop?pay=ok' },
-      redirect: 'if_required',
-    });
-
-    if (submitError) {
-      setError(submitError.message || 'Payment failed. Please try again.');
+      // 用 token 调后端，后端走 Square paymentsApi 一次性完成
+      const res = await fetch('/api/shop/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map((i) => ({ productId: i.productId, qty: i.qty })),
+          sourceId: result.token,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        setError(json.error || 'Payment failed. Please try again.');
+        setProcessing(false);
+        return;
+      }
+      onPaid();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Payment failed.');
       setProcessing(false);
-    } else {
-      // PaymentIntent user-side confirmed without redirect
-      onSuccess();
     }
   };
-
-  return (
-    <div className="space-y-4">
-      <PaymentElement />
-      {error && (
-        <div className="rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm p-3">
-          {error}
-        </div>
-      )}
-      <button
-        onClick={handleSubmit}
-        disabled={!stripe || processing}
-        className="w-full flex items-center justify-center gap-2 rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-black font-bold py-3.5 transition disabled:opacity-50"
-      >
-        <Lock className="w-4 h-4" />
-        {processing ? 'Processing…' : `Pay ${currency} ${total.toFixed(2)} securely`}
-      </button>
-      <button
-        onClick={onDone}
-        className="w-full text-center text-sm text-gray-400 hover:text-white transition"
-      >
-        ← Back
-      </button>
-    </div>
-  );
-}
-
-// Checkout modal wrapped in Elements
-function CheckoutModal({
-  clientSecret, onClose, onDone, onPaid, total, currency, publishableKey,
-}: {
-  clientSecret: string;
-  onClose: () => void;
-  onDone: () => void;
-  onPaid: () => void;
-  total: number;
-  currency: string;
-  publishableKey: string;
-}) {
-  const [stripePromise] = useState(() => loadStripe(publishableKey));
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-[#14161c] border border-white/10 rounded-3xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-white">Secure Checkout</h3>
+          <h3 className="text-lg font-bold text-white">Secure Card Payment</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-white transition">
             <X className="w-5 h-5" />
           </button>
@@ -143,14 +160,30 @@ function CheckoutModal({
             {currency} {total.toFixed(2)}
           </span>
         </div>
-        <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-4">
-          <Lock className="w-3.5 h-3.5" /> Payments encrypted &amp; processed by Stripe
-        </div>
-        {stripePromise && (
-          <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'night' } }}>
-            <CheckoutForm onSuccess={onPaid} onDone={onDone ?? onClose} total={total} currency={currency} />
-          </Elements>
+
+        {/* Square card field */}
+        <div id="card-container" className="rounded-xl bg-white/[.04] border border-white/10 p-3 min-h-[56px]" />
+
+        {error && (
+          <div className="mt-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 text-sm p-3">
+            {error}
+          </div>
         )}
+
+        <button
+          onClick={handlePay}
+          disabled={!card || processing}
+          className="mt-4 w-full flex items-center justify-center gap-2 rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-black font-bold py-3.5 transition disabled:opacity-50"
+        >
+          <Lock className="w-4 h-4" />
+          {processing ? 'Processing…' : `Pay ${currency} ${total.toFixed(2)} securely`}
+        </button>
+        <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
+          <Lock className="w-3.5 h-3.5" /> Payments encrypted &amp; processed by Square
+        </div>
+        <button onClick={onClose} className="mt-3 w-full text-center text-sm text-gray-400 hover:text-white transition">
+          ← Back
+        </button>
       </div>
     </div>
   );
@@ -164,8 +197,8 @@ export default function ShopPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [checkoutSecret, setCheckoutSecret] = useState<string | null>(null);
-  const [payOk, setPayOk] = useState(false);
+  const [payOpen, setPayOpen] = useState(false);
+  const [paidOpen, setPaidOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/shop/products')
@@ -180,9 +213,6 @@ export default function ShopPage() {
       })
       .catch(() => setData(null))
       .finally(() => setLoading(false));
-
-    const url = new URL(window.location.href);
-    if (url.searchParams.get('pay') === 'ok') setPayOk(true);
   }, []);
 
   const whatsappHref = data
@@ -233,30 +263,19 @@ export default function ShopPage() {
       return;
     }
 
-    if (!data?.stripePublishableKey) {
+    // Square 卡片支付：无需先建单，直接打开卡片弹窗；tokenize 后由后端一次完成收款
+    if (!data?.squareApplicationId) {
       alert('Card payment is being set up — please contact us on WhatsApp to complete your order.');
       return;
     }
-
-    try {
-      const res = await fetch('/api/shop/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: cart.map((i) => ({ productId: i.productId, qty: i.qty })),
-          customerPhone: data.whatsappNumber,
-        }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Checkout failed');
-      setCheckoutSecret(json.clientSecret);
-    } catch (e) {
-      alert(e instanceof Error ? e.message : 'Checkout failed');
-    }
+    setCartOpen(false);
+    setPayOpen(true);
   };
 
   return (
     <main className="min-h-screen bg-[#0a0a0c] text-white antialiased">
+      {/* Square Web Payments SDK */}
+      <Script src="https://web.squarecdn.com/v1/square.js" strategy="afterInteractive" />
       {/* ===== Header ===== */}
       <header className="sticky top-0 z-50 bg-black/70 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -387,7 +406,7 @@ export default function ShopPage() {
         {[
           { icon: ShieldCheck, t: 'Discreet Packaging', d: 'Secure, plain delivery' },
           { icon: Truck, t: 'Worldwide Shipping', d: 'Reliable global fulfillment' },
-          { icon: Lock, t: 'Secure Payment', d: 'Encrypted Stripe checkout' },
+          { icon: Lock, t: 'Secure Payment', d: 'Encrypted Square checkout' },
           { icon: MessageCircle, t: 'Live Support', d: 'WhatsApp 24/7' },
         ].map((b, i) => (
           <div key={i} className="rounded-2xl bg-[#14161c] border border-white/5 p-5">
@@ -540,7 +559,7 @@ export default function ShopPage() {
             <h4 className="font-semibold text-sm uppercase tracking-wider mb-3 text-gray-200">Payment</h4>
             <div className="flex items-center gap-2 text-xs text-gray-400">
               <CreditCard className="w-4 h-4 text-[#d4af37]" />
-              Secure checkout by Stripe
+              Secure checkout by Square
             </div>
             <p className="text-xs text-gray-500 mt-2">
               © {new Date().getFullYear()} {data?.companyName || 'GSJ Outdoor Tech LLC'}. All rights reserved.
@@ -637,28 +656,42 @@ export default function ShopPage() {
         </div>
       )}
 
-      {/* ===== Checkout Modal ===== */}
-      {checkoutSecret && data?.stripePublishableKey && (
-        <CheckoutModal
-          clientSecret={checkoutSecret}
-          onClose={() => { setCheckoutSecret(null); setCartOpen(true); }}
-          onDone={() => setCheckoutSecret(null)}
-          onPaid={() => {
-            setCheckoutSecret(null);
-            setCartOpen(false);
-            setCart([]);
-            setPayOk(true);
-          }}
+      {/* ===== Square Card Modal ===== */}
+      {payOpen && data?.squareApplicationId && (
+        <SquareCardModal
+          applicationId={data.squareApplicationId}
+          locationId={data.squareLocationId}
           total={cartTotal}
           currency={currency}
-          publishableKey={data.stripePublishableKey}
+          items={cart}
+          onClose={() => { setPayOpen(false); setCartOpen(true); }}
+          onPaid={() => {
+            setPayOpen(false);
+            setCartOpen(false);
+            setCart([]);
+            setPaidOpen(true);
+          }}
         />
       )}
 
-      {/* ===== Pay OK toast ===== */}
-      {payOk && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[110] rounded-full bg-[#25D366] text-black font-bold px-6 py-3 shadow-xl flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5" /> Payment received — thank you! We&apos;ll contact you shortly.
+      {/* ===== Payment success ===== */}
+      {paidOpen && (
+        <div className="fixed inset-0 z-[120] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-[#14161c] border border-white/10 rounded-3xl p-8 text-center">
+            <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-[#25D366]/15 flex items-center justify-center">
+              <ShieldCheck className="w-9 h-9 text-[#25D366]" />
+            </div>
+            <h3 className="text-2xl font-black text-white mb-2">Payment Received</h3>
+            <p className="text-gray-400 mb-6">
+              Thank you for your order. We&apos;ll confirm the details with you shortly.
+            </p>
+            <button
+              onClick={() => setPaidOpen(false)}
+              className="w-full rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-black font-bold py-3 transition"
+            >
+              Done
+            </button>
+          </div>
         </div>
       )}
     </main>

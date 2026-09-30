@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getShopSettings, updateShopSettings, verifyShopAdmin } from '@/lib/shop';
 
-// GET /api/shop/settings - 获取商城配置（脱敏，不含密钥明文回显给前端管理）
+// GET /api/shop/settings - 获取商城配置（需管理员密码）
 export async function GET(request: NextRequest) {
   const password = request.headers.get('x-admin-password');
   if (!password || !(await verifyShopAdmin(password))) {
@@ -16,11 +16,13 @@ export async function GET(request: NextRequest) {
     companyName: s.companyName,
     companyAddress: s.companyAddress,
     companyPhone: s.companyPhone,
-    stripePublishableKey: s.stripePublishableKey,
+    squareApplicationId: s.squareApplicationId,
+    squareLocationId: s.squareLocationId,
+    squareEnvironment: s.squareEnvironment,
   });
 }
 
-// POST /api/shop/settings - 保存商城配置（含 Stripe 密钥）
+// POST /api/shop/settings - 保存商城配置（含 Square 密钥）
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -31,7 +33,8 @@ export async function POST(request: NextRequest) {
     const allowed = [
       'siteName', 'whatsappNumber', 'whatsappMessage', 'currency',
       'companyName', 'companyAddress', 'companyPhone',
-      'stripePublishableKey', 'stripeSecretKey', 'stripeWebhookSecret',
+      'squareApplicationId', 'squareAccessToken', 'squareLocationId',
+      'squareWebhookSecret', 'squareEnvironment',
     ];
     const clean: Record<string, string> = {};
     for (const k of allowed) {

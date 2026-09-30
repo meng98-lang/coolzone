@@ -26,7 +26,7 @@ interface ShopOrder {
   message: string | null;
   payment_status: string;
   payment_method: string | null;
-  stripe_payment_intent: string | null;
+  square_payment_id: string | null;
   status: string;
   created_at: string;
 }
@@ -249,14 +249,14 @@ export default function ShopOrdersPage() {
                             </>
                           )}
                         </div>
-                        {o.stripe_payment_intent && (
+                        {o.square_payment_id && (
                           <div className="mt-2 text-xs">
-                            <span className="text-gray-400">Payment ID:</span>
+                            <span className="text-gray-400">Square Payment ID:</span>
                             <button
-                              onClick={() => copy(o.stripe_payment_intent!)}
+                              onClick={() => copy(o.square_payment_id!)}
                               className="ml-1 font-mono text-blue-600 hover:underline inline-flex items-center gap-1"
                             >
-                              {copied === o.stripe_payment_intent ? 'Copied ✓' : o.stripe_payment_intent.slice(-16)}
+                              {copied === o.square_payment_id ? 'Copied ✓' : o.square_payment_id.slice(-16)}
                               <Copy className="w-3 h-3" />
                             </button>
                           </div>

@@ -13,6 +13,8 @@ export async function GET() {
     companyName: settings.companyName,
     companyAddress: settings.companyAddress,
     companyPhone: settings.companyPhone,
-    stripePublishableKey: settings.stripePublishableKey,
+    squareApplicationId: settings.squareApplicationId,
+    squareLocationId: settings.squareLocationId,
+    squareEnvironment: settings.squareEnvironment,
   });
 }

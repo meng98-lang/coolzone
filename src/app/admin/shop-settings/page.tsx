@@ -3,20 +3,34 @@
 import { useEffect, useState } from 'react';
 import { Save, Check, KeyRound, Building2, MessageCircle, AlertCircle } from 'lucide-react';
 
+interface SettingsState {
+  siteName: string;
+  whatsappNumber: string;
+  whatsappMessage: string;
+  currency: string;
+  companyName: string;
+  companyAddress: string;
+  companyPhone: string;
+  squareApplicationId: string;
+  squareLocationId: string;
+  squareEnvironment: string;
+}
+
 export default function ShopSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
-  const [settings, setSettings] = useState({
+  const [ready, setReady] = useState(false);
+  const [settings, setSettings] = useState<SettingsState>({
     siteName: '', whatsappNumber: '', whatsappMessage: '',
     currency: 'usd', companyName: '', companyAddress: '', companyPhone: '',
-    stripePublishableKey: '',
+    squareApplicationId: '', squareLocationId: '', squareEnvironment: 'production',
   });
-  const [stripeSecretKey, setStripeSecretKey] = useState('');
-  const [stripeWebhookSecret, setStripeWebhookSecret] = useState('');
+  const [squareAccessToken, setSquareAccessToken] = useState('');
+  const [squareWebhookSecret, setSquareWebhookSecret] = useState('');
 
   useEffect(() => {
     const pw = localStorage.getItem('shop_admin_password');
-    if (!pw) return;
+    if (!pw) { setReady(true); return; }
     fetch('/api/shop/settings', { headers: { 'x-admin-password': pw } })
       .then((r) => r.json())
       .then((d) => {
@@ -25,9 +39,13 @@ export default function ShopSettingsPage() {
           siteName: d.siteName || '', whatsappNumber: d.whatsappNumber || '',
           whatsappMessage: d.whatsappMessage || '', currency: d.currency || 'usd',
           companyName: d.companyName || '', companyAddress: d.companyAddress || '',
-          companyPhone: d.companyPhone || '', stripePublishableKey: d.stripePublishableKey || '',
+          companyPhone: d.companyPhone || '',
+          squareApplicationId: d.squareApplicationId || '',
+          squareLocationId: d.squareLocationId || '',
+          squareEnvironment: d.squareEnvironment || 'production',
         });
-      });
+      })
+      .finally(() => setReady(true));
   }, []);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -41,12 +59,14 @@ export default function ShopSettingsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           password: pw, ...settings,
-          stripeSecretKey, stripeWebhookSecret,
+          squareAccessToken, squareWebhookSecret,
         }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Save failed');
       setMsg({ type: 'ok', text: 'Settings saved.' });
+      setSquareAccessToken('');
+      setSquareWebhookSecret('');
     } catch (e) {
       setMsg({ type: 'err', text: e instanceof Error ? e.message : 'Save failed' });
     } finally {
@@ -54,16 +74,10 @@ export default function ShopSettingsPage() {
     }
   };
 
-  const field = (label: string, key: keyof typeof settings) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <input
-        value={settings[key] as string}
-        onChange={(e) => setSettings((s) => ({ ...s, [key]: e.target.value }))}
-        className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
-  );
+  const set = <K extends keyof SettingsState>(key: K, value: SettingsState[K]) =>
+    setSettings((s) => ({ ...s, [key]: value }));
+
+  if (!ready) return <div className="text-sm text-gray-400">Loading…</div>;
 
   if (!localStorage.getItem('shop_admin_password')) {
     return (
@@ -73,6 +87,8 @@ export default function ShopSettingsPage() {
       </div>
     );
   }
+
+  const inputCls = 'w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500';
 
   return (
     <form onSubmit={handleSave} className="space-y-6 max-w-3xl">
@@ -94,58 +110,81 @@ export default function ShopSettingsPage() {
         </div>
       )}
 
-      {/* Stripe */}
+      {/* Square */}
       <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
         <div className="flex items-center gap-2 text-lg font-bold text-gray-900">
-          <KeyRound className="w-5 h-5 text-blue-600" /> Stripe Payment
+          <KeyRound className="w-5 h-5 text-blue-600" /> Square Payment
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Publishable Key</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Application ID</label>
             <input
-              value={settings.stripePublishableKey}
-              onChange={(e) => setSettings((s) => ({ ...s, stripePublishableKey: e.target.value }))}
-              placeholder="pk_live_..."
-              className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={settings.squareApplicationId}
+              onChange={(e) => set('squareApplicationId', e.target.value)}
+              placeholder="sandbox-... / sq0idp-..."
+              className={inputCls}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Secret Key</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Location ID</label>
             <input
-              type="password"
-              value={stripeSecretKey}
-              onChange={(e) => setStripeSecretKey(e.target.value)}
-              placeholder="sk_live_...  (leave blank to keep current)"
-              className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={settings.squareLocationId}
+              onChange={(e) => set('squareLocationId', e.target.value)}
+              placeholder="LXXXXXXXXXX"
+              className={inputCls}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Webhook Secret</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Access Token</label>
             <input
               type="password"
-              value={stripeWebhookSecret}
-              onChange={(e) => setStripeWebhookSecret(e.target.value)}
-              placeholder="whsec_...  (leave blank to keep current)"
-              className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={squareAccessToken}
+              onChange={(e) => setSquareAccessToken(e.target.value)}
+              placeholder="EAAA... / sq0atp-... (blank = keep current)"
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Webhook Signature Key</label>
+            <input
+              type="password"
+              value={squareWebhookSecret}
+              onChange={(e) => setSquareWebhookSecret(e.target.value)}
+              placeholder="wh-... (blank = keep current)"
+              className={inputCls}
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
             <input
               value={settings.currency}
-              onChange={(e) => setSettings((s) => ({ ...s, currency: e.target.value.toLowerCase() }))}
+              onChange={(e) => set('currency', e.target.value.toLowerCase())}
               placeholder="usd"
-              className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputCls}
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Environment</label>
+            <select
+              value={settings.squareEnvironment}
+              onChange={(e) => set('squareEnvironment', e.target.value)}
+              className={inputCls}
+            >
+              <option value="production">Production (Live)</option>
+              <option value="sandbox">Sandbox (Test)</option>
+            </select>
+          </div>
         </div>
-        <p className="text-xs text-gray-500">
-          Webhook endpoint:
-          <code className="ml-1 bg-gray-100 px-1.5 py-0.5 rounded text-blue-600">
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Where to get these keys: Square Developer Dashboard → your app.
+          Application ID 与 Access Token 在 <code>Credentials</code> 页，Location ID 在 <code>Locations</code> API
+          或线上后台 <code>Settings → Account &amp; Settings</code>。Webhook Signature Key 在
+          <code> Developer Dashboard → Webhooks → Subscriptions</code>（需先订阅
+          <code> payment.updated</code> 事件，地址
+          <code className="bg-gray-100 px-1.5 py-0.5 rounded text-blue-600">
             {typeof window !== 'undefined' ? window.location.origin : ''}/api/shop/webhook
           </code>
-          — add it in Stripe (event: <code>payment_intent.succeeded</code> &amp; <code>payment_intent.payment_failed</code>)
-          to auto-mark orders as paid.
+          ），用于自动把订单标记为已付款。
         </p>
       </div>
 
@@ -155,15 +194,17 @@ export default function ShopSettingsPage() {
           <Building2 className="w-5 h-5 text-gray-600" /> Company Info
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {field('Company Name', 'companyName')}
-          {field('Company Phone', 'companyPhone')}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+            <input value={settings.companyName} onChange={(e) => set('companyName', e.target.value)} className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Company Phone</label>
+            <input value={settings.companyPhone} onChange={(e) => set('companyPhone', e.target.value)} className={inputCls} />
+          </div>
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Company Address</label>
-            <input
-              value={settings.companyAddress}
-              onChange={(e) => setSettings((s) => ({ ...s, companyAddress: e.target.value }))}
-              className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <input value={settings.companyAddress} onChange={(e) => set('companyAddress', e.target.value)} className={inputCls} />
           </div>
         </div>
       </div>
@@ -174,15 +215,21 @@ export default function ShopSettingsPage() {
           <MessageCircle className="w-5 h-5 text-green-600" /> WhatsApp Support
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {field('WhatsApp Number', 'whatsappNumber')}
-          {field('Site Name', 'siteName')}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
+            <input value={settings.whatsappNumber} onChange={(e) => set('whatsappNumber', e.target.value)} className={inputCls} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Site Name</label>
+            <input value={settings.siteName} onChange={(e) => set('siteName', e.target.value)} className={inputCls} />
+          </div>
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Message</label>
             <textarea
               value={settings.whatsappMessage}
-              onChange={(e) => setSettings((s) => ({ ...s, whatsappMessage: e.target.value }))}
+              onChange={(e) => set('whatsappMessage', e.target.value)}
               rows={2}
-              className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputCls}
             />
           </div>
         </div>
