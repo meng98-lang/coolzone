@@ -3,6 +3,17 @@
 ## 项目概览
 面向欧洲市场的空调产品独立电商网站。基于 Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + shadcn/ui 构建。支持24种欧盟语言的多语言SEO。
 
+## 独立商城 /shop（GSJ Outdoor Tech / Nexus 风格补剂商城）
+> 面向健身/运动人群的性能化合物商城，公司 GSJ Outdoor Tech LLC，Stripe 收单 + 后台查看客户付款。
+- **访问**：`/shop`（黑金视觉，与 /sports 品牌一致）；`/admin/shop-orders` 后台订单中心；`/admin/shop-settings` 后台配置。
+- **数据表**：`shop_settings`（单行 id=1，含公司/WhatsApp/Stripe 三钥/币种）、`shop_orders`（订单+客户+支付信息，items jsonb）。
+- **数据层**：`src/lib/shop.ts` 封装；产品目录 `DEFAULT_PRODUCTS`（占位，待替换 nexuspharma.to 真实数据，被 Cloudflare 拦截无法自动抓取）。
+- **密钥激活收单**：进 `/admin/shop-settings` 填入 Stripe publishable/secret/webhook 密钥 + 币种，即可启用 `/shop` 的卡片支付。
+- **Webhook**：`/api/shop/webhook`（Stripe dashboard 配 `payment_intent.succeeded`/`payment_intent.payment_failed`，自动回写订单 paid/failed）。
+- **接口**：`/api/shop/products`(公开)、`/api/shop/checkout`(创建 PaymentIntent+落 pending 单)、`/api/shop/webhook`、`/api/shop/orders` 与 `/api/shop/settings`(需 `x-admin-password` 头，对应 `shop_settings.admin_password` 默认 gsj2024)。
+- ⚠️ 未配置 Stripe secret 时 `/api/shop/checkout` 返回 503（预期，非 bug）。
+- ⚠️ 合规：性能化合物属管制/敏感品类，TikTok 与 Stripe 政策或有禁止，投放与收单前需自定合规口径；页面已含免责声明。
+
 ## 技术栈
 - **Framework**: Next.js 16 (App Router)
 - **Core**: React 19

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, MessageSquare, Settings, LogOut, Menu, X, BarChart3, Clapperboard } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Settings, LogOut, Menu, X, BarChart3, Clapperboard, ShoppingBag } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isAuth, setIsAuth] = useState(false);
@@ -58,7 +58,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
     { href: '/admin/courses', label: '课程发布', icon: Clapperboard },
     { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
-    { href: '/admin/settings', label: 'Settings', icon: Settings },
+    { href: '/admin/shop-orders', label: '商城订单', icon: ShoppingBag },
+    { href: '/admin/shop-settings', label: '商城设置', icon: Settings },
   ];
 
   return (
